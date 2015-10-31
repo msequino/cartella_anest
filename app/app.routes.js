@@ -1,7 +1,8 @@
 var app = angular.module('cartellaAnestApp',[
   'ngRoute',
   'ngCookies',
-  'userController'
+  'userController',
+  'AuthenticationService'
 ]).
   config(['$routeProvider',
     function($routeProvider){

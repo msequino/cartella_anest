@@ -3,6 +3,7 @@ var app = angular.module('cartellaAnestApp',[
   'ngCookies',
   'ngAnimate',
   'homeController',
+  'AuthenticationService',
   'ui.router',
   'ui.bootstrap',
   'ui.slider']).
