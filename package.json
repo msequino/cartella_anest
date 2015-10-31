@@ -6,10 +6,10 @@
     "start": "nodejs ./bin/www"
   },
   "dependencies": {
-    "angular": "1.4.5",
+    "angular": "latest",
     "body-parser": "latest",
     "cookie-parser": "latest",
-    "connect" : "latest",
+    "connect": "latest",
     "debug": "latest",
     "email-templates": "^1.1.2",
     "express": "latest",
@@ -22,6 +22,7 @@
     "passport": "latest",
     "passport-local": "latest",
     "sequelize": "latest",
-    "angular-bootstrap-datetimepicker": "latest"
+    "angular-bootstrap-datetimepicker": "latest",
+    "handlebars": "~4.0.4"
   }
 }

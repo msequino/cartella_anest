@@ -15,42 +15,19 @@ var app = express();
 app.use(favicon(__dirname + '/app/favicon.unipr.ico'));
 app.use(logger('dev'));
 
-app.set('view engine', 'jade');
-//app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'html');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(flash());
-app.use(session({secret:'smsjaodoaid0qkplsqueu390',resave:false,saveUninitialized:false}));
+app.use(session({secret:'sdasicoisasoakdoqwiwqj92190ix11x1',resave:false,saveUninitialized:false}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'app/')));
 
-//INSERISCI VARI ROUTE
 
-var auth = require("./server/session/auth")(app,passport);
-app.post('/login',
-  passport.authenticate('login', {
-    successRedirect: '/loginSuccess',
-    failureRedirect: '/loginFailure'
-  })
-);
-
-/*var user = require("./server/controllers/user");
-app.route("/user").
-  get(user.getUser);
-*/
-
-//PAGINA INIZIALE
-app.route('/').get(function(req,res){
-  console.log(req);
-  if(req.user) {
-    res.cookie('user', JSON.stringify(req.user.user_info));
-  }
-  res.render("index.html");
-});
-
+require('./server/routes/routes.js')(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -82,5 +59,6 @@ app.use(function(err, req, res, next) {
     });
 
 });
+
 
 module.exports = app;

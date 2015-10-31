@@ -11,6 +11,11 @@ module.exports = function(sequelize, DataTypes) {
       },
       isValidPassword : function(pass){
         return this.password == pass;
+      },
+      read_info : function(){
+        return {
+          username : this.getDataValue("username")
+        };
       }
     }
   });

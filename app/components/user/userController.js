@@ -1,13 +1,14 @@
 
-angular.module('cartellaAnestApp',[]).controller('userCtrl',
-  ['$scope', '$rootScope', '$location','AuthenticationService',
-    function ($scope, $rootScope, $location, AuthenticationService) {
+angular.module('cartellaAnestApp',[]).controller('userController',
+  ['$scope', '$rootScope', '$location',
+      function ($scope, $rootScope, $location) {
         // reset login status
-        //AuthenticationService.ClearCredentials();
+//        AuthenticationService.ClearCredentials();
+        $scope.data = {};
 
         $scope.login = function () {
             $scope.dataLoading = true;
-            var data = {username : $scope.username , password : $scope.password};
+            console.log($scope.data);
             /*AuthenticationService.Login(data, function(response) {
                 if(response.success) {
                     AuthenticationService.SetCredentials($scope.username, $scope.password);
