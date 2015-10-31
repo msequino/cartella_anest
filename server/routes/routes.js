@@ -13,7 +13,7 @@ module.exports = function(app) {
   //INSERISCI VARI ROUTE
   var auth = require("../controllers/auth")(app,passport);
 
-  app.get('/loggedin', function(req, res) {
+  app.get('/auth/loggedin', function(req, res) {
     res.send(req.isAuthenticated() ? req.user : '0');
   });
   // route to log in
@@ -33,14 +33,5 @@ module.exports = function(app) {
   //- See more at:
   //  https://vickev.com/#!/article/authentication-in-single-page-applications-node-js-passportjs-angularjs
 
-  /*app.post('/auth/login', passport.authenticate('local-login', {
-    successRedirect: '/index',
-    failureRedirect: '/'
-  }));
-
-  app.post('/auth/logout',isLoggedIn,function(req,res){
-    res.logout();
-  })
-*/
   app.route("/user").get(User.getUser);
 }
