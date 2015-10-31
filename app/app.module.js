@@ -1,12 +1,9 @@
 var app = angular.module('cartellaAnestApp',[
   'ngRoute',
-  'ngCookies',
+//  'ngCookies',
   'ngAnimate',
-  'homeController',
   'AuthenticationService',
-  'ui.router',
-  'ui.bootstrap',
-  'ui.slider']).
+  'userController']).
   config(['$httpProvider',function($httpProvider){
     $httpProvider.interceptors.push(function($q,$location){
       return {

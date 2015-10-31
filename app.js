@@ -37,12 +37,14 @@ app.post('/login',
   })
 );
 
-var user = require("./server/controllers/user");
+/*var user = require("./server/controllers/user");
 app.route("/user").
   get(user.getUser);
+*/
 
 //PAGINA INIZIALE
 app.route('/').get(function(req,res){
+  console.log(req);
   if(req.user) {
     res.cookie('user', JSON.stringify(req.user.user_info));
   }

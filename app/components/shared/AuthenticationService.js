@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('cartellaAnestApp')
+angular.module('cartellaAnestApp',[])
 
 .factory('AuthenticationService',['$http',
   function($http){
 
-    return {
+/*    return {
       Login : function(data){
         console.log(data);
         $http.post('/login',data).success(function(data){
@@ -14,6 +14,6 @@ angular.module('cartellaAnestApp')
 
         });
       }
-    }
+    }*/
   }
 ]);
