@@ -1,0 +1,12 @@
+<form class="form-signin" ng-controller="userCtrl">
+  <h2 class="form-signin-heading">Autenticazione</h2>
+  <label for="inputEmail" class="sr-only">Indirizzo email</label>
+  <input type="email" ng-model="data.email" class="form-control" placeholder="Email address" required="" autofocus="">
+  <label for="inputPassword" class="sr-only">Password</label>
+  <input type="password" ng-model="data.password" class="form-control" placeholder="Password" required="">
+  <button class="btn btn-lg btn-primary btn-block" ng-click="login()">Sign in</button>
+  <br/><br/>
+  <a class="btn btn-warning">Resetta password</a>
+</form>
+
+<link href="assets/bootstrap/css/custom.css" rel="stylesheet">

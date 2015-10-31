@@ -1,4 +1,4 @@
-var app = angular.module('masterApp',[
+var app = angular.module('cartellaAnestApp',[
   'ngRoute',
   'ngCookies',
   'ngAnimate',
