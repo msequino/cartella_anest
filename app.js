@@ -15,6 +15,8 @@ var app = express();
 app.use(favicon(__dirname + '/app/favicon.unipr.ico'));
 app.use(logger('dev'));
 
+app.set('views', __dirname + '/server/views');
+app.engine('html', require('consolidate').handlebars);
 app.set('view engine', 'html');
 
 app.use(bodyParser.json());
@@ -25,7 +27,6 @@ app.use(session({secret:'sdasicoisasoakdoqwiwqj92190ix11x1',resave:false,saveUni
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'app/')));
-
 
 require('./server/routes/routes.js')(app);
 
@@ -58,6 +59,14 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 
+});
+
+//PAGINA INIZIALE
+app.get('*',function(req,res){
+  if(req.user) {
+    res.cookie('user', JSON.stringify(req.user.user_info));
+  }
+  res.sendFile(__dirname +  "index.html");
 });
 
 

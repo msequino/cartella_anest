@@ -2,6 +2,8 @@ var app = angular.module('cartellaAnestApp',[
   'ngRoute',
   'ngResource',
   'ngCookies',
+  'ngAnimate',
+  'ui.bootstrap',
   'AuthenticationService',
   'userController'
 ])
@@ -10,12 +12,13 @@ var app = angular.module('cartellaAnestApp',[
     console.log($routeProvider);
     $routeProvider.
       when('/', {
-//        templateUrl: 'components/user/userViev.html',
-  //      controller: 'userCtrl'
+        templateUrl: 'components/user/userViev.html',
+        controller: 'userCtrl'
       }).
       when('/index', {
-//        templateUrl: 'partials/phone-detail.html',
-//        controller: 'PhoneDetailCtrl'
+        templateUrl: 'partials/phone-detail.html',
+        controller: 'PhoneDetailCtrl',
+//        resolve: { loggedin: checkLoggedin }
       }).
       otherwise({
         redirectTo: '/'

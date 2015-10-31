@@ -1,22 +1,47 @@
 
 angular.module('cartellaAnestApp',[]).controller('userController',
-  ['$scope', '$rootScope', '$location',
-      function ($scope, $rootScope, $location) {
+  ['$scope', '$rootScope', '$location','AuthenticationService',
+      function ($scope, $rootScope, $location, AuthenticationService) {
         // reset login status
-//        AuthenticationService.ClearCredentials();
+
         $scope.data = {};
+        $scope.showAlert = false;
 
         $scope.login = function () {
             $scope.dataLoading = true;
-            console.log($scope.data);
-            /*AuthenticationService.Login(data, function(response) {
-                if(response.success) {
-                    AuthenticationService.SetCredentials($scope.username, $scope.password);
-                    $location.path('/');
-                } else {
-                    $scope.error = response.message;
+            AuthenticationService.Login($scope.data, function(err,response) {
+                if(!err) {
+                    $location.path('/index');
+                    $scope.showAlert = true;
+                  } else {
+                    $scope.showAlert = false;
                     $scope.dataLoading = false;
                 }
-            });*/
+            });
         };
-    }]);
+    }]).factory('AuthenticationService',['$http','$rootScope',
+      function($http,$rootScope){
+
+        return {
+          Login : function(data,callback){
+            $http.post('/auth/login',data).success(function(data){
+              return callback(false,data);
+            }).error(function(err){
+              return callback(true,err);
+
+            });
+          }
+        }
+      }
+    ]).directive('notification', function($timeout){
+      return {
+         restrict: 'E',
+         replace: true,
+         scope: {
+             ngModel: '='
+         },
+         template: '<div class="alert alert-danger" bs-alert="ngModel" >Riprova</div>',
+         link: function(scope, element, attrs){
+         }
+      }
+});

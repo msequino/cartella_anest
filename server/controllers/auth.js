@@ -10,36 +10,75 @@ module.exports = function(req,res,next){
   // (`username` and `password`) submitted by the user.  The function must verify
   // that the password is correct and then invoke `cb` with a user object, which
   // will be set at `req.user` in route handlers after authentication.
-  passport.use('login', new Strategy({
+  passport.use('local-login', new Strategy({
       passReqToCallback : true
     },
     function(req, username, password, done) {
-      console.log(username);
       // check in mongo if a user with username exists or not
       db.User.findOne({where : { 'username' :  username }}).then(
-        function(err, user) {
-          // In case of any error, return using the done method
-          if (err)
-            return done(err);
+        function(user) {
           // Username does not exist, log error & redirect back
           if (!user){
             console.log('User Not Found with username '+username);
-            return done(null, false,
-                  req.flash('message', 'User Not found.'));
+            return done(null, false);
           }
           // User exists but wrong password, log the error
           if (!user.isValidPassword(password)){
             console.log('Invalid Password');
-            return done(null, false,
-                req.flash('message', 'Invalid Password'));
+            return done(null, false);
           }
           // User and password both match, return user from
           // done method which will be treated like success
           return done(null, user);
         }
-      );
+      ).catch(function(err){
+        // In case of any error, return using the done method
+        return done(err);
+
+      });
   }));
 
+  passport.use('local-signup', new Strategy({
+        // by default, local strategy uses username and password, we will override with email
+        usernameField : 'username',
+        passwordField : 'password',
+        passReqToCallback : true // allows us to pass back the entire request to the callback
+    },
+    function(req, username, password, done) {
+
+        // asynchronous
+        // User.findOne wont fire unless data is sent back
+        process.nextTick(function() {
+
+        // find a user whose email is the same as the forms email
+        // we are checking to see if the user trying to login already exists
+        db.User.findOne({ where : { 'username' :  username }}).then(function(err, user) {
+            // if there are any errors, return the error
+            if (err)
+                return done(err);
+
+            // check to see if theres already a user with that email
+            if (user) {
+                return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+            } else {
+
+                // if there is no user with that email
+                // create the user
+                var newUser            = db.User.build({username : username,password:password});
+                // save the user
+
+                newUser.save().then(function() {
+                    return done(null, newUser);
+                }).catch(function(err) {
+                    return done(err, null);
+                });
+            }
+
+        });
+
+        });
+
+    }));
 
   // Configure Passport authenticated session persistence.
   //
@@ -53,7 +92,7 @@ module.exports = function(req,res,next){
   });
 
   passport.deserializeUser(function(id, cb) {
-    db.User.find({where : {id : id}}).then(function (err, user) {
+    db.User.findOne({where : {id : id}}).then(function (err, user) {
       if (err) { return cb(err); }
       cb(null, user);
     });
