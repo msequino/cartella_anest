@@ -15,17 +15,16 @@ module.exports = function(sequelize, DataTypes) {
       isValidPassword : function(pass){
         return bcrypt.compareSync(pass, this.getDataValue('password'));
       },
-
-    }
-  }, {
-    classMethods: {
-      associate: function(models) {
-
-      },
       read_info : function(){
         return {
           username : this.getDataValue("username")
         };
+      }
+    },
+  }, {
+    classMethods: {
+      associate: function(models) {
+
       }
     }
   });

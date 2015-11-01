@@ -1,32 +1,34 @@
-var controllers = {};
-controllers.userController = function($scope, $location, AuthenticationService){
-  $scope.data = {};
-  $scope.showAlert = false;
-/*
-  $scope.login = function () {
-      $scope.dataLoading = true;
-      AuthenticationService.Login($scope.data, function(err,response) {
-          if(!err) {
-              $location.path('/index');
-              $scope.showAlert = true;
-            } else {
-              $scope.showAlert = false;
-              $scope.dataLoading = false;
-          }
-      });
-  }*/
-}
+(function () {
+    'use strict';
 
-angular.module('cartella_anest',['AuthenticationService']).controller(controllers)
+    angular
+        .module('app')
+        .controller('UserController', UserController);
 
-console.log(controllers.userController);
+    UserController.$inject = ['$location', 'AuthenticationService', 'FlashService'];
+    function UserController($location, AuthenticationService, FlashService) {
+        var vm = this;
 
+        vm.login = login;
 
-/*app.controller('userController',
-  ['$scope','$location','AuthenticationService',
-    function ($scope, $location, AuthenticationService) {
-      // reset login status
+        (function initController() {
+            // reset login status
+            AuthenticationService.ClearCredentials();
+        })();
 
+        function login() {
+            vm.dataLoading = true;
+            AuthenticationService.Login(vm.username, vm.password, function (response) {
+              if (response) {
+                AuthenticationService.SetCredentials(vm.username,vm.password);
+                vm.password = "";
+                $location.path('/');
+              } else {
+                FlashService.Error("Utente non autenticato");
+                vm.dataLoading = false;
+              }
+            });
+        };
+    }
 
-  }]);
-*/
+})();

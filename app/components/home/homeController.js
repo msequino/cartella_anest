@@ -1,21 +1,57 @@
+(function () {
+    'use strict';
 
-angular.module('cartellaAnestApp',[]).controller('homeController',
-  ['$scope', '$rootScope', '$location','AuthenticationService',
-      function ($scope, $rootScope, $location, AuthenticationService) {
-        // reset login status
+    angular
+        .module('app')
+        .controller('HomeController', HomeController);
 
-        $scope.data = {};
-        $scope.showAlert = false;
+    HomeController.$inject = ['UserService', 'AuthenticationService', '$rootScope', '$location'];
+    function HomeController(UserService, AuthenticationService, $rootScope, $location) {
+        var vm = this;
 
-    }]).directive('notification', function($timeout){
-      return {
-         restrict: 'E',
-         replace: true,
-         scope: {
-             ngModel: '='
-         },
-         template: '<div class="alert alert-danger" bs-alert="ngModel" >Riprova</div>',
-         link: function(scope, element, attrs){
-         }
-      }
-});
+        vm.user = null;
+        vm.allUsers = [];
+        vm.deleteUser = deleteUser;
+        vm.logout = logout;
+
+        initController();
+
+        function initController() {
+            AuthenticationService.GetSession(function(response){
+              if(!response){
+                AuthenticationService.ClearCredentials();
+                $location.path("/login");
+              }
+            });
+        }
+
+        function loadCurrentUser() {
+            UserService.GetByUsername($rootScope.globals.currentUser.username)
+                .then(function (user) {
+                    vm.user = user;
+                });
+        }
+
+        function loadAllUsers() {
+            UserService.GetAll()
+                .then(function (users) {
+                    vm.allUsers = users;
+                });
+        }
+
+        function deleteUser(id) {
+            UserService.Delete(id)
+            .then(function () {
+                loadAllUsers();
+            });
+        }
+
+        function logout() {
+          AuthenticationService.Logout(function(){
+            AuthenticationService.ClearCredentials();
+            $location.path('/login');
+          });
+        }
+    }
+
+})();

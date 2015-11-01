@@ -1,8 +1,9 @@
 // Code goes here
+'use strict';
 
 var app = angular.module('cartella_anest', ['ngRoute']);
 
-var onlyLoggedIn = function ($location,$q,AuthenticationService) {
+/*var onlyLoggedIn = function ($location,$q,AuthenticationService) {
     var deferred = $q.defer();
 
     if (AuthenticationService.isLogin()) {
@@ -12,7 +13,8 @@ var onlyLoggedIn = function ($location,$q,AuthenticationService) {
         $location.url('/login');
     }
     return deferred.promise;
-};
+};*/
+
 app.config(function($routeProvider){
   $routeProvider.when('/', {
     controller: 'userController',
@@ -32,15 +34,14 @@ controllers.userController = function($scope, $location,$http){
   $scope.showAlert = false;
 
   $scope.login = function () {
-      $scope.dataLoading = true;
+    $scope.dataLoading = true;
 
-      $http.post('/auth/login',$scope.data).success(function(data){
-        $location.path('/index');
-        $scope.showAlert = false;
-      }).error(function(err){
-        $scope.showAlert = true;
-        $scope.dataLoading = false;
-      });
+    $http.post('/auth/login',$scope.data).success(function(data){
+      $location.path('/index');
+    }).error(function(err){
+      $scope.showAlert = true;
+      $scope.dataLoading = false;
+    });
   }
 }
 

@@ -1,37 +1,25 @@
 var passport =	require('passport');
-var User = require("../controllers/user");
+var User = require("../controllers/user"),
+    Auth = require("../controllers/auth");
 
 module.exports = function(app) {
   // Define a middleware function to be used for every secured routes
   //- See more at:
   // https://vickev.com/#!/article/authentication-in-single-page-applications-node-js-passportjs-angularjs
-  var auth = function(req, res, next){
-    if (!req.isAuthenticated()) res.send(401);
-    else next();
+  var isAuthenticated = function(req, res, next){
+    if (!req.isAuthenticated())
+      return res.sendStatus(401);
+    next();
   };
 
   //INSERISCI VARI ROUTE
-  var auth = require("../controllers/auth")(app,passport);
+  var pass = require("../controllers/pass")(app,passport);
 
-  app.get('/auth/loggedin', function(req, res) {
-    res.send(req.isAuthenticated() ? req.user : '0');
-  });
-  // route to log in
-  app.post('/auth/login', passport.authenticate('local-login'), function(req, res) {
-    res.send(req.user);
-  });
-  // route to sign in
-  app.post('/auth/signup', passport.authenticate('local-signup'), function(req, res) {
-    res.send(req.user);
-  });
-   // route to log out
-  app.post('/auth/logout', function(req, res){
-    req.logOut();
-    res.send(200);
-  });
+  app.get('/auth/session', isAuthenticated, Auth.getSession);
+  app.post('/auth/login', passport.authenticate('local-login'), Auth.login);
+  app.post('/auth/signup', passport.authenticate('local-signup'), Auth.signup);
+  app.post('/auth/logout', isAuthenticated, Auth.logout);
 
-  //- See more at:
-  //  https://vickev.com/#!/article/authentication-in-single-page-applications-node-js-passportjs-angularjs
 
   app.route("/user").get(User.getUser);
 }
