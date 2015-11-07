@@ -19,9 +19,8 @@
         function login() {
             vm.dataLoading = true;
             AuthenticationService.Login(vm.username, vm.password, function (response) {
-              if (response) {
+              if (response.indexOf("Unauthorized") != 0 ) {
                 AuthenticationService.SetCredentials(vm.username,vm.password);
-                vm.password = "";
                 $location.path('/');
               } else {
                 FlashService.Error("Utente non autenticato");

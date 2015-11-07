@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="row">
+      <div class="col-md-offset-8">
+        <button class="btn btn-success" type="button" ng-click="vm.changeView('components/home/editPatient.html',4)"><span class="glyphicon glyphicon-plus"> Inserisci paziente</span></button>
+      </div>
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <td>ID</td>
+          <td>Data presunto parto</td>
+          <td>Medico</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="patient in vm.patients">
+          <td>{{patient.id}}</td>
+        </tr>
+      </tbody>
+    </table>
+</div>

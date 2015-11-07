@@ -36,7 +36,6 @@
             // redirect to login page if not logged in and trying to access a restricted page
             var restrictedPage = $.inArray($location.path(), ['/login']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
-            console.log(loggedIn);
             if (restrictedPage){
               if(!loggedIn) $location.path('/login');
               else $location.path('/');

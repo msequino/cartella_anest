@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-md-5 thumbnail">
+    <table class="table table-hover">
+      <thead>
+        <center>Medici registrati<br/>
+          <input type="checkbox" ng-model="vm.check[1]" ng-checked="true"/> Ginecologi
+          <input type="checkbox" ng-model="vm.check[2]" ng-checked="true"/> Ostetrici
+          <input type="checkbox" ng-model="vm.check[3]" ng-checked="true"/> Anestesisti
+        </center>
+      </thead>
+      <tbody>
+        <tr ng-repeat="doctor in vm.doctors | byRole:vm.check" id="doctor{{doctor.id}}" ng-click="vm.loadDoctor(doctor.id)" class="mouse-over">
+          <td>{{doctor.name + " " + doctor.surname}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+ <a href="data:application/octet-stream,field1%2cfield2">download</a>
+
+  <div class="col-md-5 col-md-offset-1 thumbnail">
+      <div ng-show="vm.error" class="alert alert-danger">{{vm.error}}</div>
+      <form name="vm.form" ng-submit="vm.submitDoctor()" role="form" novalidate>
+        <input type="hidden" ng-model="vm.data.id"/>
+        <div class="row">
+          <div class="form-group col-md-6" ng-class="{ 'has-error': vm.form.firstName.$dirty && vm.form.firstName.$error.required }">
+              <label for="username">Nome</label>
+              <input type="text" name="firstName" class="form-control" ng-model="vm.data.name" required />
+              <span ng-show="vm.form.firstName.$dirty && vm.form.firstName.$error.required" class="help-block">Nome richiesto</span>
+          </div>
+          <div class="form-group col-md-6" ng-class="{ 'has-error': vm.form.lastName.$dirty && vm.form.lastName.$error.required }">
+              <label for="username">Cognome</label>
+              <input type="text" name="lastName" class="form-control" ng-model="vm.data.surname" required />
+              <span ng-show="vm.form.lastName.$dirty && vm.form.lastName.$error.required" class="help-block">Cognome richiesto</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6">
+              <label for="GroupId">Ruolo</label>
+              <select class="form-control" ng-model="vm.data.RoleId" ng-options="item.id as item.title for item in vm.roles" />
+          </div>
+          <div class="form-group col-md-6">
+              <label for="ClinicId">Clinica</label>
+              <select class="form-control" ng-model="vm.data.ClinicId" ng-options="item.id as item.title for item in vm.clinics" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-actions col-md-6">
+              <button type="submit" ng-disabled="vm.form.$invalid || vm.data == {}" class="btn btn-primary">{{vm.data.id ? "Aggiorna" : "Registra"}}</button>
+              <a ng-click="vm.cleanForm()" class="btn btn-link">Cancella</a>
+          </div>
+        </div>
+      </form>
+  </div>
+</div>

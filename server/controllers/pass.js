@@ -19,6 +19,7 @@ module.exports = function(req,res,next){
       db.User.findOne({where : { 'username' :  username }}).then(
         function(user) {
           // Username does not exist, log error & redirect back
+
           if (!user){
             console.log('User Not Found with username '+username);
             return done(null, false);

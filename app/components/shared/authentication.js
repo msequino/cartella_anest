@@ -25,6 +25,9 @@
             $http.post('/auth/login', { username: username, password: password })
                 .success(function (response) {
                     callback(response);
+                })
+                .error(function (response) {
+                    callback(response);
                 });
 
         }
@@ -41,6 +44,17 @@
         function GetSession(callback) {
 
           $http.get('/auth/session')
+              .success(function (response) {
+                callback(response);
+              }).error(function (error){
+                callback();
+              });
+
+        }
+
+        function GetSession(callback) {
+
+          $http.get('/auth/setPassword')
               .success(function (response) {
                 callback(response);
               }).error(function (error){
