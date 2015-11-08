@@ -31,6 +31,7 @@
               <label for="code">Codice fiscale</label>
               <input type="text" name="code" class="form-control" maxlength="16" ng-pattern="/[a-z]{6}[0-9]{2}[a-z][0-9]{2}[a-z][0-9]{3}[a-z]/i" ng-model="vm.data.code" required />
           </div>
+          <input type="hidden" ng-model="vm.data.ClinicId" />
 
         </div>
 

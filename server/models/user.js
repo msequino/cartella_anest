@@ -30,7 +30,8 @@ module.exports = function(sequelize, DataTypes) {
       },
       read_info : function(){
         return {
-          username : this.getDataValue("username")
+          username : this.getDataValue("username"),
+          ClinicId : this.getDataValue("ClinicId"),
         };
       },
       isAdmin : function(){

@@ -27,7 +27,7 @@
                     callback(response);
                 })
                 .error(function (response) {
-                    callback(response);
+                    callback({error : response});
                 });
 
         }
@@ -44,17 +44,6 @@
         function GetSession(callback) {
 
           $http.get('/auth/session')
-              .success(function (response) {
-                callback(response);
-              }).error(function (error){
-                callback();
-              });
-
-        }
-
-        function GetSession(callback) {
-
-          $http.get('/auth/setPassword')
               .success(function (response) {
                 callback(response);
               }).error(function (error){

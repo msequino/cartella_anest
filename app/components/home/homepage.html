@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="patient in vm.patients">
+        <tr ng-repeat="patient in vm.patients" ng-dblclick="vm.changeView('components/home/editInfo.html',4,patient.id)">
           <td>{{patient.id}}</td>
         </tr>
       </tbody>

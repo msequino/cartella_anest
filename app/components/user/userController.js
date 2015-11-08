@@ -17,17 +17,18 @@
         })();
 
         function login() {
-            vm.dataLoading = true;
-            AuthenticationService.Login(vm.username, vm.password, function (response) {
-              if (response.indexOf("Unauthorized") != 0 ) {
-                AuthenticationService.SetCredentials(vm.username,vm.password);
-                $location.path('/');
-              } else {
-                FlashService.Error("Utente non autenticato");
-                vm.dataLoading = false;
-              }
-            });
+          vm.dataLoading = true;
+          AuthenticationService.Login(vm.username, vm.password, function (response) {
+            if (!response.error) {
+              AuthenticationService.SetCredentials(vm.username,vm.password);
+              $location.path('/');
+            } else {
+              FlashService.Error("Utente non autenticato");
+              vm.dataLoading = false;
+            }
+          });
         };
+
     }
 
 })();

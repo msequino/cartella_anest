@@ -86,6 +86,7 @@
 
         // TEMPLATE
         function changeView(next,loadItems,id){
+          cleanForm();
           vm.template = next;
           if(loadItems == 1) //Load Users
             UserService.GetAll().then(function (response) {
@@ -104,7 +105,7 @@
                   else{
                     if(loadItems == 4 && id) //Load patient with id
                       PatientService.GetById(id).then(function (response) {
-                        vm.patients = response;
+                        vm.data = response;
                       });
                       else{
                         if(loadItems == 5) //Load patient with id
@@ -119,7 +120,8 @@
 
         function cleanForm(){
           vm.data = {};
-          vm.form.$setPristine();
+          if(vm.form)
+            vm.form.$setPristine();
         }
 
         function submitUser(changePage){
@@ -146,7 +148,7 @@
                 line.removeClass("success");
                 line.removeClass("danger");
                 line.addClass((vm.data.active == 1 ? "success" : "danger"));
-                cleanForm();                
+                cleanForm();
               }
             });
           }
@@ -169,6 +171,7 @@
         }
 
         function submitPatient(){
+          vm.data.ClinicId = vm.user.ClinicId;
           if(!vm.data.id)
             PatientService.Create(vm.data).then(function(response){
               vm.data.id = response.id;

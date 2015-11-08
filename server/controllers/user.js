@@ -22,7 +22,7 @@ module.exports.insertUser = function(req,res,next){
   models.User.create(req.body).then(function(user){
     res.sendStatus(200);
   }).catch(function(error){
-    res.json(error);
+    res.json({error : error});
   });
 }
 

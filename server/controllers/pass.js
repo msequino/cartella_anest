@@ -35,7 +35,7 @@ module.exports = function(req,res,next){
         }
       ).catch(function(err){
         // In case of any error, return using the done method
-        return done(err);
+        return done({error : err});
 
       });
   }));
