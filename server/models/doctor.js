@@ -7,8 +7,8 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Doctor.belongsTo(models.Role);
         Doctor.belongsTo(models.Clinic);
+        Doctor.belongsTo(models.Role);
       },
     }
   });

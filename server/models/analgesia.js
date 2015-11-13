@@ -2,6 +2,10 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Analgesia = sequelize.define("Analgesia", {
+    c1s1: {
+      type : DataTypes.ENUM("Si","No"),
+      comment : "Ha avuto una procedura anestesiologica"
+    },
     c1s1a: {
       type : DataTypes.BOOLEAN,
       comment : "Procedura: Peridurale"
@@ -28,12 +32,26 @@ module.exports = function(sequelize, DataTypes) {
         min : 0
       }
     },
-    c1s6: {
+    c1s4: {
       type : DataTypes.INTEGER,
       comment : "Catetere (cm)",
       isValid :{
         min : 0,
         max : 10
+      }
+    },
+    c1s5: {
+      type : DataTypes.ENUM("Nessuno","L1-L2","L2-L3","L3-L4","Altro"),
+      comment : "Interspazio 2",
+      isValid : {
+        min : 0
+      }
+    },
+    c1s6: {
+      type : DataTypes.ENUM("Nessuno","16G","18G"),
+      comment : "Ago 2",
+      isValid : {
+        min : 0
       }
     },
     c1s7: {
@@ -45,16 +63,16 @@ module.exports = function(sequelize, DataTypes) {
       comment : "Complicanze"
     },
     c1s9: {
-      type : DataTypes.ENUM("SI","NO"),
+      type : DataTypes.ENUM("Si","No"),
       comment : "Dose test"
     },
     c1s9a: {
       type : DataTypes.ENUM("Ropivacaina","Levobupivacaina","Lidocaina","Bubivacaina","Altro"),
-      comment : "Dose test"
+      comment : "Dose test farmaco"
     },
     c1s9b: {
       type : DataTypes.FLOAT,
-      comment : "Quantità (ml)"
+      comment : "Quantità (ml)",
       isValid : {
         min : 0
       }
@@ -89,6 +107,18 @@ module.exports = function(sequelize, DataTypes) {
         min : 0,
         max : 10
       }
+    },
+    c2s4: {
+      type : DataTypes.ENUM("Si","No"),
+      comment : "Ossitocina"
+    },
+    c2s4a: {
+      type : DataTypes.FLOAT,
+      comment : "Quantità (ml)"
+    },
+    c2s5: {
+      type : DataTypes.STRING,
+      comment : "Note"
     },
 
   },

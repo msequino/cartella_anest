@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
   var Team = sequelize.define("Team", {
     c1s1 : {
       type : DataTypes.DATE,
-      comment : "Date and Hour member comes in"
+      comment : "Data e ora di quando l'operatore è entrato in SO"
     }
   },
   {

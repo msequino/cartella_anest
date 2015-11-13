@@ -1,20 +1,31 @@
 <div class="row">
     <div class="row">
-      <div class="col-md-offset-8">
+      <div class="col-md-2 col-md-offset-8">
         <button class="btn btn-success" type="button" ng-click="vm.changeView('components/home/editPatient.html',4)"><span class="glyphicon glyphicon-plus"> Inserisci paziente</span></button>
       </div>
     </div>
+    <br/>
     <table class="table table-hover">
       <thead>
         <tr>
-          <td>ID</td>
-          <td>Data presunto parto</td>
-          <td>Medico</td>
+          <th>ID paziente</th>
+          <th>Data visita</th>
+          <th>Data presunto parto</th>
+          <th>Regime</th>
+          <th>Medico</th>
+          <th>Analgesia</th>
+          <th>Anestesia</th>
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="patient in vm.patients" ng-dblclick="vm.changeView('components/home/editInfo.html',4,patient.id)">
-          <td>{{patient.id}}</td>
+          <td><center>{{patient.id}}</center></td>
+          <td>{{patient.c1s1}}</td>
+          <td>{{patient.c1s3}}</td>
+          <td>{{patient.c1s2}}</td>
+          <td>{{patient.doctor}}</td>
+          <td><span class="glyphicon" ng-class="{'glyphicon-remove':!patient.agid, 'glyphicon-ok':patient.agid}"><span></td>
+          <td><span class="glyphicon" ng-class="{'glyphicon-remove':!patient.anid, 'glyphicon-ok':patient.anid}"><span></td>
         </tr>
       </tbody>
     </table>

@@ -23,7 +23,7 @@
           <div class="form-group col-md-6" ng-class="{ 'has-error': vm.form.birth.$dirty && vm.form.birth.$error.required }">
               <label for="date">Data di nascita</label>
               <div class="input-group">
-                  <input type="text" name="birth" disabled class="form-control" date-options="dateOptions" ng-model="vm.data.birth" datepicker required/>
+                  <p class="showInline"><input type="text" name="birth" disabled class="form-control" date-options="dateOptions" ng-model="vm.data.birth" datepicker required/></p>
               </div>
               <span ng-show="vm.form.date.$dirty && vm.form.date.$error.required" class="help-block">Data richiesta</span>
           </div>
@@ -35,7 +35,7 @@
 
         </div>
 
-      <div class="row">
+        <div class="row">
           <div class="form-actions col-md-6">
               <button type="submit" ng-disabled="vm.form.$invalid || vm.data == {}" class="btn btn-primary">{{vm.data.id ? "Aggiorna" : "Registra"}}</button>
               <a ng-click="vm.cleanForm()" class="btn btn-link">Cancella</a>

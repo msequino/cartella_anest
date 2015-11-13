@@ -1,0 +1,83 @@
+
+<div class="form-group col-md-12">
+  <label for="AnalgesiaC1s1a">Procedura:</label>
+  <div class="checkbox">
+    <label for="AnalgesiaC1s1a" class="checkbox-inline">
+      <input type="checkbox" name="AnalgesiaC1s1a" ng-model="vm.data.Analgesia.c1s1a"> Peridurale
+    </label>
+    <label for="AnalgesiaC1s1b" class="checkbox-inline">
+      <input type="checkbox" name="AnalgesiaC1s1b" ng-model="vm.data.Analgesia.c1s1b"> Subaracnoidea
+    </label>
+    <label for="AnalgesiaC1s1c" class="checkbox-inline">
+      <input type="checkbox" name="AnalgesiaC1s1c" ng-model="vm.data.Analgesia.c1s1c"> Combinata spino/peridurale
+    </label>
+  </div>
+</div>
+
+<div class="row" ng-show="vm.data.Analgesia.c1s1a == true || vm.data.Analgesia.c1s1b == true || vm.data.Analgesia.c1s1c == true">
+  <div class="form-group col-md-4">
+    <label for="AnalgesiaC1s2">Interspazio:</label>
+    <select name="AnalgesiaC1s2" ng-change="vm.cleanAnalgesiaC1s2()" class="form-control" ng-model="vm.data.Analgesia.c1s2"
+      ng-options="item for item in vm.items['Analgesia.c1s2']"></select>
+  </div>
+  <div class="form-group col-md-3">
+    <label for="AnalgesiaC1s3">Ago:</label>
+    <select name="AnalgesiaC1s3" ng-disabled="vm.data.Analgesia.c1s2 == 'Nessuno' || !vm.data.Analgesia.c1s2" class="form-control" ng-model="vm.data.Analgesia.c1s3"
+      ng-options="item for item in vm.items['Analgesia.c1s3']">
+    </select>
+  </div>
+
+  <div class="form-group col-md-5"><a name="ex1"></a>
+    <label for="AnalgesiaC1s4" ng-model="vm.data.Analgesia.c1s4" >Catetere spazio peridurale (cm): {{vm.data.Analgesia.c1s4}}</label>
+		<div ui-slider min="0" class="slider-style" ng-disabled="vm.data.Analgesia.c1s2 == 'Nessuno' || !vm.data.Analgesia.c1s2" max="10" name="AnalgesiaC1s4" ng-model="vm.data.Analgesia.c1s4"></div>
+	</div>
+</div>
+
+<div class="row" ng-hide="vm.data.Analgesia.c1s1c == false || !vm.data.Analgesia.c1s1c" >
+  <div class="form-group col-md-4">
+    <label for="AnalgesiaC1s5">Interspazio:</label>
+    <select name="AnalgesiaC1s5" class="form-control" ng-model="vm.data.Analgesia.c1s5"
+      ng-options="item for item in vm.items['Analgesia.c1s5']"></select>
+  </div>
+  <div class="form-group col-md-3">
+    <label for="AnalgesiaC1s6">Ago:</label>
+    <select name="AnalgesiaC1s6" ng-disabled="vm.data.Analgesia.c1s5 == 'Nessuno' || !vm.data.Analgesia.c1s5" class="form-control" ng-model="vm.data.Analgesia.c1s6"
+      ng-options="item for item in vm.items['Analgesia.c1s6']"></select>
+  </div>
+</div>
+
+<div class="row">
+  <div class="form-group col-md-6">
+    <label for="AnalgesiaC1s7">Difficoltà tecniche:</label>
+    <textarea name="AnalgesiaC1s7" class="form-control" ng-model="vm.data.Analgesia.c1s7"/>
+  </div>
+  <div class="form-group col-md-6">
+    <label for="AnalgesiaC1s8">Complicanze:</label>
+    <textarea name="AnalgesiaC1s8" class="form-control" ng-model="vm.data.Analgesia.c1s8"/>
+  </div>
+</div>
+
+<div class="row">
+  <div class="form-group col-md-12">
+    <label for="AnalgesiaC1s9">Dose test </label>
+    <div class="radio">
+      <label for="AnalgesiaC1s9{{item}}" class="radio-inline"  ng-repeat="(key,item) in vm.items['Analgesia.c1s9']">
+        <input type="radio" name="AnalgesiaC1s9" ng-change="vm.cleanAnalgesiaC1s9()" ng-model="vm.data.Analgesia.c1s9" value="{{item}}">{{item}}
+      </label>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="form-group col-md-4">
+    <label for="AnalgesiaC1s9a">Farmaco:</label>
+    <select name="AnalgesiaC1s9a" ng-disabled="vm.data.Analgesia.c1s9 == 'No' || !vm.data.Analgesia.c1s9" class="form-control" ng-model="vm.data.Analgesia.c1s9a"
+      ng-options="item for item in vm.items['Analgesia.c1s9a']">
+    </select>
+  </div>
+  <div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.AnalgesiaC1s9b.$dirty && vm.form.AnalgesiaC1s9b.$error.min }">
+    <label for="AnalgesiaC1s9b">Q.tà (ml):</label>
+    <input type="number" name="AnalgesiaC1s9b" ng-disabled="vm.data.Analgesia.c1s9 == 'No' || !vm.data.Analgesia.c1s9 || !vm.data.Analgesia.c1s9a" class="form-control" ng-model="vm.data.Analgesia.c1s9b" min="0"/>
+    <span ng-show="vm.form.AnalgesiaC1s9b.$dirty && vm.form.AnalgesiaC1s9b.$error.min" class="help-block">Maggiore di 0</span>
+  </div>
+</div>

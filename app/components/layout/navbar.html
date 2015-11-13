@@ -1,6 +1,6 @@
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="navbar-header">
-    <a class="navbar-brand navbar-left mouse-over" ng-click="vm.showSidebar = !vm.showSidebar"  aria-label="Toggle ngHide">{{vm.showSidebar ? "Nascondi" : "Mostra"}} menù</a>
+    <a class="navbar-brand navbar-left mouse-over" ng-click="vm.showSidebar = !vm.showSidebar"  aria-label="Toggle ngHide">{{vm.showSidebar ? "Mostra" : "Nascondi"}} menù</a>
   </div>
   <div class="dropdown navbar-dropdown" ng-class="{open:vm.openDropdown}"  ng-mouseover="vm.openDropdown = true" ng-mouseleave="vm.openDropdown = false" >
     <a class="nav navbar-nav navbar-brand navbar-right mouse-over" type="button" id="menu1" data-toggle="dropdown" aria-expanded="false">{{vm.user.username}}

@@ -7,7 +7,7 @@ module.exports = function(sequelize, DataTypes) {
       comment : "Data visita"
     },
     c1s2: {
-      type : DataTypes.ENUM("SSN","LP"),
+      type : DataTypes.ENUM("ND","SSN","LP"),
       comment : "Tipo visita"
     },
     c1s3: {
@@ -34,7 +34,7 @@ module.exports = function(sequelize, DataTypes) {
       comment : "Esame Obiettivo"
     },
     c2s2: {
-      type : DataTypes.ENUM("SI","NO"),
+      type : DataTypes.ENUM("Si","No"),
       comment : "Precedenti anestesie"
     },
     c2s3a: {

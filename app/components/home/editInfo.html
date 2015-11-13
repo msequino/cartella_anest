@@ -1,10 +1,26 @@
 <div class="row">
 
-  <div class="col-md-8 col-md-offset-1 thumbnail">
+  <div class="title"><p>Paziente codice {{vm.patient.id}} Data visita: {{vm.data.Summary.c1s1}}</p></div>
+
+  <div class="col-md-11 thumbnail">
       <div ng-show="vm.error" class="alert alert-danger">{{vm.error}}</div>
       <div ng-show="vm.success" class="alert alert-success">Paziente inserito correttamente. Tra 3 secondi verrai rimandato nella homepage</div>
+
       <form name="vm.form" ng-submit="vm.submitPatient()" role="form" novalidate>
-        Ciaooooo
-      </form>
+      <div>
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" ng-click="vm.showTab = 1" ng-class="{active:vm.showTab==1}" class="mouse-over"><a role="tab" aria-expanded="true">Cartella</a></li>
+          <li role="presentation" ng-click="vm.showTab = 2" ng-class="{active:vm.showTab==2}" class="mouse-over"><a role="tab" aria-expanded="true">Anestesiologia</a></li>
+          <li role="presentation" ng-click="vm.showTab = 3" ng-class="{active:vm.showTab==3}" class="mouse-over"><a role="tab" aria-expanded="true">Anestesia</a></li>
+          <li role="presentation" ng-click="vm.showTab = 4" ng-class="{active:vm.showTab==4}" class="mouse-over"><a role="tab" aria-expanded="true">Note</a></li>
+        </ul>
+        <div class="tab-content">
+          <div ng-class="{active:vm.showTab==1,in:vm.showTab==1}" class="tab-pane fade" ng-include="'components/home/editInfoPanels/panel1.html'"></div>
+          <div ng-class="{active:vm.showTab==2,in:vm.showTab==2}" class="tab-pane fade" ng-include="'components/home/editInfoPanels/panel2.html'"></div>
+          <div ng-class="{active:vm.showTab==3,in:vm.showTab==3}" class="tab-pane fade" ng-include="'components/home/editInfoPanels/panel3.html'"></div>
+          <div ng-class="{active:vm.showTab==4,in:vm.showTab==4}" class="tab-pane fade" ng-include="'components/home/editInfoPanels/panel4.html'"></div>
+        </div>
+      </div>
+    </form>
   </div>
 </div>

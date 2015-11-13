@@ -52,10 +52,12 @@ module.exports = function(app) {
   app.route("/patients/:id").put(isAuthenticated,Patient.updatePatient);
   /*  app.route("/users/:id").delete(isAdmin,User.deactivateUser);*/
 
-  app.route("/clinics").get(Clinic.getClinics);
+  app.route("/clinics").get(isAuthenticated,Clinic.getClinics);
 
-  app.route("/roles").get(Role.getRoles);
+  app.route("/roles").get(isAuthenticated,Role.getRoles);
 
-  app.route("/groups").get(Group.getGroups);
+  app.route("/groups").get(isAuthenticated,Group.getGroups);
+
+  app.route("/info").get(isAuthenticated,Patient.getInfo);
 
 }
