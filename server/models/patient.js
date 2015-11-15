@@ -10,6 +10,7 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         Patient.belongsTo(models.Clinic);
+        Patient.belongsTo(models.Study);
       },
     }
   });

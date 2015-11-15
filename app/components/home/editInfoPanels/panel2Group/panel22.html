@@ -80,4 +80,38 @@
     <input type="number" name="AnalgesiaC1s9b" ng-disabled="vm.data.Analgesia.c1s9 == 'No' || !vm.data.Analgesia.c1s9 || !vm.data.Analgesia.c1s9a" class="form-control" ng-model="vm.data.Analgesia.c1s9b" min="0"/>
     <span ng-show="vm.form.AnalgesiaC1s9b.$dirty && vm.form.AnalgesiaC1s9b.$error.min" class="help-block">Maggiore di 0</span>
   </div>
+  <div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.AnalgesiaC1s9c.$dirty && (vm.form.AnalgesiaC1s9c.$error.min || vm.form.AnalgesiaC1s9c.$error.max)}">
+    <label for="AnalgesiaC1s9c">Concentrazione (%):</label>
+    <input type="number" name="AnalgesiaC1s9c" ng-disabled="vm.data.Analgesia.c1s9 == 'No' || !vm.data.Analgesia.c1s9 || !vm.data.Analgesia.c1s9a" class="form-control" ng-model="vm.data.Analgesia.c1s9c" min="0" max="100"/>
+    <span ng-show="vm.form.AnalgesiaC1s9c.$dirty && vm.form.AnalgesiaC1s9c.$error.min" class="help-block">Maggiore di 0</span>
+    <span ng-show="vm.form.AnalgesiaC1s9c.$dirty && vm.form.AnalgesiaC1s9c.$error.max" class="help-block">Minore di 100</span>
+  </div>
+</div>
+
+<div class="row">
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th class="col-md-4">Data e ora</th>
+        <th class="col-md-2">VAS prima</th>
+        <th class="col-md-2">VAS dopo</th>
+        <th class="col-md-2">Somministrazioni</th>
+        <th class="col-md-2">Elimina</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="item in vm.data.Therapy">
+        <input type="hidden" ng-model="item.AnalgesiumId"/>
+        <td><p class="text-info">{{item.c1s1}}</p></td>
+        <td><p class="text-warning">{{item.c1s2a}}</p></td>
+        <td><p class="text-success">{{item.c1s2b}}</p></td>
+        <!-- TODO: fai aprire il tooltip -->
+        <td><a ng-click="vm.loadTherapy($index)" class="mouse-over" title="" data-toggle="tooltip" data-placement="top" tooltip><span class="glyphicon glyphicon-search"></span></a></td>
+        <td><span class="mouse-over glyphicon glyphicon-remove" ng-click="vm.data.Therapy.splice($index,1)"></span></td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="button" ng-disabled="vm.data.Analgesia.c1s9 != 'Si'" ng-click="vm.showModal = !vm.showModal" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
+
+  <div ng-include="'components/home/modal/modalTherapy.html'"></div>
 </div>

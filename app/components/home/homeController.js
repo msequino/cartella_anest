@@ -15,6 +15,7 @@
         vm.check[3] = true;
 
         vm.showTab = 1;
+        vm.showModal = false;
 
         vm.loadUser = loadUser;
         vm.loadDoctor = loadDoctor;
@@ -23,9 +24,11 @@
         vm.changeView = changeView;
         vm.cleanForm = cleanForm;
         vm.cleanSummaryC2s3 = cleanSummaryC2s3;
+        vm.cleanAnalgesiaC1s1 = cleanAnalgesiaC1s1;
         vm.cleanAnalgesiaC1s2 = cleanAnalgesiaC1s2;
         vm.cleanAnalgesiaC1s4 = cleanAnalgesiaC1s4;
-        vm.cleanAnalgesiaC1s1 = cleanAnalgesiaC1s1;
+        vm.cleanAnalgesiaC1s9 = cleanAnalgesiaC1s9;
+
         vm.cleanAnestesiaC1 = cleanAnestesiaC1;
         vm.cleanAnestesiaC2s1 = cleanAnestesiaC2s1;
         vm.cleanAnestesiaC2s3 = cleanAnestesiaC2s3;
@@ -36,6 +39,13 @@
         vm.cleanAnestesiaC3s4 = cleanAnestesiaC3s4;
         vm.cleanAnestesiaC3s5 = cleanAnestesiaC3s5;
         vm.cleanAnestesiaC4s1 = cleanAnestesiaC4s1;
+
+        vm.cleanTherapyC1s4 = cleanTherapyC1s4;
+        vm.cleanTherapyC1s5 = cleanTherapyC1s5;
+
+        vm.addTherapy = addTherapy;
+        vm.loadTherapy = loadTherapy;
+
         //Submits
         vm.submitUser = submitUser;
         vm.submitDoctor = submitDoctor;
@@ -60,6 +70,9 @@
                 });
                 OptionService.Get('roles').then(function(response){
                   vm.roles = response;
+                });
+                OptionService.Get('studies').then(function(response){
+                  vm.studies = response;
                 });
                 PatientService.GetAll().then(function(response){
                   vm.patients = response;
@@ -103,8 +116,6 @@
 
         // TEMPLATE
         function changeView(next,loadItems,id){
-          cleanForm();
-          vm.template = next;
           if(loadItems == 1) //Load Users
             UserService.GetAll().then(function (response) {
               vm.users = response;
@@ -122,7 +133,11 @@
                   else{
                     if(loadItems == 4 && id) //Load patient with id
                       PatientService.GetById(id).then(function (response) {
-                        vm.patient = response;
+                        vm.data = response;
+                        vm.data.Risk = vm.data.Risk || [];
+                        vm.data.Consulence = vm.data.Consulence || [];
+                        vm.data.Team = vm.data.Team || [];
+                        vm.data.Therapy = vm.data.Therapy || [];
                         OptionService.Get('info').then(function(response){
                           vm.items = response;
                         });
@@ -136,6 +151,9 @@
                   }
               }
           }
+          cleanForm();
+          vm.template = next;
+
         }
 
         function cleanForm(){
@@ -217,42 +235,53 @@
         }
 
         function cleanSummaryC2s3(){
-          if(vm.data.Summary.c2s2 == "SI"){
-            vm.data.Summary.c2s3a = false;
-            vm.data.Summary.c2s3b = false;
-            vm.data.Summary.c2s3c = false;
-            vm.data.Summary.c2s4 = "";
-            vm.data.Summary.c2s5 = "";
-          }
+          if(vm.data.Summary)
+            if(vm.data.Summary.c2s2 == "SI"){
+              vm.data.Summary.c2s3a = false;
+              vm.data.Summary.c2s3b = false;
+              vm.data.Summary.c2s3c = false;
+              vm.data.Summary.c2s4 = "";
+              vm.data.Summary.c2s5 = "";
+            }
 
         }
 
+
+        function cleanAnalgesiaC1s1(){
+          if(vm.data.Analgesia.c1s1 == 'No')
+            if(confirm("Se confermi verranno cancellati i dati inseriti in questa pagina")){
+              vm.data.Analgesia = {c1s1 : vm.data.Analgesia.c1s1};
+              vm.data.Therapy = [];
+              vm.data.Team = [];
+              vm.therapy = {};
+            }
+        }
         function cleanAnalgesiaC1s2(){
-          if(vm.data.Analgesia.c1s2 == "Nessuno"){
-            delete vm.data.Analgesia.c1s3;
-            delete vm.data.Analgesia.c1s4;
+            if(vm.data.Analgesia.c1s2 == "Nessuno"){
+              delete vm.data.Analgesia.c1s3;
+              delete vm.data.Analgesia.c1s4;
+            }
           }
-        }
         function cleanAnalgesiaC1s4(){
           if(vm.data.Analgesia.c1s4 == "Nessuno")
             delete vm.data.Analgesia.c1s5;
         }
-        function cleanAnalgesiaC1s1(){
-          if(vm.data.Analgesia.c1s1 == 'No')
-            if(confirm("Se confermi verranno cancellati i dati inseriti in questa pagina"))
-            {
-              vm.data.Analgesia = {};
-              vm.data.Analgesia.c1s1 = 'No';
+        function cleanAnalgesiaC1s9(){
+          if(vm.data.Analgesia.c1s9 == 'No'){
+            delete vm.data.Analgesia.c1s9a;
+            delete vm.data.Analgesia.c1s9b;
+            delete vm.data.Analgesia.c1s9c;
+            vm.data.Therapy = [];
+            vm.therapy = {};
 
-            }
-          if(vm.data.Analgesia.c1s4 == "Nessuno")
-            vm.data.Analgesia.c1s5 = 'Nessuno';
+          }
         }
 
         function cleanAnestesiaC1(){
           if(vm.data.Anestesia.c1 == 'No')
-            if(confirm("Se confermi verranno cancellati i dati inseriti in questa pagina"))
+            if(confirm("Se confermi verranno cancellati i dati inseriti in questa pagina")){
               vm.data.Anestesia = {c1 : vm.data.Anestesia.c1};
+            }
         }
         function cleanAnestesiaC2s1(){
           if(vm.data.Anestesia.c2s1 == 'No')
@@ -324,6 +353,29 @@
               delete vm.data.Anestesia.c4s6;
               delete vm.data.Anestesia.c4s7;
             }
+        }
+
+        function cleanTherapyC1s4(){
+          delete vm.therapy.c1s4a;
+          delete vm.therapy.c1s4b;
+          delete vm.therapy.c1s4c;
+        }
+        function cleanTherapyC1s5(){
+          delete vm.therapy.c1s5a;
+          delete vm.therapy.c1s5b;
+          delete vm.therapy.c1s5c;
+        }
+
+        function addTherapy(){
+          vm.data.Therapy.push(vm.therapy);
+          vm.therapy = {};
+          vm.showModal = !vm.showModal;
+
+        }
+        function loadTherapy(id){
+          vm.therapy = vm.data.Therapy[id];
+          vm.showModal = !vm.showModal;
+
         }
         // TEMPLATE
     }

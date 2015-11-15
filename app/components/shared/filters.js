@@ -22,6 +22,13 @@
 
             return out;
           }
+        })
+        .filter('checkStudiesByPatient',function(){
+          return function(patient){
+            // TODO : manca NRS > 5 e dilatazione cervice
+//            if(patient.Summary.c1s5 == 0 && patient.birth)
+          }
+
         });
 
 })();

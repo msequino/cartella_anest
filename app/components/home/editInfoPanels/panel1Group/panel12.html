@@ -5,9 +5,35 @@
     <textarea name="SummaryC2s1" class="form-control" ng-model="vm.data.Summary.c2s1"/>
   </div>
 </div>
-<!-- TODO:
-  inserisci tabella 1.2
--->
+
+<div class="row">
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th class="col-md-5">Rischio</th>
+        <th class="col-md-5">Annotazione</th>
+        <th class="col-md-2">Elimina</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="item in vm.data.Risk">
+        <input type="hidden" ng-model="item.SummaryId"/>
+        <td>
+          <select name="RiskC1s1" class="form-control" ng-model="item.c1s1"
+                ng-options="item as item for item in vm.items['Risk.c1s1'] track by item"></select>
+        </td>
+        <td><textarea class="form-control" ng-model="item.c1s2"></textarea></td>
+        <td><span class="mouse-over glyphicon glyphicon-remove" ng-click="vm.data.Risk.splice($index,1)"></span></td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="button" ng-click="vm.data.Risk.push({})" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
+</div>
+
+<div clas="row">
+  <hr>
+</div>
+
 <div class="form-group col-md-6">
   <label for="SummaryC2s2">Precedenti anestesie:</label>
   <div class="radio">

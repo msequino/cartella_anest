@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     c1s3: {
-      type : DataTypes.ENUM("Nessuna","Top-up","Infusione continua","PIEB","PCA","PCA+PEB"),
+      type : DataTypes.ENUM("Top-up","Infusione continua","PIEB","PCA","PCA+PEB"),
       comment : "Tecnica"
     },
     c1s3a: {
@@ -35,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
       comment : "Anestesia locale"
     },
     c1s4a: {
-      type : DataTypes.ENUM("Nessuno","Ropivacaina","Levobupivacaina","Lidocaina","Bubivacaina","Altro"),
+      type : DataTypes.ENUM("Ropivacaina","Levobupivacaina","Lidocaina","Bubivacaina","Altro"),
       comment : "Tipo"
     },
     c1s4b: {
@@ -57,7 +57,7 @@ module.exports = function(sequelize, DataTypes) {
       comment : "Oppioide"
     },
     c1s5a : {
-      type : DataTypes.ENUM("Nessuno","Sufentanil","Morfina"),
+      type : DataTypes.ENUM("Sufentanil","Morfina"),
       comment : "Farmaco"
     },
     c1s5b : {
@@ -74,7 +74,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     c2s2 : {
       type : DataTypes.FLOAT,
-      comment : "Intervallo tra i boli (ml)"
+      comment : "Intervallo tra i boli (min)"
     },
     c2s3 : {
       type : DataTypes.FLOAT,

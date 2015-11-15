@@ -15,6 +15,7 @@
           <th>Medico</th>
           <th>Analgesia</th>
           <th>Anestesia</th>
+          <th>Studio di riferimento</th>
         </tr>
       </thead>
       <tbody>
@@ -26,7 +27,12 @@
           <td>{{patient.doctor}}</td>
           <td><span class="glyphicon" ng-class="{'glyphicon-remove':!patient.agid, 'glyphicon-ok':patient.agid}"><span></td>
           <td><span class="glyphicon" ng-class="{'glyphicon-remove':!patient.anid, 'glyphicon-ok':patient.anid}"><span></td>
-        </tr>
+          <td><a ng-click="vm.changeView('components/home/studies/parer.html')" class="mouse-over">{{patient.title}}</a></td>
+          </tr>
       </tbody>
     </table>
 </div>
+<!-- TODO: inserire pagina di riepilogo per ciascun paziente a seconda dello studio -->
+<!-- TODO: in statistiche, scaricare il dataset riguardante lo studio -->
+<!-- TODO: inserire controlli su date e valori in genere -->
+<!-- TODO: controllare finestra modale perchè non funzionano i due si/no -->

@@ -17,11 +17,12 @@ module.exports.getPatients = function(req,res,next){
   */
   var whereClinicId = req.user.getDataValue('clinicId') ? "WHERE p.ClinicId = :clinicId" : "";
   var paramsClinicId = req.user.getDataValue('clinicId') ? {clinicId : req.user.getDataValue('clinicId')} : {};
-  models.sequelize.query("SELECT p.id,s.c1s1,s.c1s3,s.c1s2,CONCAT(d.surname, ' ',d.name) AS doctor,ag.id AS agid,an.id AS anid "+
+  models.sequelize.query("SELECT p.id,s.c1s1,s.c1s3,s.c1s2,CONCAT(d.surname, ' ',d.name) AS doctor,ag.id AS agid,an.id AS anid,st.title "+
     "FROM Patients p LEFT JOIN Summaries s ON p.id=s.PatientId "+
     " LEFT JOIN Analgesia ag ON s.id=ag.SummaryId "+
     " LEFT JOIN Anestesia an ON s.id=ag.SummaryId "+
     " LEFT JOIN Doctors d ON s.DoctorId=d.id "+
+    " LEFT JOIN Studies st ON p.StudyId=st.id "+
     "" + whereClinicId + " ORDER BY p.id", {replacements : paramsClinicId,
           type:models.sequelize.QueryTypes.SELECT}).then(function(data){
             res.json(data);
@@ -75,6 +76,8 @@ module.exports.getInfo = function(req,res,next){
   response['Analgesia.c1s6'] = models.Analgesia.rawAttributes.c1s6.values;
   response['Analgesia.c1s9'] = models.Analgesia.rawAttributes.c1s9.values;
   response['Analgesia.c1s9a'] = models.Analgesia.rawAttributes.c1s9a.values;
+  response['Analgesia.c2a'] = models.Analgesia.rawAttributes.c2a.values;
+  response['Analgesia.c2b'] = models.Analgesia.rawAttributes.c2b.values;
   response['Analgesia.c2s2'] = models.Analgesia.rawAttributes.c2s2.values;
   response['Analgesia.c2s4'] = models.Analgesia.rawAttributes.c2s4.values;
   response['Therapy.c1s3'] = models.Therapy.rawAttributes.c1s3.values;
@@ -114,7 +117,12 @@ module.exports.getInfo = function(req,res,next){
 
   models.Doctor.findAll({where : whereClinicId,attributes : ['id','name','surname','ClinicId','RoleId']}).then(function(doctors){
     response['Doctors'] = doctors;
-    res.json(response);
+    models.Role.findAll().then(function(roles){
+      response['Roles'] = roles;
+      res.json(response);
+    }).catch(function(error){
+      res.json(error);
+    });
   }).catch(function(error){
     res.json(error);
   });

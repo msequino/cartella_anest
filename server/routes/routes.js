@@ -5,6 +5,7 @@ var User = require("../controllers/user"),
     Group = require("../controllers/group"),
     Doc = require("../controllers/doctor"),
     Patient = require("../controllers/patient"),
+    Study = require("../controllers/study"),
     Role = require("../controllers/role");
 
 module.exports = function(app) {
@@ -59,5 +60,7 @@ module.exports = function(app) {
   app.route("/groups").get(isAuthenticated,Group.getGroups);
 
   app.route("/info").get(isAuthenticated,Patient.getInfo);
+
+  app.route("/studies").get(isAuthenticated,Study.getStudies);
 
 }

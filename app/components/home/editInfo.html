@@ -2,11 +2,11 @@
 
   <div class="title"><p>Paziente codice {{vm.patient.id}} Data visita: {{vm.data.Summary.c1s1}}</p></div>
 
-  <div class="col-md-11 thumbnail">
+  <form name="vm.form" ng-submit="vm.submitPatient()" role="form" novalidate>
+    <div class="col-md-11 thumbnail">
       <div ng-show="vm.error" class="alert alert-danger">{{vm.error}}</div>
       <div ng-show="vm.success" class="alert alert-success">Paziente inserito correttamente. Tra 3 secondi verrai rimandato nella homepage</div>
 
-      <form name="vm.form" ng-submit="vm.submitPatient()" role="form" novalidate>
       <div>
         <ul class="nav nav-tabs" role="tablist">
           <li role="presentation" ng-click="vm.showTab = 1" ng-class="{active:vm.showTab==1}" class="mouse-over"><a role="tab" aria-expanded="true">Cartella</a></li>
@@ -21,6 +21,22 @@
           <div ng-class="{active:vm.showTab==4,in:vm.showTab==4}" class="tab-pane fade" ng-include="'components/home/editInfoPanels/panel4.html'"></div>
         </div>
       </div>
-    </form>
-  </div>
+
+    </div>
+    <div class="row">
+
+      <div class="form-group col-md-6">
+        <label for="Study">Studio in cui includere la paziente:</label>
+        <select name="Study" class="form-control" ng-model="vm.data.StudyId"
+          ng-options="item as item.title for item in (vm.studies) track by item.id"></select>
+      </div>
+
+      <div class="form-actions col-md-6">
+        <button type="submit" class="btn btn-primary">{{vm.data.id ? "Aggiorna" : "Registra"}}</button>
+        <a ng-click="vm.cleanForm()" class="btn btn-link">Cancella</a>
+      </div>
+    </div>
+
+  </form>
+
 </div>

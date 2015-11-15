@@ -1,3 +1,29 @@
-<!-- TODO:
-  inserisci tabella 1.3
--->
+<div class="row">
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th class="col-md-4">Data</th>
+        <th class="col-md-3">Tipo</th>
+        <th class="col-md-4">Annotazione</th>
+        <th class="col-md-1">Elimina</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="item in vm.data.Consulence">
+        <input type="hidden" ng-model="item.SummaryId"/>
+        <td>
+          <div class="input-group">
+              <p class="showInline"><input type="text" name="AnestesiaC1s1d" disabled class="form-control col-md-3" date-options="dateOptions" ng-model="item.c1s1" datepicker/></p>
+          </div>
+        </td>
+        <td>
+          <select name="ConsulenceC1s2" class="form-control" ng-model="item.c1s2"
+                ng-options="item as item for item in vm.items['Consulence.c1s2'] track by item"></select>
+        </td>
+        <td><textarea class="form-control" ng-model="item.c1s3"></textarea></td>
+        <td><span class="mouse-over glyphicon glyphicon-remove" ng-click="vm.data.Consulence.splice($index,1)"></span></td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="button" ng-click="vm.data.Consulence.push({})" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
+</div>

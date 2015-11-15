@@ -1,3 +1,28 @@
-<!-- TODO:
-  tabella Team
--->
+<div class="row">
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th class="col-md-4">Data e ora</th>
+        <th class="col-md-2">Ruolo</th>
+        <th class="col-md-4">Nominativo</th>
+        <th class="col-md-2">Elimina</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="item in vm.data.Team">
+        <input type="hidden" ng-model="item.AnalgesiumId"/>
+        <td><input type="datetime-local" class="form-control" ng-model="item.c1s1"/></td>
+        <td>
+          <select name="TeamDoctorId" class="form-control" ng-model="item.role"
+            ng-options="item as item.title for item in (vm.items['Roles'] | filter : {id : '!3'}) track by item.id "></select>
+        </td>
+        <td>
+          <select name="TeamDoctorId" class="form-control" ng-model="item.DoctorId"
+            ng-options="item as (item.name + ' ' + item.surname) for item in (vm.items['Doctors'] | filter : {RoleId : item.role.id}) track by item.id"></select>
+        </td>
+        <td><span class="mouse-over glyphicon glyphicon-remove" ng-click="vm.data.Team.splice($index,1)"></span></td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="button" ng-click="vm.data.Team.push({})" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
+</div>

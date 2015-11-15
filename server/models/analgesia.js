@@ -84,6 +84,14 @@ module.exports = function(sequelize, DataTypes) {
         min : 0
       }
     },
+    c2a: {
+      type : DataTypes.ENUM('Si','No'),
+      comment : "Induzione al parto"
+    },
+    c2b: {
+      type : DataTypes.ENUM('MECCANICA','OSSITOCINA','PROSTAGLANDINE'),
+      comment : "Metodologia"
+    },
     c2s1: {
       type : DataTypes.DATE,
       comment : "Data e ora Parto"
@@ -118,7 +126,31 @@ module.exports = function(sequelize, DataTypes) {
     },
     c2s5: {
       type : DataTypes.STRING,
-      comment : "Note"
+      comment : "Note anestesiologiche"
+    },
+    c2s6: {
+      type : DataTypes.DATE,
+      comment : "Inizio periodo espulsivo"
+    },
+    c2s7: {
+      type : DataTypes.STRING,
+      comment : "Note ostetriche"
+    },
+    c2s8a: {
+      type : DataTypes.FLOAT,
+      comment : "be arterioso"
+    },
+    c2s8b: {
+      type : DataTypes.FLOAT,
+      comment : "be venoso"
+    },
+    c2s9a: {
+      type : DataTypes.FLOAT,
+      comment : "ph arterioso"
+    },
+    c2s9b: {
+      type : DataTypes.FLOAT,
+      comment : "ph venoso"
     },
 
   },

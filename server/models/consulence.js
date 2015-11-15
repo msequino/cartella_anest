@@ -7,7 +7,7 @@ module.exports = function(sequelize, DataTypes) {
       comment : "Data"
     },
     c1s2 : {
-      type : DataTypes.ENUM("Nessuno","CARDIOLOGICA","DIABETOLOGICA","EMATOLOGICA","EMOCOAGULATIVA","ENDOCRINOLOGA","NEUROLOGICA","PSICHIATRICA"),
+      type : DataTypes.ENUM("CARDIOLOGICA","DIABETOLOGICA","EMATOLOGICA","EMOCOAGULATIVA","ENDOCRINOLOGA","NEUROLOGICA","PSICHIATRICA"),
       comment : "Consulenza"
     },
     c1s3 : {
