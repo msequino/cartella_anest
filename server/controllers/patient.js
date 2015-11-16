@@ -1,26 +1,16 @@
 
 var models = require("../models"),
-  sequelize = require("sequelize");
+  sequelize = require("sequelize"),
+  log = require("../config/winston");
 
 module.exports.getPatients = function(req,res,next){
   var clinic = !req.user.getDataValue('ClinicId') ? {} : {ClinicId : req.user.getDataValue('ClinicId')};
-  /*
-    models.Summary.findAll({where : clinic,
-          include : [{
-            model : models.Patient
-          }],
-          limit : 10,
-          offset : 10,
-      }).then(function(data){
-    res.json(data);
-  });
-  */
   var whereClinicId = req.user.getDataValue('clinicId') ? "WHERE p.ClinicId = :clinicId" : "";
   var paramsClinicId = req.user.getDataValue('clinicId') ? {clinicId : req.user.getDataValue('clinicId')} : {};
-  models.sequelize.query("SELECT p.id,s.c1s1,s.c1s3,s.c1s2,CONCAT(d.surname, ' ',d.name) AS doctor,ag.id AS agid,an.id AS anid,st.title "+
+  models.sequelize.query("SELECT p.id,s.c1s1,s.c1s3,s.c1s2,CONCAT(d.surname, ' ',d.name) AS doctor,ag.id AS agid,an.id AS anid,st.acronym "+
     "FROM Patients p LEFT JOIN Summaries s ON p.id=s.PatientId "+
-    " LEFT JOIN Analgesia ag ON s.id=ag.SummaryId "+
-    " LEFT JOIN Anestesia an ON s.id=ag.SummaryId "+
+    " LEFT JOIN Analgesia ag ON p.id=ag.PatientId "+
+    " LEFT JOIN Anestesia an ON p.id=ag.PatientId "+
     " LEFT JOIN Doctors d ON s.DoctorId=d.id "+
     " LEFT JOIN Studies st ON p.StudyId=st.id "+
     "" + whereClinicId + " ORDER BY p.id", {replacements : paramsClinicId,
@@ -31,26 +21,82 @@ module.exports.getPatients = function(req,res,next){
 }
 
 module.exports.getPatient = function(req,res,next){
-  models.Patient.findOne({where : {id:req.params.id}}).then(function(p){
-    res.json(p);
-  });
-}
+  var response = {};
+  models.Patient.findOne({where : {id:req.params.id}}).then(function(patient){
+    models.Summary.findOne({where : {PatientId:req.params.id}}).then(function(summary){
+      models.Consulence.findAll({where : {PatientId:req.params.id}}).then(function(consulences){
+        models.Risk.findAll({where : {PatientId:req.params.id}}).then(function(risks){
+          models.Analgesia.findOne({where : {PatientId:req.params.id}}).then(function(analgesia){
+            models.Anestesia.findOne({where : {PatientId:req.params.id}}).then(function(anestesia){
+              models.Team.findAll({where : {PatientId:req.params.id}}).then(function(teams){
+                models.Therapy.findAll({where : {PatientId:req.params.id}}).then(function(therapies){
+                  models.Note.findOne({where : {PatientId:req.params.id}}).then(function(note){
+                    response['Patient'] = patient;
 
-module.exports.insertPatient = function(req,res,next){
-  models.Patient.create(req.body).then(function(p){
-    res.json(p);
+                    response['Summary'] = summary;
+
+                    response['Consulence'] = consulences;
+                    response['Risk'] = risks;
+
+                    response['Analgesia'] = analgesia;
+                    response['Team'] = teams;
+                    response['Therapy'] = therapies;
+
+                    response['Anestesia'] = anestesia;
+
+                    response['Note'] = note;
+                    res.json(response);
+                  }).catch(function(error){
+                    res.json(error);
+                  });
+                }).catch(function(error){
+                  res.json(error);
+                });
+              }).catch(function(error){
+                res.json(error);
+              });
+
+            }).catch(function(error){
+              res.json(error);
+            });
+
+          }).catch(function(error){
+            res.json(error);
+          });
+
+        }).catch(function(error){
+          res.json(error);
+        });
+      }).catch(function(error){
+        res.json(error);
+      });
+    }).catch(function(error){
+      res.json(error);
+    });
   }).catch(function(error){
     res.json(error);
   });
 }
 
+module.exports.insertPatient = function(req,res,next){
+  models.Patient.create(req.body).then(function(p){
+    log.log('info',req.user.id + ' CREATE patient '+ JSON.stringify(p));
+    res.json(p);
+  }).catch(function(error){
+    log.log('error',error);
+    res.json(error);
+  });
+}
+
 module.exports.updatePatient = function(req,res,next){
-  models.Patient.findOne({where : {id : req.params.id}}).then(function(doctor){
+  models.Patient.findOne({where : {id : req.params.id}}).then(function(patient){
     if(p)
-      doctor.updateAttributes(req.body).then(function(p){
+      patient.updateAttributes(req.body).then(function(p){
+        log.log('info',req.user.id + ' UPDATE patient '+ JSON.stringify(p));
         res.json(p);
       });
   }).catch(function(error){
+    log.log('error',error);
     res.json(error);
   });
 }
@@ -69,7 +115,7 @@ module.exports.getInfo = function(req,res,next){
   response['Risk.c1s1'] = models.Risk.rawAttributes.c1s1.values;
 
   //GET Analgesia enums
-  response['Analgesia.c1s1'] = models.Analgesia.rawAttributes.c1s1.values;
+  response['Analgesia.c1s1'] = ['Si','No'];
   response['Analgesia.c1s2'] = models.Analgesia.rawAttributes.c1s2.values;
   response['Analgesia.c1s3'] = models.Analgesia.rawAttributes.c1s3.values;
   response['Analgesia.c1s5'] = models.Analgesia.rawAttributes.c1s5.values;
@@ -88,7 +134,7 @@ module.exports.getInfo = function(req,res,next){
   response['Therapy.c1s5a'] = models.Therapy.rawAttributes.c1s5a.values;
 
   //GET Anestesia enums
-  response['Anestesia.c1'] = models.Anestesia.rawAttributes.c1.values;
+  response['Anestesia.c1'] = ['Si','No'];
   response['Anestesia.c1s3'] = models.Anestesia.rawAttributes.c1s3.values;
   response['Anestesia.c2s1'] = models.Anestesia.rawAttributes.c2s1.values;
   response['Anestesia.c2s3'] = models.Anestesia.rawAttributes.c2s3.values;
@@ -126,4 +172,168 @@ module.exports.getInfo = function(req,res,next){
   }).catch(function(error){
     res.json(error);
   });
+}
+
+module.exports.insertSummary = function(req,res,next){
+  models.Summary.create(req.body).then(function(summary){
+    log.log('info',req.user.id + ' CREATE Summary '+ JSON.stringify(summary));
+    res.json(summary);
+  }).catch(function(error){
+    log.log('error',error);
+    res.json(error);
+  });
+}
+module.exports.updateSummary = function(req,res,next){
+  models.Summary.findOne({where : {id : req.params.id}}).then(function(data){
+    if(data)
+      data.updateAttributes(req.body).then(function(p){
+        log.log('info',req.user.id + ' UPDATE Summary '+ JSON.stringify(p));
+        res.json(p);
+      });
+  }).catch(function(error){
+    log.log('error',error);
+    res.json(error);
+  });
+}
+
+module.exports.insertAnalgesia = function(req,res,next){
+  models.Analgesia.create(req.body).then(function(analgesia){
+    log.log('info',req.user.id + ' CREATE Analgesia '+ JSON.stringify(analgesia));
+    res.json(analgesia);
+  }).catch(function(error){
+    log.log('error',error);
+    res.json(error);
+  });
+}
+module.exports.updateAnalgesia = function(req,res,next){
+  models.Analgesia.findOne({where : {id : req.params.id}}).then(function(data){
+    if(data)
+      data.updateAttributes(req.body).then(function(p){
+        log.log('info',req.user.id + ' UPDATE Analgesia '+ JSON.stringify(p));
+        res.json(p);
+      });
+  }).catch(function(error){
+    log.log('error',error);
+    res.json(error);
+  });
+}
+
+module.exports.insertAnestesia = function(req,res,next){
+  models.Anestesia.create(req.body).then(function(anestesia){
+    log.log('info',req.user.id + ' CREATE Anestesia '+ JSON.stringify(anestesia));
+    res.json(anestesia);
+  }).catch(function(error){
+    log.log('error',error);
+    res.json(error);
+  });
+}
+module.exports.updateAnestesia = function(req,res,next){
+  models.Anestesia.findOne({where : {id : req.params.id}}).then(function(data){
+    if(data)
+      data.updateAttributes(req.body).then(function(p){
+        log.log('info',req.user.id + ' UPDATE Anestesia '+ JSON.stringify(p));
+        res.json(p);
+      });
+  }).catch(function(error){
+    log.log('error',error);
+    res.json(error);
+  });
+}
+
+module.exports.insertNote = function(req,res,next){
+  models.Note.create(req.body).then(function(note){
+    log.log('info',req.user.id + ' CREATE Note '+ JSON.stringify(note));
+    res.json(note);
+  }).catch(function(error){
+    log.log('error',error);
+    res.json(error);
+  });
+}
+module.exports.updateNote = function(req,res,next){
+  models.Note.findOne({where : {id : req.params.id}}).then(function(data){
+    if(data)
+      data.updateAttributes(req.body).then(function(p){
+        log.log('info',req.user.id + ' UPDATE Note '+ JSON.stringify(p));
+        res.json(p);
+      });
+  }).catch(function(error){
+    log.log('error',error);
+    res.json(error);
+  });
+}
+
+module.exports.insertRisk = function(req,res,next){
+
+  req.body.forEach(function(element,index, array) {
+    models.Risk.upsert(req.body[index]).then();
+  });
+
+  models.Risk.findAll({where : {PatientId : req.params.id}}).then(function(data){
+    res.json(data);
+  });
+
+}
+module.exports.deleteRisk = function(req,res,next){
+  models.Risk.findOne({where : {id : req.params.id}}).then(function(risk) {
+    risk.destroy().then(function(data) {
+      res.json(200);
+    })
+  })
+}
+
+module.exports.insertConsulence = function(req,res,next){
+
+  req.body.forEach(function(element,index, array) {
+    models.Consulence.upsert(req.body[index]).then();
+  });
+
+  models.Consulence.findAll({where : {PatientId : req.params.id}}).then(function(data){
+    res.json(data);
+  });
+
+}
+module.exports.deleteConsulence = function(req,res,next){
+  models.Consulence.findOne({where : {id : req.params.id}}).then(function(consulence) {
+    consulence.destroy().then(function(data) {
+      res.json(200);
+    })
+  })
+}
+
+module.exports.insertTeam = function(req,res,next){
+
+  req.body.forEach(function(element,index, array) {
+    models.Team.upsert(req.body[index]).then();
+  });
+
+  models.Team.findAll({where : {PatientId : req.params.id}}).then(function(data){
+    res.json(data);
+  });
+
+}
+module.exports.deleteTeam = function(req,res,next){
+  models.Team.findOne({where : {id : req.params.id}}).then(function(team) {
+    team.destroy().then(function(data) {
+      res.json(200);
+    })
+  })
+}
+
+module.exports.insertTherapy = function(req,res,next){
+
+  req.body.forEach(function(element,index, array) {
+    models.Therapy.upsert(req.body[index]).then();
+  });
+
+  models.Therapy.findAll({where : {PatientId : req.params.id}}).then(function(data){
+    res.json(data);
+  });
+
+}
+module.exports.deleteTherapy = function(req,res,next){
+  models.Therapy.findOne({where : {id : req.params.id}}).then(function(therapy) {
+    therapy.destroy().then(function(data) {
+      res.json(200);
+    })
+  })
 }

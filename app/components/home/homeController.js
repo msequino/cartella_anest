@@ -5,10 +5,10 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['UserService', 'PatientService', 'DoctorService', 'AuthenticationService', 'OptionService', '$rootScope', '$location', '$timeout'];
-    function HomeController(UserService, PatientService, DoctorService, AuthenticationService, OptionService, $rootScope, $location, $timeout) {
+    HomeController.$inject = ['UserService', 'PatientService', 'DoctorService', 'AuthenticationService', 'OptionService', 'StudyService', '$rootScope', '$location', '$timeout'];
+    function HomeController(UserService, PatientService, DoctorService, AuthenticationService, OptionService, StudyService, $rootScope, $location, $timeout) {
         var vm = this;
-
+        vm.today = new Date();
         vm.check = {};
         vm.check[1] = true;
         vm.check[2] = true;
@@ -19,7 +19,6 @@
 
         vm.loadUser = loadUser;
         vm.loadDoctor = loadDoctor;
-        vm.deleteUser = deleteUser;
         vm.logout = logout;
         vm.changeView = changeView;
         vm.cleanForm = cleanForm;
@@ -45,12 +44,15 @@
 
         vm.addTherapy = addTherapy;
         vm.loadTherapy = loadTherapy;
+        vm.closeTherapy = closeTherapy;
 
+        vm.deleteFromArray = deleteFromArray;
         //Submits
         vm.submitUser = submitUser;
         vm.submitDoctor = submitDoctor;
         vm.submitPatient = submitPatient;
         vm.submitInfo = submitInfo;
+        vm.submitStudy = submitStudy;
 
         initController();
 
@@ -91,6 +93,7 @@
 
         //Profile functionalities
         function loadUser(id) {
+          console.log(id);
             UserService.GetById(id)
                 .then(function (user) {
                     vm.data = user;
@@ -102,15 +105,6 @@
                     vm.data = doctor;
                 });
         }
-
-//OLD
-        function deleteUser(id) {
-            UserService.Delete(id)
-            .then(function () {
-                loadAllUsers();
-            });
-        }
-//OLD
 
         //USER functionality
 
@@ -133,11 +127,26 @@
                   else{
                     if(loadItems == 4 && id) //Load patient with id
                       PatientService.GetById(id).then(function (response) {
-                        vm.data = response;
+                        vm.showTab = 1;
+                        vm.data = response || {};
+                        vm.data.StudyId = response.Patient.StudyId;
+                        vm.data.Summary = response.Summary || null;
+                        if(response.Analgesia){
+                          vm.Analgesia = "Si";
+                          vm.data.Analgesia = response.Analgesia;
+                          vm.data.Analgesia.c1s10c = new Date(1970,0,1,23,0,0);
+                        }
+                        if(response.Anestesia){
+                          vm.Anestesia = "Si";
+                          vm.data.Anestesia = response.Anestesia;
+                        }
+
+                        vm.data.Note = response.Note || null;
                         vm.data.Risk = vm.data.Risk || [];
                         vm.data.Consulence = vm.data.Consulence || [];
                         vm.data.Team = vm.data.Team || [];
                         vm.data.Therapy = vm.data.Therapy || [];
+                        vm.data.patientId = response.Patient.id;
                         OptionService.Get('info').then(function(response){
                           vm.items = response;
                         });
@@ -147,6 +156,14 @@
                           UserService.GetByUsername(vm.user.username).then(function (response) {
                             vm.data = response;
                           });
+                        else{
+                          if(loadItems == 6) //Load study with id
+                            StudyService.GetByPatient(id).then(function (response) {
+                              vm.showSidebar = true;
+                              vm.data = response;
+                              vm.data['id'] = id;
+                            });
+                        }
                       }
                   }
               }
@@ -165,6 +182,7 @@
         function submitUser(changePage){
           if(!vm.data.id)
             UserService.Create(vm.data).then(function(response){
+              vm.data.id = response.id;
               vm.data.password = null;
               vm.data.ClinicId = null;
               vm.data.GroupId = null;
@@ -172,7 +190,8 @@
               cleanForm();
             });
           else{
-            if(!vm.data.password || vm.data.password.length == 0) vm.data.password = null;
+            if(!vm.data.password || vm.data.password.length == 0) delete vm.data.password;
+            console.log(vm.data);
             UserService.Update(vm.data).then(function(response){
               if(changePage){
                 vm.success = true;
@@ -192,6 +211,13 @@
           }
         }
 
+        function submitStudy(){
+          StudyService.Create(vm.data).then(function(response){
+            vm.studies.push(vm.data);
+            cleanForm();
+          });
+        }
+
         function submitDoctor(){
           if(!vm.data.id)
             DoctorService.Create(vm.data).then(function(response){
@@ -201,7 +227,7 @@
             });
           else{
             DoctorService.Update(vm.data).then(function(response){
-              var line = angular.element(document.querySelector("#user"+vm.data.id));
+              var line = angular.element(document.querySelector("#doctor"+vm.data.id));
               line.children().text(vm.data.name + " " + vm.data.surname);
               cleanForm();
             });
@@ -232,11 +258,117 @@
         }
 
         function submitInfo(){
+          if(vm.data.Risk.length == 0) delete vm.data.Risk;
+          if(vm.data.Consulence.length == 0) delete vm.data.Consulence;
+          if(vm.data.Team.length == 0) delete vm.data.Team;
+          if(vm.data.Therapy.length == 0) delete vm.data.Therapy;
+
+          if(vm.data.Summary) submitInfoSummary();
+          if(vm.data.Risk) submitInfoRisk();
+          if(vm.data.Consulence) submitInfoConsulence();
+          if(vm.data.Analgesia) submitInfoAnalgesia();
+          if(vm.data.Team) submitInfoTeam();
+          if(vm.data.Therapy) submitInfoTherapy();
+          if(vm.data.Anestesia) submitInfoAnestesia();
+          if(vm.data.Note) submitInfoNote();
+
+          vm.data.Risk = vm.data.Risk || [];
+          vm.data.Consulence = vm.data.Consulence || [];
+          vm.data.Team = vm.data.Team || [];
+          vm.data.Therapy = vm.data.Therapy || [];
+        }
+        function submitInfoRisk(){
+          angular.forEach(vm.data.Risk, function(value, key) {
+            vm.data.Risk[key].PatientId = vm.data.patientId;
+          });
+          PatientService.SaveTInfo(vm.data.Risk,vm.data.patientId,'risk').then(function(response){
+            vm.data.Risk = response;
+            timer(true);
+          });
+        }
+        function submitInfoConsulence(){
+          angular.forEach(vm.data.Consulence, function(value, key) {
+            vm.data.Consulence[key].PatientId = vm.data.patientId;
+          });
+          PatientService.SaveTInfo(vm.data.Consulence,vm.data.patientId,'consulence').then(function(response){
+            vm.data.Consulence = response;
+            timer(true);
+
+          });
+        }
+        function submitInfoTeam(){
+          angular.forEach(vm.data.Team, function(value, key) {
+            vm.data.Team[key].PatientId = vm.data.patientId;
+          });
+          PatientService.SaveTInfo(vm.data.Team,vm.data.patientId,'team').then(function(response){
+            vm.data.Team = response;
+            timer(true);
+          });
+        }
+        function submitInfoTherapy(){
+          angular.forEach(vm.data.Therapy, function(value, key) {
+            vm.data.Therapy[key].PatientId = vm.data.patientId;
+          });
+          PatientService.SaveTInfo(vm.data.Therapy,vm.data.patientId,'therapy').then(function(response){
+            vm.data.Risk = response;
+            timer(true);
+          });
+        }
+        function submitInfoSummary(){
+          vm.data.Summary.PatientId = vm.data.patientId;
+          if(!vm.data.Summary.id)
+            PatientService.CreateInfo(vm.data.Summary,'summary').then(function(response){
+              vm.data.Summary = response;
+              timer(true);
+            });
+          else
+            PatientService.UpdateInfo(vm.data.Summary,'summary').then(function(response){
+              vm.data.Summary = response;
+              timer(true);
+            });
+        }
+        function submitInfoAnalgesia(){
+          vm.data.Analgesia.PatientId = vm.data.patientId;
+          if(!vm.data.Analgesia.id)
+            PatientService.CreateInfo(vm.data.Analgesia,'analgesia').then(function(response){
+              vm.data.Analgesia = response;
+              timer(true);
+            });
+          else
+            PatientService.UpdateInfo(vm.data.Analgesia,'analgesia').then(function(response){
+              vm.data.Summary = response;
+              timer(true);
+            });
+        }
+        function submitInfoAnestesia(){
+          vm.data.Anestesia.PatientId = vm.data.patientId;
+          if(!vm.data.Anestesia.id)
+            PatientService.CreateInfo(vm.data.Anestesia,'anestesia').then(function(response){
+              vm.data.Anestesia = response;
+              timer(true);
+            });
+          else
+            PatientService.UpdateInfo(vm.data.Anestesia,'anestesia').then(function(response){
+              vm.data.Anestesia = response;
+            });
+        }
+        function submitInfoNote(){
+          vm.data.Note.PatientId = vm.data.patientId;
+          if(!vm.data.Note.id)
+            PatientService.CreateInfo(vm.data.Note,'note').then(function(response){
+              vm.data.Note = response;
+              timer(true);
+            });
+          else
+            PatientService.UpdateInfo(vm.data.Note,'note').then(function(response){
+              vm.data.Note = response;
+              timer(true);
+            });
         }
 
         function cleanSummaryC2s3(){
           if(vm.data.Summary)
-            if(vm.data.Summary.c2s2 == "SI"){
+            if(vm.data.Summary.c2s2 == "Si"){
               vm.data.Summary.c2s3a = false;
               vm.data.Summary.c2s3b = false;
               vm.data.Summary.c2s3c = false;
@@ -246,11 +378,10 @@
 
         }
 
-
         function cleanAnalgesiaC1s1(){
-          if(vm.data.Analgesia.c1s1 == 'No')
+          if(vm.Analgesia == 'No')
             if(confirm("Se confermi verranno cancellati i dati inseriti in questa pagina")){
-              vm.data.Analgesia = {c1s1 : vm.data.Analgesia.c1s1};
+              vm.data.Analgesia = null;
               vm.data.Therapy = [];
               vm.data.Team = [];
               vm.therapy = {};
@@ -278,9 +409,9 @@
         }
 
         function cleanAnestesiaC1(){
-          if(vm.data.Anestesia.c1 == 'No')
+          if(vm.Anestesia == 'No')
             if(confirm("Se confermi verranno cancellati i dati inseriti in questa pagina")){
-              vm.data.Anestesia = {c1 : vm.data.Anestesia.c1};
+              vm.data.Anestesia = null;
             }
         }
         function cleanAnestesiaC2s1(){
@@ -367,15 +498,48 @@
         }
 
         function addTherapy(){
-          vm.data.Therapy.push(vm.therapy);
+          if(!vm.loadedTherapy)
+            vm.data.Therapy.push(vm.therapy);
+          else
+            angular.forEach(vm.data.Therapy, function(value, key) {
+              if(vm.data.Therapy[key].$$hashKey == vm.therapy.$$hashKey)
+                vm.data.Therapy[key] = vm.therapy;
+            });
+
           vm.therapy = {};
           vm.showModal = !vm.showModal;
-
+          vm.loadedTherapy = false;
         }
         function loadTherapy(id){
           vm.therapy = vm.data.Therapy[id];
           vm.showModal = !vm.showModal;
+          vm.loadedTherapy = true;
+        }
+        function closeTherapy(){
+          vm.therapy = {};
+          vm.showModal = !vm.showModal;
 
+        }
+
+        function deleteFromArray(table,index){
+          if(!vm.data[table][index].id)
+            vm.data[table].splice(index,1);
+          else {
+            PatientService.DeleteTInfo('/info/'+table+"/"+vm.data[table][index].id).then(function(response){
+              vm.data[table].splice(index,1);
+              timer(true);
+            });
+          }
+        }
+
+        function timer(successAlert){
+          vm.success = successAlert;
+          vm.error = !successAlert;
+          $timeout(function () {
+            vm.success = false;
+            vm.error = false;
+
+          }, 3000);
         }
         // TEMPLATE
     }

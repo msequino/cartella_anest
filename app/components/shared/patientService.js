@@ -13,7 +13,11 @@
         service.GetById = GetById;
         service.Create = Create;
         service.Update = Update;
+        service.CreateInfo = CreateInfo;
+        service.UpdateInfo = UpdateInfo;
         service.Delete = Delete;
+        service.SaveTInfo = SaveTInfo;
+        service.DeleteTInfo = DeleteTInfo;
 
         return service;
 
@@ -29,12 +33,27 @@
             return $http.post('/patients', user).then(handleSuccess, handleError);
         }
 
+        function CreateInfo(info,table) {
+            return $http.post('/info/'+table, info).then(handleSuccess, handleError);
+        }
+        function SaveTInfo(info,id,table) {
+            return $http.post('/info/'+ table + '/'+id, info).then(handleSuccess, handleError);
+        }
+
         function Update(user) {
             return $http.put('/patients/' + user.id, user).then(handleSuccess, handleError('Error updating user'));
         }
 
+        function UpdateInfo(info,table) {
+            return $http.put('/info/' + table +'/' + info.id, info).then(handleSuccess, handleError('Error updating user'));
+        }
+
         function Delete(id) {
             return $http.delete('/patients/' + id).then(handleSuccess, handleError('Error deleting user'));
+        }
+
+        function DeleteTInfo(path) {
+            return $http.delete(path).then(handleSuccess, handleError('Error deleting user'));
         }
 
         // private functions

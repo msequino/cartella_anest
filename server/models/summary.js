@@ -4,7 +4,13 @@ module.exports = function(sequelize, DataTypes) {
   var Summary = sequelize.define("Summary", {
     c1s1: {
       type : DataTypes.DATEONLY,
-      comment : "Data visita"
+      comment : "Data visita",
+      get      : function()  {
+        var date = new Date(this.getDataValue('c1s1')).toISOString();
+
+        // 'this' allows you to access attributes of the instance
+        return date.substr(0,date.indexOf("T"));
+      }
     },
     c1s2: {
       type : DataTypes.ENUM("ND","SSN","LP"),
@@ -12,7 +18,15 @@ module.exports = function(sequelize, DataTypes) {
     },
     c1s3: {
       type : DataTypes.DATEONLY,
-      comment : "Data presunto parto"
+      comment : "Data presunto parto",
+      get      : function()  {
+        if(this.getDataValue('c1s3')){
+          var date = new Date(this.getDataValue('c1s3')).toISOString();
+
+          // 'this' allows you to access attributes of the instance
+          return date.substr(0,date.indexOf("T"));
+        }
+      }
     },
     c1s4: {
       type : DataTypes.INTEGER,

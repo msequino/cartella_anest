@@ -17,10 +17,11 @@
             ng-options="item as item.title for item in (vm.items['Roles'] | filter : {id : '!3'}) track by item.id "></select>
         </td>
         <td>
-          <select name="TeamDoctorId" class="form-control" ng-model="item.DoctorId"
-            ng-options="item as (item.name + ' ' + item.surname) for item in (vm.items['Doctors'] | filter : {RoleId : item.role.id}) track by item.id"></select>
+          <select name="TeamDoctorId" class="form-control" ng-model="item.DoctorId">
+            <option ng-repeat="item in (vm.items['Doctors'] | filter : {RoleId : '1'})" value="{{item.id}}">{{item.name + " " + item.surname}}</option>
+          </select>
         </td>
-        <td><span class="mouse-over glyphicon glyphicon-remove" ng-click="vm.data.Team.splice($index,1)"></span></td>
+        <td><span class="mouse-over glyphicon glyphicon-remove" ng-click="vm.deleteFromArray('Team',$index)"></span></td>
       </tr>
     </tbody>
   </table>

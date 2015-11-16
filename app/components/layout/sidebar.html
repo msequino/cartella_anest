@@ -7,13 +7,16 @@
         <a class="mouse-over" ng-click="vm.changeView('components/home/homepage.html',3)">Lista pazienti</a>
     </li>
     <li>
-        <a class="mouse-over" ng-click="vm.changeView()">Statistiche</a>
+        <a class="mouse-over" ng-click="vm.changeView('components/home/statistics.html')">Statistiche</a>
     </li>
     <li>
-        <a class="mouse-over" ng-click="vm.changeView('components/home/editDoctors.html',2)">Lista medici</a>
+        <a class="mouse-over" ng-show="vm.user.GroupId == 1" ng-click="vm.changeView('components/home/editDoctors.html',2)">Lista medici</a>
     </li>
     <li>
-        <a class="mouse-over" ng-click="vm.changeView('components/home/editUsers.html',1)">Lista utenti</a>
+        <a class="mouse-over" ng-show="vm.user.GroupId == 1" ng-click="vm.changeView('components/home/editUsers.html',1)">Lista utenti</a>
+    </li>
+    <li>
+        <a class="mouse-over" ng-click="vm.changeView('components/home/editStudies.html')">Lista studi</a>
     </li>
   </ul>
 </div>

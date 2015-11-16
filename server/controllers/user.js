@@ -1,5 +1,6 @@
 
-var models = require("../models");
+var models = require("../models"),
+  log = require('../config/winston');
 module.exports.getUsers = function(req,res,next){
   models.User.findAll({attributes:['id','name','surname','active']}).then(function(users){
     res.json(users);
@@ -20,8 +21,10 @@ module.exports.getUserByUsername = function(req,res,next){
 
 module.exports.insertUser = function(req,res,next){
   models.User.create(req.body).then(function(user){
-    res.sendStatus(200);
+    log.log('info',req.user.id + ' CREATE user '+ user.id);
+    res.json({id : user.getDataValue('id')});
   }).catch(function(error){
+    log.log('error',error);
     res.json({error : error});
   });
 }
@@ -30,9 +33,11 @@ module.exports.updateUser = function(req,res,next){
   models.User.findOne({where : {id : req.params.id}}).then(function(user){
     if(user)
       user.updateAttributes(req.body).then(function(u){
+        log.log('info',req.user.id + ' UPDATED user '+ JSON.stringify(user));
         res.json(u);
       });
   }).catch(function(error){
+    log.log('error',error);
     res.json(error);
   });
 }

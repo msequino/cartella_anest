@@ -4,10 +4,17 @@ module.exports = function(sequelize, DataTypes) {
   var Therapy = sequelize.define("Therapy", {
     c1s1: {
       type : DataTypes.DATE,
-      comment : "Data e ora somministrazione terapia"
+      comment : "Data e ora somministrazione terapia",
+      get : function(){
+
+        if(this.getDataValue('c1s1')){
+          var date = new Date(this.getDataValue('c1s1'));
+          return date.toISOString().substr(0,date.toISOString().lastIndexOf(":"));
+        }
+      }
     },
     c1s2a: {
-      type : DataTypes.DATE,
+      type : DataTypes.INTEGER,
       comment : "VAS prima",
       isValid : {
         min : 0,
@@ -15,7 +22,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     c1s2b: {
-      type : DataTypes.DATE,
+      type : DataTypes.INTEGER,
       comment : "VAS dopo",
       isValid : {
         min : 0,
@@ -93,7 +100,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Therapy.belongsTo(models.Analgesia);
+        Therapy.belongsTo(models.Patient);
       }
     },
   });

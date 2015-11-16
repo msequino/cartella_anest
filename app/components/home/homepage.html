@@ -19,20 +19,18 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="patient in vm.patients" ng-dblclick="vm.changeView('components/home/editInfo.html',4,patient.id)">
+        <tr class="mouse-over" ng-repeat="patient in vm.patients" ng-dblclick="vm.changeView('components/home/editInfo.html',4,patient.id)">
           <td><center>{{patient.id}}</center></td>
-          <td>{{patient.c1s1}}</td>
-          <td>{{patient.c1s3}}</td>
+          <td>{{patient.c1s1 | date : 'yyyy-MM-dd'}}</td>
+          <td>{{patient.c1s3 | date : 'yyyy-MM-dd'}}</td>
           <td>{{patient.c1s2}}</td>
           <td>{{patient.doctor}}</td>
           <td><span class="glyphicon" ng-class="{'glyphicon-remove':!patient.agid, 'glyphicon-ok':patient.agid}"><span></td>
           <td><span class="glyphicon" ng-class="{'glyphicon-remove':!patient.anid, 'glyphicon-ok':patient.anid}"><span></td>
-          <td><a ng-click="vm.changeView('components/home/studies/parer.html')" class="mouse-over">{{patient.title}}</a></td>
+          <td><a ng-click="vm.changeView('components/home/studies/parer.html',6,patient.id)" class="mouse-over">{{patient.acronym}}</a></td>
           </tr>
       </tbody>
     </table>
 </div>
-<!-- TODO: inserire pagina di riepilogo per ciascun paziente a seconda dello studio -->
+
 <!-- TODO: in statistiche, scaricare il dataset riguardante lo studio -->
-<!-- TODO: inserire controlli su date e valori in genere -->
-<!-- TODO: controllare finestra modale perchè non funzionano i due si/no -->

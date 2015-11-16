@@ -1,4 +1,6 @@
 <br>
+<input type="hidden" ng-model="vm.data.Summary.PatientId"/>
+
 <div class="panel panel-info">
 
   <div class="panel-heading">Anagrafica</div>
@@ -29,7 +31,8 @@
 
   <div class="form-group col-md-6">
     <label for="SummaryDoctorId">Medico:</label>
-    <select name="SummaryDoctorId" class="form-control" ng-model="vm.data.Summary.DoctorId"
-      ng-options="item as (item.name + ' ' + item.surname) for item in (vm.items['Doctors'] | filter : {RoleId : '1'}) track by item.id"></select>
+    <select name="SummaryDoctorId" class="form-control" ng-model="vm.data.Summary.DoctorId">
+      <option ng-repeat="item in (vm.items['Doctors'] | filter : {RoleId : '1'})" value="{{item.id}}">{{item.name + " " + item.surname}}</option>
+    </select>
   </div>
 </div>

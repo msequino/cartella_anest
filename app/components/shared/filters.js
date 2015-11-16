@@ -29,6 +29,19 @@
 //            if(patient.Summary.c1s5 == 0 && patient.birth)
           }
 
+        })
+        .filter('split', function() {
+          return function(input, splitChar) {
+              // do some bounds checking here to ensure it has that index
+              return input.split(splitChar);
+          }
+        })
+        .filter('splitDuration', function() {
+          return function(input, splitChar, splitIndex) {
+              // do some bounds checking here to ensure it has that index
+              if(input)
+                return input.split(splitChar)[splitIndex];
+          }
         });
 
 })();

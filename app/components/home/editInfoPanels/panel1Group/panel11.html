@@ -1,7 +1,7 @@
 <div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.SummaryC1s1.$dirty && vm.form.SummaryC1s1.$error.required }">
   <label for="SummaryC1s1">Data visita (*):</label>
   <div class="input-group">
-      <p class="showInline"><input type="text" name="SummaryC1s1" disabled class="form-control" date-options="dateOptions" ng-model="vm.data.Summary.c1s1" datepicker required/></p>
+      <p class="showInline"><input type="text" name="SummaryC1s1" disabled class="form-control" max-date="vm.today" ng-model="vm.data.Summary.c1s1" datepicker required/></p>
   </div>
   <span ng-show="vm.form.SummaryC1s1.$dirty && vm.form.SummaryC1s1.$error.required" class="help-block">Data richiesta</span>
 </div>
@@ -18,29 +18,29 @@
 <div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.SummaryC1s3.$dirty && vm.form.SummaryC1s3.$error.required }">
   <label for="SummaryC1s3">Data presunto parto (*):</label>
   <div class="input-group">
-      <p class="showInline"><input type="text" name="SummaryC1s4" disabled class="form-control" date-options="dateOptions" ng-model="vm.data.Summary.c1s4" datepicker required/></p>
+      <p class="showInline"><input type="text" name="SummaryC1s3" disabled class="form-control" min-date="vm.data.Summary.c1s3" ng-model="vm.data.Summary.c1s3" datepicker required/></p>
   </div>
-  <span ng-show="vm.form.SummaryC1s4.$dirty && vm.form.SummaryC1s4.$error.required" class="help-block">Data richiesta</span>
+  <span ng-show="vm.form.SummaryC1s3.$dirty && vm.form.SummaryC1s3.$error.required" class="help-block">Data richiesta</span>
 </div>
 
 <div class="col-md-12">
   <hr>
 </div>
 
-<div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.SummaryC1s5.$dirty && vm.form.SummaryC1s5.$error.min }">
+<div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.SummaryC1s4.$dirty && vm.form.SummaryC1s4.$error.min }">
   <label for="SummaryC1s5">Parità:</label>
+  <input type="number" name="SummaryC1s4" class="form-control" ng-model="vm.data.Summary.c1s4" min="0"/>
+  <span ng-show="vm.form.SummaryC1s4.$dirty && vm.form.SummaryC1s4.$error.min" class="help-block">Maggiore di 0</span>
+</div>
+
+<div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.SummaryC1s5.$dirty && vm.form.SummaryC1s5.$error.min }">
+  <label for="SummaryC1s5">Peso (kg):</label>
   <input type="number" name="SummaryC1s5" class="form-control" ng-model="vm.data.Summary.c1s5" min="0"/>
   <span ng-show="vm.form.SummaryC1s5.$dirty && vm.form.SummaryC1s5.$error.min" class="help-block">Maggiore di 0</span>
 </div>
 
 <div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.SummaryC1s6.$dirty && vm.form.SummaryC1s6.$error.min }">
-  <label for="SummaryC1s6">Peso (kg):</label>
+  <label for="SummaryC1s6">Altezza (cm):</label>
   <input type="number" name="SummaryC1s6" class="form-control" ng-model="vm.data.Summary.c1s6" min="0"/>
   <span ng-show="vm.form.SummaryC1s6.$dirty && vm.form.SummaryC1s6.$error.min" class="help-block">Maggiore di 0</span>
-</div>
-
-<div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.SummaryC1s7.$dirty && vm.form.SummaryC1s7.$error.min }">
-  <label for="SummaryC1s7">Altezza (cm):</label>
-  <input type="number" name="SummaryC1s7" class="form-control" ng-model="vm.data.Summary.c1s7" min="0"/>
-  <span ng-show="vm.form.SummaryC1s7.$dirty && vm.form.SummaryC1s7.$error.min" class="help-block">Maggiore di 0</span>
 </div>

@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
   },{
     classMethods: {
       associate: function(models) {
-        Note.belongsTo(models.Summary);
+        Note.belongsTo(models.Patient);
       }
     },
   });

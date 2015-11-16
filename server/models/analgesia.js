@@ -2,10 +2,6 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Analgesia = sequelize.define("Analgesia", {
-    c1s1: {
-      type : DataTypes.ENUM("Si","No"),
-      comment : "Ha avuto una procedura anestesiologica"
-    },
     c1s1a: {
       type : DataTypes.BOOLEAN,
       comment : "Procedura: Peridurale"
@@ -84,6 +80,34 @@ module.exports = function(sequelize, DataTypes) {
         min : 0
       }
     },
+    c1s10a: {
+      type : DataTypes.DATE,
+      comment : "Posizionamento catetere",
+      get : function(){
+        if(this.getDataValue('c1s10a')){
+          var date = new Date(this.getDataValue('c1s10a'));
+          return date.toISOString().substr(0,date.toISOString().lastIndexOf(":"));
+        }
+      }
+    },
+    c1s10b: {
+      type : DataTypes.DATE,
+      comment : "Posizionamento bolo",
+      get : function(){
+        if(this.getDataValue('c1s10b')){
+          var date = new Date(this.getDataValue('c1s10b'));
+          return date.toISOString().substr(0,date.toISOString().lastIndexOf(":"));
+        }
+      }
+    },
+    c1s10ch: {
+      type : DataTypes.INTEGER,
+      comment : "Tempo totale lavoro (ore)"
+    },
+    c1s10cm: {
+      type : DataTypes.INTEGER,
+      comment : "Tempo totale lavoro (minuti)"
+    },
     c2a: {
       type : DataTypes.ENUM('Si','No'),
       comment : "Induzione al parto"
@@ -94,7 +118,13 @@ module.exports = function(sequelize, DataTypes) {
     },
     c2s1: {
       type : DataTypes.DATE,
-      comment : "Data e ora Parto"
+      comment : "Data e ora Parto",
+      get : function(){
+        if(this.getDataValue('c2s1')){
+          var date = new Date(this.getDataValue('c2s1'));
+          return date.toISOString().substr(0,date.toISOString().lastIndexOf(":"));
+        }
+      }
     },
     c2s2: {
       type : DataTypes.ENUM("SPONTANEO","KRISTELLER","VENTOSA","CESAREO"),
@@ -130,7 +160,13 @@ module.exports = function(sequelize, DataTypes) {
     },
     c2s6: {
       type : DataTypes.DATE,
-      comment : "Inizio periodo espulsivo"
+      comment : "Inizio periodo espulsivo",
+      get : function(){
+        if(this.getDataValue('c2s6')){
+          var date = new Date(this.getDataValue('c2s6'));
+          return date.toISOString().substr(0,date.toISOString().lastIndexOf(":"));
+        }
+      }
     },
     c2s7: {
       type : DataTypes.STRING,
@@ -152,12 +188,20 @@ module.exports = function(sequelize, DataTypes) {
       type : DataTypes.FLOAT,
       comment : "ph venoso"
     },
+    c2s10a: {
+      type : DataTypes.INTEGER,
+      comment : "NRS Iniziale"
+    },
+    c2s10b: {
+      type : DataTypes.FLOAT,
+      comment : "NRS Medio"
+    },
 
   },
   {
     classMethods: {
       associate: function(models) {
-        Analgesia.belongsTo(models.Summary);
+        Analgesia.belongsTo(models.Patient);
       }
     }
   });

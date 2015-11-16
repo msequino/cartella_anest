@@ -4,37 +4,54 @@
     angular
         .module('app')
         .directive('datepicker', function(){
+          function link(scope,element,attrs,ngModelCtrl){
+
+            /*scope.$watch('minDate', function(value) {
+              var date = new Date(element.datepicker("getDate"));
+              if(value != undefined)
+                if(new Date(value) > date){
+                  element.val('');
+                }
+              element.datepicker("option","minDate",value);
+            });*/
+
+            $(function(){
+              element.datepicker({
+                dateFormat : "yy-mm-dd",
+                showOn : "button",
+                maxDate : scope.maxDate,
+                changeMonth: true,
+                changeYear: true,
+                buttonImage : "img/calendar.gif",
+                buttonImageOnly : true,
+                buttonText : "Scegli data",
+                onSelect : function(date){
+                  ngModelCtrl.$setViewValue(date)
+                  scope.$apply();
+
+                }
+              });
+            })
+
+          }
           return{
             restrict : 'A',
             require : 'ngModel',
-            link : function(scope,element,attrs,ngModelCtrl){
-              $(function(){
-                element.datepicker({
-                  dateFormat : "yy-mm-dd",
-                  showOn : "button",
-                  buttonImage : "img/calendar.gif",
-                  buttonImageOnly : true,
-                  buttonText : "Scegli data",
-                  onSelect : function(date){
-                    ngModelCtrl.$setViewValue(date)
-                    scope.$apply();
-
-                  }
-                });
-              })
-            }
+            scope : {
+              minDate : '=minDate',
+              maxDate : '=maxDate',
+            },
+            link : link
           }
         })
         .directive('tooltip', function(){
             return {
                 restrict: 'A',
                 link: function(scope, element, attrs){
-                  var item = scope.item;
-                  var title = (item.c1s4 == 'Si' ? "- " + item.c1s4a + " " + item.c1s4b + " " + item.c1s4c : "") + " " + (item.c1s5 == 'Si' ? "\n- " + item.c1s5a + " " + item.c1s5b + " " + item.c1s5c : "");
-                  $(element).tooltip({content : ""});
                   $(element).hover(function(){
+                    //TODO: update tooltip when change
+                      $(element).tooltip( {"content" : attrs.title});
                       // on mouseenter
-                      $(element).tooltip({"content" : title});
                       $(element).tooltip('show');
                   }, function(){
                       // on mouseleave

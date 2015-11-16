@@ -2,13 +2,15 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Anestesia = sequelize.define("Anestesia", {
-    c1: {
-      type : DataTypes.ENUM("Si","No"),
-      comment : "Ha avuto una procedura anestesiologica"
-    },
     c1s1: {
       type : DataTypes.DATE,
-      comment : "Inizio estensione blocco"
+      comment : "Inizio estensione blocco",
+      get : function(){
+        if(this.getDataValue('c1s1')){
+          var date = new Date(this.getDataValue('c1s1'));
+          return date.toISOString().substr(0,date.toISOString().lastIndexOf(":"));
+        }
+      }
     },
     c1s2: {
       type : DataTypes.STRING,
@@ -20,7 +22,13 @@ module.exports = function(sequelize, DataTypes) {
     },
     c1s4: {
       type : DataTypes.DATE,
-      comment : "Ultima assunzione cibo"
+      comment : "Ultima assunzione cibo",
+      get : function(){
+        if(this.getDataValue('c1s4')){
+          var date = new Date(this.getDataValue('c1s4'));
+          return date.toISOString().substr(0,date.toISOString().lastIndexOf(":"));
+        }
+      }
     },
     c1s5: {
       type : DataTypes.STRING,
@@ -199,7 +207,7 @@ module.exports = function(sequelize, DataTypes) {
   {
     classMethods: {
       associate: function(models) {
-        Anestesia.belongsTo(models.Summary);
+        Anestesia.belongsTo(models.Patient);
         Anestesia.belongsTo(models.Doctor, {as : "Anestesista"});
         Anestesia.belongsTo(models.Doctor, {as : "Ginecologo"});
       }

@@ -5,8 +5,8 @@
         .module('app')
         .controller('UserController', UserController);
 
-    UserController.$inject = ['$location', 'AuthenticationService', 'FlashService'];
-    function UserController($location, AuthenticationService, FlashService) {
+    UserController.$inject = ['$location', '$window', 'AuthenticationService', 'FlashService'];
+    function UserController($location, $window, AuthenticationService, FlashService) {
         var vm = this;
 
         vm.login = login;
@@ -14,6 +14,7 @@
         (function initController() {
             // reset login status
             AuthenticationService.ClearCredentials();
+
         })();
 
         function login() {

@@ -4,26 +4,26 @@
     <label for="AnalgesiaC1s1">E' stata attivata una procedura anestesiologica? </label>
     <div class="radio">
       <label for="AnalgesiaC1s1{{item}}" class="radio-inline"  ng-repeat="(key,item) in vm.items['Analgesia.c1s1']">
-        <input type="radio" name="AnalgesiaC1s1" ng-change="vm.cleanAnalgesiaC1s1()" ng-model="vm.data.Analgesia.c1s1" value="{{item}}">{{item}}
+        <input type="radio" name="AnalgesiaC1s1" ng-change="vm.cleanAnalgesiaC1s1()" ng-model="vm.Analgesia" value="{{item}}">{{item}}
       </label>
     </div>
   </div>
 </div>
 
-<div class="panel panel-info" ng-show="vm.data.Analgesia.c1s1 == 'Si'">
+<div class="panel panel-info" ng-show="vm.Analgesia == 'Si'">
 
   <div class="panel-heading">Team</div>
   <div class="panel-body" ng-include="'components/home/editInfoPanels/panel2Group/panel21.html'"></div>
 </div>
 
-<div class="panel panel-info" ng-show="vm.data.Analgesia.c1s1 == 'Si'">
+<div class="panel panel-info" ng-show="vm.Analgesia == 'Si'">
 
   <div class="panel-heading">Tecnica anestesiologica</div>
   <div class="panel-body" ng-include="'components/home/editInfoPanels/panel2Group/panel22.html'"></div>
 </div>
 
 
-<div class="footer" ng-show="vm.data.Analgesia.c1s1 == 'Si'">
+<div class="footer" ng-show="vm.Analgesia == 'Si'">
   <div class="row">
     <div class="form-group col-md-4">
       <label for="AnalgesiaC2a">Induzione al parto </label>
@@ -43,7 +43,7 @@
   <div class="row">
     <div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.AnalgesiaC2s1.$dirty && vm.form.AnalgesiaC2s1.$error.required }">
       <label for="AnalgesiaC2s1">Data e ora parto:</label>
-      <input type="datetime-local" class="form-control" ng-model="vm.data.Analgesia.c2s1"/>
+      <input type="datetime-local" placeholder="yyyy-MM-ddTHH:mm" class="form-control" ng-model="vm.data.Analgesia.c2s1"/>
     </div>
     <div class="form-group col-md-4">
       <label for="AnalgesiaC2s2">Tipo parto:</label>
@@ -103,6 +103,18 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.AnalgesiaC2s10a.$dirty && (vm.form.AnalgesiaC2s10a.$error.min || vm.form.AnalgesiaC2s10a.$error.max) }">
+      <label for="AnalgesiaC2s10a">NRS Iniziale:</label>
+      <input type="number" name="AnalgesiaC2s10a" class="form-control" ng-model="vm.data.Analgesia.c2s10a" min="0" max="10"/>
+      <span ng-show="vm.form.AnalgesiaC2s10a.$dirty && (vm.form.AnalgesiaC2s10a.$error.min || vm.form.AnalgesiaC2s10a.$error.max)" class="help-block">Tra 0 e 10</span>
+    </div>
+    <div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.AnalgesiaC2s10b.$dirty && (vm.form.AnalgesiaC2s10b.$error.min || vm.form.AnalgesiaC2s10a.$error.max) }">
+      <label for="AnalgesiaC2s10b">NRS Medio:</label>
+      <input type="number" name="AnalgesiaC2s10b" class="form-control" ng-model="vm.data.Analgesia.c2s10b" min="0" max="10"/>
+      <span ng-show="vm.form.AnalgesiaC2s10b.$dirty && (vm.form.AnalgesiaC2s10b.$error.min || vm.form.AnalgesiaC2s10b.$error.max)" class="help-block">Tra 0 e 10</span>
+    </div>
+  </div>
   <div class="row">
     <div class="form-group col-md-6">
       <label for="AnalgesiaC2s5">Note anestesiologiche:</label>

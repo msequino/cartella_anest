@@ -1,5 +1,6 @@
 
-var models = require("../models");
+var models = require("../models"),
+  log = require("../config/winston");
 
 module.exports.getDoctors = function(req,res,next){
   var clinic = !req.user.getDataValue('ClinicId') ? {} : {ClinicId : req.user.getDataValue('ClinicId')};
@@ -16,8 +17,11 @@ module.exports.getDoctor = function(req,res,next){
 
 module.exports.insertDoctor = function(req,res,next){
   models.Doctor.create(req.body).then(function(doctor){
-    res.json(doctor);
+    log.log('info',req.user.id + ' CREATE doctor '+ JSON.stringify(doctor));
+
+    res.json({id : doctor.getDataValue('id')});
   }).catch(function(error){
+    log.log('error',error);
     res.json(error);
   });
 }
@@ -26,9 +30,11 @@ module.exports.updateDoctor = function(req,res,next){
   models.Doctor.findOne({where : {id : req.params.id}}).then(function(doctor){
     if(doctor)
       doctor.updateAttributes(req.body).then(function(d){
+        log.log('info',req.user.id + ' UPDATED doctor '+ JSON.stringify(doctor) );
         res.json(d);
       });
   }).catch(function(error){
+    log.log('error',error);
     res.json(error);
   });
 }

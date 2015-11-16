@@ -26,7 +26,7 @@
             <label for="password">Password</label>
             <input type="password" class="form-control" ng-model="vm.data.password" />
         </div>
-        <div class="row">
+<!--        <div class="row" ng-show="vm.user.isAdmin">
           <div class="form-group col-md-6">
               <label for="GroupId">Tipo profilo</label>
               <select class="form-control" ng-model="vm.data.GroupId" ng-options="item.id as item.title for item in vm.groups" />
@@ -35,7 +35,7 @@
               <label for="ClinicId">Clinica</label>
               <select class="form-control" ng-model="vm.data.ClinicId" ng-options="item.id as item.title for item in vm.clinics" />
           </div>
-        </div>
+        </div>-->
         <div class="row">
           <div class="col-md-6">
             <input type="checkbox" name="active" ng-model="vm.data.active" ng-checked="vm.data.active">

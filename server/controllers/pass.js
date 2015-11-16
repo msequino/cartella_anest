@@ -2,6 +2,7 @@ var express = require('express');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var db = require('../models');
+var log = require('../config/winston');
 
 module.exports = function(req,res,next){
 
@@ -21,20 +22,22 @@ module.exports = function(req,res,next){
           // Username does not exist, log error & redirect back
 
           if (!user){
-            console.log('User Not Found with username '+username);
+            log.log('error','LOGIN '+ username + ' NOT FOUND');
             return done(null, false);
           }
           // User exists but wrong password, log the error
           if (!user.isValidPassword(password)){
-            console.log('Invalid Password');
+            log.log('error','LOGIN '+username + ' INVALID password');
             return done(null, false);
           }
+          log.log('info','LOGIN '+username + ' log IN');
           // User and password both match, return user from
           // done method which will be treated like success
           return done(null, user);
         }
       ).catch(function(err){
         // In case of any error, return using the done method
+        log.log('error',error);
         return done({error : err});
 
       });
@@ -70,7 +73,8 @@ module.exports = function(req,res,next){
                 // save the user
 
                 newUser.save().then(function() {
-                    return done(null, newUser);
+                  log.log('info','SIGNUP '+username + ' by ' + req.user.id);
+                  return done(null, newUser);
                 }).catch(function(err) {
                     return done(err, null);
                 });

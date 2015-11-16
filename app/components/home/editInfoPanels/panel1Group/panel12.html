@@ -23,7 +23,7 @@
                 ng-options="item as item for item in vm.items['Risk.c1s1'] track by item"></select>
         </td>
         <td><textarea class="form-control" ng-model="item.c1s2"></textarea></td>
-        <td><span class="mouse-over glyphicon glyphicon-remove" ng-click="vm.data.Risk.splice($index,1)"></span></td>
+        <td><span class="mouse-over glyphicon glyphicon-remove" ng-click="vm.deleteFromArray('Risk',$index)"></span></td>
       </tr>
     </tbody>
   </table>
@@ -47,13 +47,13 @@
   <label for="SummaryC2s3a">Tipo anestesia:</label>
   <div class="checkbox">
     <label for="SummaryC2s3a" class="checkbox-inline">
-      <input type="checkbox" ng-disabled="vm.data.Summary.c2s2 != 'SI'" name="SummaryC2s3a" ng-model="vm.data.Summary.c2s3a"> Generale
+      <input type="checkbox" ng-disabled="vm.data.Summary.c2s2 != 'Si'" name="SummaryC2s3a" ng-model="vm.data.Summary.c2s3a"> Generale
     </label>
     <label for="SummaryC2s3b" class="checkbox-inline">
-      <input type="checkbox" ng-disabled="vm.data.Summary.c2s2 != 'SI'" name="SummaryC2s3b" ng-model="vm.data.Summary.c2s3b"> Locale
+      <input type="checkbox" ng-disabled="vm.data.Summary.c2s2 != 'Si'" name="SummaryC2s3b" ng-model="vm.data.Summary.c2s3b"> Locale
     </label>
     <label for="SummaryC2s3c" class="checkbox-inline">
-      <input type="checkbox" ng-disabled="vm.data.Summary.c2s2 != 'SI'" name="SummaryC2s3c" ng-model="vm.data.Summary.c2s3c"> Locoregionale
+      <input type="checkbox" ng-disabled="vm.data.Summary.c2s2 != 'Si'" name="SummaryC2s3c" ng-model="vm.data.Summary.c2s3c"> Locoregionale
     </label>
   </div>
 </div>

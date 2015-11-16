@@ -105,12 +105,38 @@
         <td><p class="text-info">{{item.c1s1}}</p></td>
         <td><p class="text-warning">{{item.c1s2a}}</p></td>
         <td><p class="text-success">{{item.c1s2b}}</p></td>
-        <!-- TODO: fai aprire il tooltip -->
-        <td><a ng-click="vm.loadTherapy($index)" class="mouse-over" title="" data-toggle="tooltip" data-placement="top" tooltip><span class="glyphicon glyphicon-search"></span></a></td>
-        <td><span class="mouse-over glyphicon glyphicon-remove" ng-click="vm.data.Therapy.splice($index,1)"></span></td>
+        <td><a ng-click="vm.loadTherapy($index)" class="mouse-over" data-title="{{(item.c1s4 == 'Si' ? '' + item.c1s4a + ' ' + item.c1s4b + ' ml ' + item.c1s4c + '% ' : '') + '\u000A' + (item.c1s5 == 'Si' ? '' + item.c1s5a + ' ' + item.c1s5b + ' mcg ' + item.c1s5c + ' ml': '')}}" data-placement="top" tooltip><span class="glyphicon glyphicon-search"></span></a></td>
+        <td><span class="mouse-over glyphicon glyphicon-remove" ng-click="vm.deleteFromArray('Therapy',$index)"></span></td>
       </tr>
     </tbody>
   </table>
+
+  <div class="row">
+    <div class="form-group col-md-4">
+      <label for="AnalgesiaC1s10a">Posizionamento catetere:</label>
+      <input type="datetime-local" class="form-control" ng-model="vm.data.Analgesia.c1s10a"/>
+    </div>
+
+    <div class="form-group col-md-4">
+      <label for="AnalgesiaC1s10b">Posizionamento bolo :</label>
+      <input type="datetime-local" class="form-control" ng-model="vm.data.Analgesia.c1s10b"/>
+    </div>
+
+    <div class="form-group col-md-4">
+      <label for="AnalgesiaC1s10c">Tempo totale lavoro (ore) (minuti) :</label>
+      <div class="row">
+        <div class="col-md-6">
+          <input type="number" min="0" class="form-control" ng-model="vm.data.Analgesia.c1s10ch"/>
+        </div>
+        <div class="col-md-6">
+          <input type="number" min="0" max="59" class="form-control" ng-model="vm.data.Analgesia.c1s10cm"/>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
   <button type="button" ng-disabled="vm.data.Analgesia.c1s9 != 'Si'" ng-click="vm.showModal = !vm.showModal" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
 
   <div ng-include="'components/home/modal/modalTherapy.html'"></div>

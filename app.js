@@ -8,6 +8,7 @@ var express =	 	require('express')
   , passport =	require('passport')
   , session = 		require('express-session')
   , flash = 		require('connect-flash')
+  , log = 		require('./server/config/winston')
   , passport = 		require('passport');
 
 var app = express();
@@ -34,6 +35,7 @@ require('./server/routes/routes.js')(app);
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
+  //log.error(err);
   next(err);
 });
 

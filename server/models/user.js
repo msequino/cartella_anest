@@ -32,6 +32,7 @@ module.exports = function(sequelize, DataTypes) {
         return {
           username : this.getDataValue("username"),
           ClinicId : this.getDataValue("ClinicId"),
+          GroupId : this.getDataValue("GroupId")
         };
       },
       isAdmin : function(){

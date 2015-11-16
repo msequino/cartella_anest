@@ -1,0 +1,84 @@
+<header >
+<table class="table table-bordered">
+<thead><tr><th style="width:50%">Centro</th><th style="width:50%">Data</th></tr></thead>
+<tbody><tr><th>{{vm.data.header.title}}</th><th>{{vm.data.header.c1s1 | date : 'yyyy-MM-dd HH:mm'}}</th></tr></tbody>
+</table>
+</header>
+
+<h2>Studio PARER <small> Pagina riassuntiva paziente <span>{{vm.data.id}}</span></small></h2>
+
+<br/>
+<div class="col-md-offset-3">
+<table>
+  <th class="large"ead class="large">
+    <tr>
+      <th class="large">Inserimento catetere</th>
+      <th class="large"><span class="text-warning">{{vm.data.firstquery.c1s10a | date : 'yyyy-MM-dd HH:mm'}}</span></th>
+    </tr>
+    <tr>
+      <th class="large">Inserimento bolo</th>
+      <th class="large"><span class="text-warning">{{vm.data.firstquery.c1s10b | date : 'yyyy-MM-dd HH:mm'}}</span></th>
+    </tr>
+    <tr>
+      <th class="large">Inizio espulsione</th>
+      <th class="large"><span class="text-warning">{{vm.data.firstquery.c2s6| date : 'yyyy-MM-dd HH:mm'}}</span></th>
+    </tr>
+    <tr>
+      <th class="large">Parto</th>
+      <th class="large"><span class="text-warning">{{vm.data.firstquery.c2s1| date : 'yyyy-MM-dd HH:mm'}}</span></th>
+    </tr>
+    <tr>
+      <th class="large">Durata Analgesia</th>
+      <th class="large"><span class="text-warning">{{vm.data.firstquery.dAnalgesia | splitDuration:':':0}} ore  {{vm.data.firstquery.dAnalgesia | splitDuration:':':1}} minuti</span></th>
+    </tr>
+    <tr>
+      <th class="large">Quantità anestetico</th>
+      <th class="large"><span class="text-warning">{{vm.data.secondquery.Anestetico + " mg"}}</span></th>
+    </tr>
+    <tr>
+      <th class="large">Quantità oppioide</th>
+      <th class="large"><span class="text-warning">{{vm.data.secondquery.Oppioide + " mg"}}</span></th>
+    </tr>
+    <tr>
+      <th class="large">Tempo totale lavoro</th>
+      <th class="large"><span class="text-warning">{{vm.data.firstquery.timeH + " ore " + vm.data.firstquery.timeM + " minuti"}}</span></th>
+    </tr>
+    <tr>
+      <th class="large">VAS Iniziale</th>
+      <th class="large"><span class="text-warning">{{vm.data.thirdquery.c1s2a}}</span></th>
+    </tr>
+    <tr>
+      <th class="large">VAS Medio</th>
+      <th class="large"><span class="text-warning">{{vm.data.secondquery.MeanVas}}</span></th>
+    </tr>
+    <tr>
+      <th class="large">NRS Iniziale</th>
+      <th class="large"><span class="text-warning">{{vm.data.firstquery.StartNrs}}</span></th>
+    </tr>
+    <tr>
+      <th class="large">NRS Medio</th>
+      <th class="large"><span class="text-warning">{{vm.data.firstquery.MeanNrs}}</span></th>
+    </tr>
+    <tr>
+      <th class="large">Complicanze</th>
+      <th class="large"><span class="text-warning">{{vm.data.firstquery.Complicanze}}</span></th>
+    </tr>
+
+  </thead>
+</table>
+
+<hr>
+<p> Riassunto farmaci : <span ng-show="!vm.data.secondquery.FarmaciAnestetici && !vm.data.secondquery.FarmaciOppioidi">Nessun farmaco usato</span><br/>
+  <ul>
+  <li ng-show="vm.data.secondquery.FarmaciAnestetici"> Anestetici: <span class="text-warning">{{vm.data.secondquery.FarmaciAnestetici}}</span><br/></li>
+  <li ng-show="vm.data.secondquery.FarmaciOppioidi"> Oppioidi: <span class="text-warning">{{vm.data.secondquery.FarmaciOppioidi}}</span><br/></li>
+  </ul>
+</p>
+</div>
+
+<footer>
+  <table class="table table-bordered">
+  <thead><tr><th style="width:50%">Firma</th><th style="width:50%">In data</th></tr></thead>
+  <tbody><tr><th></th><th>{{vm.today | date : 'dd MMMM yyyy HH:mm'}}</th></tr></tbody>
+  <table>
+</footer>

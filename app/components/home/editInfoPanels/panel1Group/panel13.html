@@ -13,7 +13,7 @@
         <input type="hidden" ng-model="item.SummaryId"/>
         <td>
           <div class="input-group">
-              <p class="showInline"><input type="text" name="AnestesiaC1s1d" disabled class="form-control col-md-3" date-options="dateOptions" ng-model="item.c1s1" datepicker/></p>
+              <p class="showInline"><input type="text" max-date="vm.today" name="AnestesiaC1s1d" disabled class="form-control col-md-3" date-options="dateOptions" ng-model="item.c1s1" datepicker/></p>
           </div>
         </td>
         <td>
@@ -21,7 +21,7 @@
                 ng-options="item as item for item in vm.items['Consulence.c1s2'] track by item"></select>
         </td>
         <td><textarea class="form-control" ng-model="item.c1s3"></textarea></td>
-        <td><span class="mouse-over glyphicon glyphicon-remove" ng-click="vm.data.Consulence.splice($index,1)"></span></td>
+        <td><span class="mouse-over glyphicon glyphicon-remove" ng-click="vm.deleteFromArray('Consulence',$index)"></span></td>
       </tr>
     </tbody>
   </table>

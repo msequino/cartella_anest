@@ -2,7 +2,11 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Study = sequelize.define("Study", {
-    title: DataTypes.STRING
+    acronym: DataTypes.STRING,
+    title: DataTypes.STRING,
+    description: DataTypes.STRING,
+    inclusions: DataTypes.STRING,
+    exclusions: DataTypes.STRING,
   },
   {
       timestamps : false
