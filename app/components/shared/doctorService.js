@@ -18,23 +18,23 @@
         return service;
 
         function GetAll() {
-            return $http.get('/doctors').then(handleSuccess, handleError('Error getting all doctors'));
+            return $http.get('/cartella_anest/doctors').then(handleSuccess, handleError('Error getting all doctors'));
         }
 
         function GetById(id) {
-            return $http.get('/doctors/' + id).then(handleSuccess, handleError('Error getting doctor by id'));
+            return $http.get('/cartella_anest/doctors/' + id).then(handleSuccess, handleError('Error getting doctor by id'));
         }
 
         function Create(doctor) {
-            return $http.post('/doctors', doctor).then(handleSuccess, handleError);
+            return $http.post('/cartella_anest/doctors', doctor).then(handleSuccess, handleError);
         }
 
         function Update(doctor) {
-            return $http.put('/doctors/' + doctor.id, doctor).then(handleSuccess, handleError('Error updating doctor'));
+            return $http.put('/cartella_anest/doctors/' + doctor.id, doctor).then(handleSuccess, handleError);
         }
 
         function Delete(id) {
-            return $http.delete('/doctors/' + id).then(handleSuccess, handleError('Error deleting doctor'));
+            return $http.delete('/cartella_anest/doctors/' + id).then(handleSuccess, handleError('Error deleting doctor'));
         }
 
         // private functions
@@ -44,9 +44,7 @@
         }
 
         function handleError(error) {
-            return function () {
-                return { success: false, message: error };
-            };
+            return { success: false, message: error };
         }
     }
 

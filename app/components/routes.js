@@ -1,7 +1,7 @@
 // Code goes here
 'use strict';
 
-var app = angular.module('cartella_anest', ['ngRoute']);
+var app = angular.module('cartella_anest');
 
 /*var onlyLoggedIn = function ($location,$q,AuthenticationService) {
     var deferred = $q.defer();

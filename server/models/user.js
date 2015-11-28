@@ -35,8 +35,8 @@ module.exports = function(sequelize, DataTypes) {
           GroupId : this.getDataValue("GroupId")
         };
       },
-      isAdmin : function(){
-        return this.getDataValue('GroupId') == 1;
+      isNotUser : function(){
+        return this.getDataValue('GroupId') < 3;
       },
     },
   });

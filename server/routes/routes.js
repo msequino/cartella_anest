@@ -18,10 +18,19 @@ module.exports = function(app) {
     next();
   };
 
-  var isAdmin = function(req, res, next){
+  /*var isAdmin = function(req, res, next){
     if (!req.isAuthenticated())
       return res.sendStatus(401);
     if (!req.user.isAdmin())
+      return res.sendStatus(401);
+    next();
+  };*/
+
+  // Deny only USER
+  var isAdmin = function(req, res, next){
+    if (!req.isAuthenticated())
+      return res.sendStatus(401);
+    if (!req.user.isNotUser() )
       return res.sendStatus(401);
     next();
   };
@@ -62,23 +71,27 @@ module.exports = function(app) {
   app.route("/info").get(isAuthenticated,Patient.getInfo);
 
   app.route("/info/summary").post(isAuthenticated,Patient.insertSummary);
+  app.route("/info/summary/:id").put(isAuthenticated,Patient.updateSummary);
   app.route("/info/risk/:id").post(isAuthenticated,Patient.insertRisk);
   app.route("/info/risk/:id").delete(isAuthenticated,Patient.deleteRisk);
   app.route("/info/consulence/:id").post(isAuthenticated,Patient.insertConsulence);
   app.route("/info/consulence/:id").delete(isAuthenticated,Patient.deleteConsulence);
 
   app.route("/info/analgesia").post(isAuthenticated,Patient.insertAnalgesia);
+  app.route("/info/analgesia/:id").put(isAuthenticated,Patient.updateAnalgesia);
   app.route("/info/team/:id").post(isAuthenticated,Patient.insertTeam);
   app.route("/info/team/:id").delete(isAuthenticated,Patient.deleteTeam);
   app.route("/info/therapy/:id").post(isAuthenticated,Patient.insertTherapy);
   app.route("/info/therapy/:id").delete(isAuthenticated,Patient.deleteTherapy);
 
   app.route("/info/anestesia").post(isAuthenticated,Patient.insertAnestesia);
-  app.route("/info/note").post(isAuthenticated,Patient.insertNote);
-  app.route("/info/summary/:id").put(isAuthenticated,Patient.updateSummary);
-  app.route("/info/analgesia/:id").put(isAuthenticated,Patient.updateAnalgesia);
   app.route("/info/anestesia/:id").put(isAuthenticated,Patient.updateAnestesia);
+
+  app.route("/info/note").post(isAuthenticated,Patient.insertNote);
   app.route("/info/note/:id").put(isAuthenticated,Patient.updateNote);
+
+  app.route("/info/birth").post(isAuthenticated,Patient.insertBirth);
+  app.route("/info/birth/:id").put(isAuthenticated,Patient.updateBirth);
 
   app.route("/studies").get(isAuthenticated,Study.getStudies);
   app.route("/studies/patient/:id").get(isAuthenticated,Study.getStudyPatient);

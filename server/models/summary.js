@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     c1s2: {
-      type : DataTypes.ENUM("ND","SSN","LP"),
+      type : DataTypes.ENUM("SSN","LP"),
       comment : "Tipo visita"
     },
     c1s3: {

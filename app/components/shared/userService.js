@@ -19,27 +19,27 @@
         return service;
 
         function GetAll() {
-            return $http.get('/users').then(handleSuccess, handleError('Error getting all users'));
+            return $http.get('/cartella_anest/users').then(handleSuccess, handleError('Error getting all users'));
         }
 
         function GetById(id) {
-            return $http.get('/users/' + id).then(handleSuccess, handleError('Error getting user by id'));
+            return $http.get('/cartella_anest/users/' + id).then(handleSuccess, handleError('Error getting user by id'));
         }
 
         function GetByUsername(username) {
-            return $http.get('/user/' + username).then(handleSuccess, handleError('Error getting user by id'));
+            return $http.get('/cartella_anest/user/' + username).then(handleSuccess, handleError('Error getting user by id'));
         }
 
         function Create(user) {
-            return $http.post('/users', user).then(handleSuccess, handleError);
+            return $http.post('/cartella_anest/users', user).then(handleSuccess, handleError);
         }
 
         function Update(user) {
-            return $http.put('/users/' + user.id, user).then(handleSuccess, handleError('Error updating user'));
+            return $http.put('/cartella_anest/users/' + user.id, user).then(handleSuccess, handleError);
         }
 
         function Delete(id) {
-            return $http.delete('/users/' + id).then(handleSuccess, handleError('Error deleting user'));
+            return $http.delete('/cartella_anest/users/' + id).then(handleSuccess, handleError('Error deleting user'));
         }
 
         // private functions
@@ -49,9 +49,7 @@
         }
 
         function handleError(error) {
-            return function () {
-                return { success: false, message: error };
-            };
+            return { success: false, message: error };
         }
     }
 

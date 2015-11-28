@@ -98,7 +98,6 @@ module.exports = function(req,res,next){
   });
 
   passport.deserializeUser(function(id, cb) {
-    console.log(id);
     db.User.findOne({where : {id : id}}).then(function (user) {
       cb(false,user);
     }).catch(function(err){

@@ -10,14 +10,21 @@ module.exports.getStudies = function(req,res,next){
 
 module.exports.getStudyPatient = function(req,res,next){
   var response = {};
-  models.sequelize.query("SELECT c1s10a,c1s10b,c2s1,c2s6,TIMEDIFF(c2s1,c1s10b) AS dAnalgesia, c2s10a AS StartNrs, c2s10b AS MeanNrs, c2s7 AS Complicanze, c1s10ch AS timeH, c1s10cm AS timeM FROM Analgesia WHERE PatientId = :id" , {replacements : {id : req.params.id},
+  /* TODO
+    -- controlla formati datetime-local (meglio se in formato 24) usa il computer del lavoro
+    -- problema quantità farmaci;
+    -- vedi etichette concentrazione;
+    imposta campi richiesti da facoltativi e permetti salva e finalizzazione;
+    perchè vm.Anestesia e vm.Analgesia non si aggiornano??? scrivi su stack
+     */
+  models.sequelize.query("SELECT a.c1s10a AS InsCatetere,t.c1s1 AS InsBolo,a.c2s6 AS InEsp,a.c2s1 AS Parto,TIMEDIFF(IF(an.c2s2 IS NOT NULL, an.c2s2 ,a.c2s1),t.c1s1) AS dAnalgesia, a.c2s7 AS Complicanze FROM Analgesia AS a INNER JOIN Therapies AS t ON a.PatientId=t.PatientId LEFT JOIN Anestesia AS an ON a.PatientId=an.PatientId WHERE a.PatientId = :id ORDER BY t.c1s1 ASC LIMIT 1" ,{replacements : {id : req.params.id},
         type:models.sequelize.QueryTypes.SELECT}).then(function(data){
           response['firstquery'] = data[0];
-          models.sequelize.query("SELECT SUM(c1s2a+c1s2b)/(2*COUNT(*)) AS MeanVas, SUM(IF(c1s4 = 'Si',c1s4b*c1s4c/100,0)) AS Anestetico, SUM(IF(c1s5 = 'Si',c1s5b*c1s5c/100,0)) AS Oppioide, GROUP_CONCAT(DISTINCT c1s4a SEPARATOR ', ') AS FarmaciAnestetici,GROUP_CONCAT(DISTINCT c1s5a SEPARATOR ', ') AS FarmaciOppioidi FROM Therapies WHERE PatientId = :id GROUP BY PatientId" , {replacements : {id : req.params.id},
+          models.sequelize.query("SELECT SUM(c1s2a+c1s2b) AS NumeratoreNRS , COUNT(*) AS DenominatoreNRS, SUM(IF(c1s4 = 'Si',c1s4b*c1s4c/100,0)) AS Anestetico, SUM(IF(c1s5 = 'Si',c1s5b*c1s5c/100,0)) AS Oppioide, SUM(c1s1h) AS TimeH, SUM(c1s1m) AS TimeM, GROUP_CONCAT(DISTINCT c1s4a SEPARATOR ', ') AS FarmaciAnestetici,GROUP_CONCAT(DISTINCT c1s5a SEPARATOR ', ') AS FarmaciOppioidi FROM Therapies WHERE PatientId = :id GROUP BY PatientId" , {replacements : {id : req.params.id},
                 type:models.sequelize.QueryTypes.SELECT}).then(function(data){
 
                   response['secondquery'] = data[0];
-                  models.sequelize.query("SELECT c1s2a FROM Therapies WHERE PatientId = :id AND c1s1 = (SELECT MIN(c1s1) FROM Therapies WHERE PatientId = :id)" , {replacements : {id : req.params.id},
+                  models.sequelize.query("SELECT c1s2a AS StartNrs FROM Therapies WHERE PatientId = :id AND c1s1 = (SELECT MIN(c1s1) FROM Therapies WHERE PatientId = :id)" , {replacements : {id : req.params.id},
                         type:models.sequelize.QueryTypes.SELECT}).then(function(data){
 
                           response['thirdquery'] = data[0];

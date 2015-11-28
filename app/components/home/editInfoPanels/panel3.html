@@ -5,7 +5,7 @@
     <label for="AnestesiaC1">Paziente operato sotto anestesia? </label>
     <div class="radio">
       <label for="AnestesiaC1{{item}}" class="radio-inline"  ng-repeat="(key,item) in vm.items['Anestesia.c1']">
-        <input type="radio" name="AnestesiaC1" ng-change="vm.cleanAnestesiaC1()" ng-model="vm.Anestesia" value="{{item}}">{{item}}
+        <input type="radio" name="AnestesiaC1" ng-disabled="vm.finalized" ng-change="vm.cleanAnestesiaC1()" ng-model="vm.Anestesia" value="{{item}}">{{item}}
       </label>
     </div>
   </div>
@@ -15,20 +15,30 @@
   <div class="row">
     <div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.AnestesiaC1s1.$dirty && vm.form.AnestesiaC1s1.$error.required }">
       <label for="AnestesiaC1s1">Data e ora:</label>
-      <input type="datetime-local" class="form-control" ng-model="vm.data.Anestesia.c1s1"/>
+      <input type="datetime-local" ng-disabled="vm.finalized" class="form-control" ng-model="vm.data.Anestesia.c1s1"/>
     </div>
   </div>
 
   <div class="row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-4">
       <label for="AnestesiaC1s2">Tipo intervento:</label>
-      <textarea name="AnestesiaC1s2" class="form-control" ng-model="vm.data.Anestesia.c1s2"/>
+      <select name="AnestesiaC1s2" class="form-control" ng-disabled="vm.finalized" ng-change="vm.cleanAnestesiaC1s2()" ng-model="vm.data.Anestesia.c1s2"
+        ng-options="item for item in vm.items['Anestesia.c1s2'] track by item">
+        <option value=""></option>
+      </select>
     </div>
 
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-4" ng-show="vm.data.Anestesia.c1s2 == 'Altro'">
+      <label for="AnestesiaC1s2t">Specifica:</label>
+      <textarea name="AnestesiaC1s2t" class="form-control" ng-disabled="vm.finalized" ng-model="vm.data.Anestesia.c1s2t"/>
+    </div>
+
+    <div class="form-group col-md-4">
       <label for="AnestesiaC1s3">Taglio cesareo:</label>
-      <select name="AnestesiaC1s3" class="form-control" ng-model="vm.data.Anestesia.c1s3"
-        ng-options="item as item for item in vm.items['Anestesia.c1s3'] track by item"></select>
+      <select name="AnestesiaC1s3" class="form-control" ng-disabled="vm.finalized" ng-model="vm.data.Anestesia.c1s3"
+        ng-options="item as item for item in vm.items['Anestesia.c1s3'] track by item">
+        <option value=""></option>
+      </select>
     </div>
 
   </div>
@@ -36,35 +46,39 @@
   <div class="row">
     <div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.AnestesiaC1s4d.$dirty && vm.form.AnestesiaC1s4d.$error.required }">
       <label for="AnestesiaC1s4">Ultima assunzione cibo:</label>
-      <input type="datetime-local" class="form-control" ng-model="vm.data.Anestesia.c1s4"/>
+      <input type="datetime-local" ng-disabled="vm.finalized" class="form-control" ng-model="vm.data.Anestesia.c1s4"/>
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-6">
       <label for="Anestesista">Anestesista:</label>
-      <select name="Anestesista" class="form-control" ng-model="vm.data.Anestesia.Anestesista"
-        ng-options="item as (item.name + ' ' + item.surname) for item in (vm.items['Doctors'] | filter : {RoleId : '2'}) track by item.id"></select>
+      <select name="Anestesista" class="form-control" ng-disabled="vm.finalized" ng-model="vm.data.Anestesia.Anestesista"
+        ng-options="item as (item.name + ' ' + item.surname) for item in (vm.items['Doctors'] | filter : {RoleId : '2'}) track by item.id">
+        <option value=""></option>
+      </select>
     </div>
 
     <div class="form-group col-md-6">
       <label for="Ginecologo">Ginecologo:</label>
-      <select name="Ginecologo" class="form-control" ng-model="vm.data.Anestesia.Ginecologo"
-        ng-options="item as (item.name + ' ' + item.surname) for item in (vm.items['Doctors'] | filter : {RoleId : '1'}) track by item.id"></select>
+      <select name="Ginecologo" class="form-control" ng-disabled="vm.finalized" ng-model="vm.data.Anestesia.Ginecologo"
+        ng-options="item as (item.name + ' ' + item.surname) for item in (vm.items['Doctors'] | filter : {RoleId : '1'}) track by item.id">
+        <option value=""></option>
+      </select>
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-6">
       <label for="AnestesiaC1s5">Complicanze:</label>
-      <textarea name="AnestesiaC1s5" class="form-control" ng-model="vm.data.Anestesia.c1s5"/>
+      <textarea name="AnestesiaC1s5" class="form-control" ng-disabled="vm.finalized" ng-model="vm.data.Anestesia.c1s5"/>
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-6">
       <label for="AnestesiaC1s6">Difficoltà tecniche:</label>
-      <textarea name="AnestesiaC1s6" class="form-control" ng-model="vm.data.Anestesia.c1s6"/>
+      <textarea name="AnestesiaC1s6" class="form-control" ng-disabled="vm.finalized" ng-model="vm.data.Anestesia.c1s6"/>
     </div>
   </div>
 </div>
@@ -98,5 +112,5 @@
 
 <div class="form-group col-md-6" ng-show="vm.Anestesia == 'Si'">
   <label for="AnestesiaC5">Note: </label>
-  <textarea name="AnestesiaC5" rows="5" class="form-control" ng-model="vm.data.Anestesia.c5"/>
+  <textarea name="AnestesiaC5" rows="5" class="form-control" ng-disabled="vm.finalized" ng-model="vm.data.Anestesia.c5"/>
 </div>

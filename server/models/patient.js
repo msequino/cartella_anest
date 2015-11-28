@@ -5,7 +5,11 @@ module.exports = function(sequelize, DataTypes) {
     name: DataTypes.STRING,
     surname: DataTypes.STRING,
     birth : DataTypes.DATEONLY,
-    code : DataTypes.STRING
+    code : DataTypes.STRING,
+    finalized : {
+      type : DataTypes.INTEGER,
+      defaultValue : 0
+    }
   }, {
     classMethods: {
       associate: function(models) {

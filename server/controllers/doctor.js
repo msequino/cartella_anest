@@ -22,7 +22,7 @@ module.exports.insertDoctor = function(req,res,next){
     res.json({id : doctor.getDataValue('id')});
   }).catch(function(error){
     log.log('error',error);
-    res.json(error);
+    res.status(404).send(error.errors[0].message);
   });
 }
 
@@ -32,9 +32,12 @@ module.exports.updateDoctor = function(req,res,next){
       doctor.updateAttributes(req.body).then(function(d){
         log.log('info',req.user.id + ' UPDATED doctor '+ JSON.stringify(doctor) );
         res.json(d);
+      }).catch(function(error){
+        log.log('error',error);
+        res.status(404).send(error.errors[0].message);
       });
   }).catch(function(error){
     log.log('error',error);
-    res.json(error);
+    res.status(404).send(error.errors[0].message);
   });
 }

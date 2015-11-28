@@ -20,8 +20,7 @@
   </div>
 </div>
 
-<div class="col-md-8 col-md-offset-1 thumbnail" ng-show="vm.user.GroupId == 1">
-    <div ng-show="vm.error" class="alert alert-danger">{{vm.error}}</div>
+<div class="col-md-8 col-md-offset-1 thumbnail" ng-hide="vm.user.GroupId == 3">
     <form name="vm.form" ng-submit="vm.submitStudy()" role="form" novalidate>
       <div class="form-group" ng-class="{ 'has-error': vm.acronym.title.$dirty && vm.form.acronym.$error.required }">
         <label for="acronym">Acronimo</label>

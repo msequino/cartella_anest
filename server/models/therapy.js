@@ -13,9 +13,24 @@ module.exports = function(sequelize, DataTypes) {
         }
       }
     },
+    c1s1h: {
+      type : DataTypes.INTEGER,
+      comment : "ore trascorse",
+      isValid : {
+        min : 0
+      }
+    },
+    c1s1m: {
+      type : DataTypes.INTEGER,
+      comment : "minuti",
+      isValid : {
+        min : 0,
+        max : 59
+      }
+    },
     c1s2a: {
       type : DataTypes.INTEGER,
-      comment : "VAS prima",
+      comment : "NRS prima",
       isValid : {
         min : 0,
         max : 10
@@ -23,14 +38,14 @@ module.exports = function(sequelize, DataTypes) {
     },
     c1s2b: {
       type : DataTypes.INTEGER,
-      comment : "VAS dopo",
+      comment : "NRS dopo",
       isValid : {
         min : 0,
         max : 10
       }
     },
     c1s3: {
-      type : DataTypes.ENUM("Top-up","Infusione continua","PIEB","PCA","PCA+PEB"),
+      type : DataTypes.ENUM("Top-up","Infusione continua","PIEB","PCA","PCA+PIEB"),
       comment : "Tecnica"
     },
     c1s3a: {

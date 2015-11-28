@@ -7,7 +7,7 @@ module.exports.getPatients = function(req,res,next){
   var clinic = !req.user.getDataValue('ClinicId') ? {} : {ClinicId : req.user.getDataValue('ClinicId')};
   var whereClinicId = req.user.getDataValue('clinicId') ? "WHERE p.ClinicId = :clinicId" : "";
   var paramsClinicId = req.user.getDataValue('clinicId') ? {clinicId : req.user.getDataValue('clinicId')} : {};
-  models.sequelize.query("SELECT p.id,s.c1s1,s.c1s3,s.c1s2,CONCAT(d.surname, ' ',d.name) AS doctor,ag.id AS agid,an.id AS anid,st.acronym "+
+  models.sequelize.query("SELECT p.id,s.c1s1,s.c1s3,s.c1s2,CONCAT(d.surname, ' ',d.name) AS doctor,ag.id AS agid,an.id AS anid,st.acronym,p.finalized "+
     "FROM Patients p LEFT JOIN Summaries s ON p.id=s.PatientId "+
     " LEFT JOIN Analgesia ag ON p.id=ag.PatientId "+
     " LEFT JOIN Anestesia an ON p.id=ag.PatientId "+
@@ -84,20 +84,24 @@ module.exports.insertPatient = function(req,res,next){
     res.json(p);
   }).catch(function(error){
     log.log('error',error);
-    res.json(error);
+    res.status(404).send(error.errors[0].message);
   });
 }
 
 module.exports.updatePatient = function(req,res,next){
   models.Patient.findOne({where : {id : req.params.id}}).then(function(patient){
-    if(p)
+
+    if(patient)
       patient.updateAttributes(req.body).then(function(p){
         log.log('info',req.user.id + ' UPDATE patient '+ JSON.stringify(p));
         res.json(p);
+      }).catch(function(error){
+        log.log('error',error);
+        res.status(404).send(error.errors[0].message);
       });
   }).catch(function(error){
     log.log('error',error);
-    res.json(error);
+    res.status(404).send(error.errors[0].message);
   });
 }
 
@@ -115,7 +119,8 @@ module.exports.getInfo = function(req,res,next){
   response['Risk.c1s1'] = models.Risk.rawAttributes.c1s1.values;
 
   //GET Analgesia enums
-  response['Analgesia.c1s1'] = ['Si','No'];
+  response['Analgesia.c1'] = ['Si','No'];
+  response['Analgesia.c1s1'] = models.Analgesia.rawAttributes.c1s1.values;
   response['Analgesia.c1s2'] = models.Analgesia.rawAttributes.c1s2.values;
   response['Analgesia.c1s3'] = models.Analgesia.rawAttributes.c1s3.values;
   response['Analgesia.c1s5'] = models.Analgesia.rawAttributes.c1s5.values;
@@ -135,6 +140,7 @@ module.exports.getInfo = function(req,res,next){
 
   //GET Anestesia enums
   response['Anestesia.c1'] = ['Si','No'];
+  response['Anestesia.c1s2'] = models.Anestesia.rawAttributes.c1s2.values;
   response['Anestesia.c1s3'] = models.Anestesia.rawAttributes.c1s3.values;
   response['Anestesia.c2s1'] = models.Anestesia.rawAttributes.c2s1.values;
   response['Anestesia.c2s3'] = models.Anestesia.rawAttributes.c2s3.values;
@@ -159,6 +165,9 @@ module.exports.getInfo = function(req,res,next){
   response['Anestesia.c4s6'] = models.Anestesia.rawAttributes.c4s6.values;
   response['Anestesia.c4s7'] = models.Anestesia.rawAttributes.c4s7.values;
 
+  response['Birth.c1s5'] = models.Birth.rawAttributes.c1s5.values;
+  response['Birth.c1s6'] = models.Birth.rawAttributes.c1s6.values;
+
   var whereClinicId = req.user.getDataValue('clinicId') ? {ClinicId : req.user.getDataValue('clinicId')} : {};
 
   models.Doctor.findAll({where : whereClinicId,attributes : ['id','name','surname','ClinicId','RoleId']}).then(function(doctors){
@@ -180,7 +189,7 @@ module.exports.insertSummary = function(req,res,next){
     res.json(summary);
   }).catch(function(error){
     log.log('error',error);
-    res.json(error);
+    res.status(404).send(error.errors[0].message);
   });
 }
 module.exports.updateSummary = function(req,res,next){
@@ -189,10 +198,13 @@ module.exports.updateSummary = function(req,res,next){
       data.updateAttributes(req.body).then(function(p){
         log.log('info',req.user.id + ' UPDATE Summary '+ JSON.stringify(p));
         res.json(p);
+      }).catch(function(error){
+        log.log('error',error);
+        res.status(404).send(error.errors[0].message);
       });
   }).catch(function(error){
     log.log('error',error);
-    res.json(error);
+    res.status(404).send(error.errors[0].message);
   });
 }
 
@@ -202,7 +214,7 @@ module.exports.insertAnalgesia = function(req,res,next){
     res.json(analgesia);
   }).catch(function(error){
     log.log('error',error);
-    res.json(error);
+    res.status(404).send(error.errors[0].message);
   });
 }
 module.exports.updateAnalgesia = function(req,res,next){
@@ -211,10 +223,13 @@ module.exports.updateAnalgesia = function(req,res,next){
       data.updateAttributes(req.body).then(function(p){
         log.log('info',req.user.id + ' UPDATE Analgesia '+ JSON.stringify(p));
         res.json(p);
+      }).catch(function(error){
+        log.log('error',error);
+        res.status(404).send(error.errors[0].message);
       });
   }).catch(function(error){
     log.log('error',error);
-    res.json(error);
+    res.status(404).send(error.errors[0].message);
   });
 }
 
@@ -224,7 +239,7 @@ module.exports.insertAnestesia = function(req,res,next){
     res.json(anestesia);
   }).catch(function(error){
     log.log('error',error);
-    res.json(error);
+    res.status(404).send(error.errors[0].message);
   });
 }
 module.exports.updateAnestesia = function(req,res,next){
@@ -233,10 +248,13 @@ module.exports.updateAnestesia = function(req,res,next){
       data.updateAttributes(req.body).then(function(p){
         log.log('info',req.user.id + ' UPDATE Anestesia '+ JSON.stringify(p));
         res.json(p);
+      }).catch(function(error){
+        log.log('error',error);
+        res.status(404).send(error.errors[0].message);
       });
   }).catch(function(error){
     log.log('error',error);
-    res.json(error);
+    res.status(404).send(error.errors[0].message);
   });
 }
 
@@ -246,7 +264,7 @@ module.exports.insertNote = function(req,res,next){
     res.json(note);
   }).catch(function(error){
     log.log('error',error);
-    res.json(error);
+    res.status(404).send(error.errors[0].message);
   });
 }
 module.exports.updateNote = function(req,res,next){
@@ -255,10 +273,38 @@ module.exports.updateNote = function(req,res,next){
       data.updateAttributes(req.body).then(function(p){
         log.log('info',req.user.id + ' UPDATE Note '+ JSON.stringify(p));
         res.json(p);
+      }).catch(function(error){
+        log.log('error',error);
+        res.status(404).send(error.errors[0].message);
       });
   }).catch(function(error){
     log.log('error',error);
-    res.json(error);
+    res.status(404).send(error.errors[0].message);
+  });
+}
+
+module.exports.insertBirth = function(req,res,next){
+  models.Birth.create(req.body).then(function(note){
+    log.log('info',req.user.id + ' CREATE Birth '+ JSON.stringify(note));
+    res.json(note);
+  }).catch(function(error){
+    log.log('error',error);
+    res.status(404).send(error.errors[0].message);
+  });
+}
+module.exports.updateBirth = function(req,res,next){
+  models.Birth.findOne({where : {id : req.params.id}}).then(function(data){
+    if(data)
+      data.updateAttributes(req.body).then(function(p){
+        log.log('info',req.user.id + ' UPDATE Birth '+ JSON.stringify(p));
+        res.json(p);
+      }).catch(function(error){
+        log.log('error',error);
+        res.status(404).send(error.errors[0].message);
+      });
+  }).catch(function(error){
+    log.log('error',error);
+    res.status(404).send(error.errors[0].message);
   });
 }
 

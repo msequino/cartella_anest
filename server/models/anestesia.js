@@ -13,11 +13,15 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     c1s2: {
+      type : DataTypes.ENUM("Secondamento manuale","Sutura","Tamponamento uterino","Revisione di parità","Altro"),
+      comment : "Tipo intervento"
+    },
+    c1s2t: {
       type : DataTypes.STRING,
       comment : "Tipo intervento"
     },
     c1s3: {
-      type : DataTypes.ENUM("URGENTE","EMERGENTE"),
+      type : DataTypes.ENUM("ELETTIVO","URGENTE","EMERGENTE"),
       comment : "Taglio cesareo"
     },
     c1s4: {
@@ -45,8 +49,14 @@ module.exports = function(sequelize, DataTypes) {
       comment : "EPIDURALE??"
     },
     c2s2 : {
-      type : DataTypes.TIME,
-      comment : "Inizio estensione blocco"
+      type : DataTypes.DATE,
+      comment : "Inizio estensione blocco",
+      get : function(){
+        if(this.getDataValue('c2s2')){
+          var date = new Date(this.getDataValue('c2s2'));
+          return date.toISOString().substr(0,date.toISOString().lastIndexOf(":"));
+        }
+      }
     },
     c2s3 : {
       type : DataTypes.ENUM("Si","No"),
@@ -100,11 +110,11 @@ module.exports = function(sequelize, DataTypes) {
       comment : "Subaracnoidea??"
     },
     c3s2a : {
-      type : DataTypes.ENUM("Nessuno","L1-L2","L2-L3","L3-L4","Altro"),
+      type : DataTypes.ENUM("L1-L2","L2-L3","L3-L4","Altro"),
       comment : "Interspazio"
     },
     c3s2b : {
-      type : DataTypes.ENUM("Nessuno","16G","18G"),
+      type : DataTypes.ENUM("25G","27G"),
       comment : "Ago"
     },
     c3s3 : {

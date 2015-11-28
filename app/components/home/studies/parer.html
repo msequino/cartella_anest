@@ -13,19 +13,19 @@
   <th class="large"ead class="large">
     <tr>
       <th class="large">Inserimento catetere</th>
-      <th class="large"><span class="text-warning">{{vm.data.firstquery.c1s10a | date : 'yyyy-MM-dd HH:mm'}}</span></th>
+      <th class="large"><span class="text-warning">{{vm.data.firstquery.InsCatetere | date : 'yyyy-MM-dd HH:mm'}}</span></th>
     </tr>
     <tr>
       <th class="large">Inserimento bolo</th>
-      <th class="large"><span class="text-warning">{{vm.data.firstquery.c1s10b | date : 'yyyy-MM-dd HH:mm'}}</span></th>
+      <th class="large"><span class="text-warning">{{vm.data.firstquery.InsBolo | date : 'yyyy-MM-dd HH:mm'}}</span></th>
     </tr>
     <tr>
       <th class="large">Inizio espulsione</th>
-      <th class="large"><span class="text-warning">{{vm.data.firstquery.c2s6| date : 'yyyy-MM-dd HH:mm'}}</span></th>
+      <th class="large"><span class="text-warning">{{vm.data.firstquery.InEsp | date : 'yyyy-MM-dd HH:mm'}}</span></th>
     </tr>
     <tr>
       <th class="large">Parto</th>
-      <th class="large"><span class="text-warning">{{vm.data.firstquery.c2s1| date : 'yyyy-MM-dd HH:mm'}}</span></th>
+      <th class="large"><span class="text-warning">{{vm.data.firstquery.Parto | date : 'yyyy-MM-dd HH:mm'}}</span></th>
     </tr>
     <tr>
       <th class="large">Durata Analgesia</th>
@@ -37,27 +37,19 @@
     </tr>
     <tr>
       <th class="large">Quantità oppioide</th>
-      <th class="large"><span class="text-warning">{{vm.data.secondquery.Oppioide + " mg"}}</span></th>
+      <th class="large"><span class="text-warning">{{vm.data.secondquery.Oppioide + " mcg"}}</span></th>
     </tr>
     <tr>
       <th class="large">Tempo totale lavoro</th>
-      <th class="large"><span class="text-warning">{{vm.data.firstquery.timeH + " ore " + vm.data.firstquery.timeM + " minuti"}}</span></th>
-    </tr>
-    <tr>
-      <th class="large">VAS Iniziale</th>
-      <th class="large"><span class="text-warning">{{vm.data.thirdquery.c1s2a}}</span></th>
-    </tr>
-    <tr>
-      <th class="large">VAS Medio</th>
-      <th class="large"><span class="text-warning">{{vm.data.secondquery.MeanVas}}</span></th>
+      <th class="large"><span class="text-warning">{{(vm.data.secondquery.TimeH + (vm.data.secondquery.TimeM / 60 | number:0))+ " ore " + (vm.data.secondquery.TimeM % 60) + " minuti"}}</span></th>
     </tr>
     <tr>
       <th class="large">NRS Iniziale</th>
-      <th class="large"><span class="text-warning">{{vm.data.firstquery.StartNrs}}</span></th>
+      <th class="large"><span class="text-warning">{{vm.data.thirdquery.StartNrs}}</span></th>
     </tr>
     <tr>
       <th class="large">NRS Medio</th>
-      <th class="large"><span class="text-warning">{{vm.data.firstquery.MeanNrs}}</span></th>
+      <th class="large"><span class="text-warning">{{(vm.data.secondquery.NumeratoreNRS - vm.data.thirdquery.StartNrs) / ((2*vm.data.secondquery.DenominatoreNRS )-1)}}</span></th>
     </tr>
     <tr>
       <th class="large">Complicanze</th>

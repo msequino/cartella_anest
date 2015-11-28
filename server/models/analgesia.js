@@ -2,27 +2,19 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Analgesia = sequelize.define("Analgesia", {
-    c1s1a: {
-      type : DataTypes.BOOLEAN,
-      comment : "Procedura: Peridurale"
-    },
-    c1s1b: {
-      type : DataTypes.BOOLEAN,
-      comment : "Procedura: Subaracnoidea"
-    },
-    c1s1c: {
-      type : DataTypes.BOOLEAN,
-      comment : "Procedura: Combinata spino/peridurale"
+    c1s1: {
+      type : DataTypes.ENUM("Peridurale","Subaracnoidea","Combinata spino/peridurale"),
+      comment : "Procedura: "
     },
     c1s2: {
-      type : DataTypes.ENUM("Nessuno","L1-L2","L2-L3","L3-L4","Altro"),
+      type : DataTypes.ENUM("L1-L2","L2-L3","L3-L4","ALTRO"),
       comment : "Interspazio 1",
       isValid : {
         min : 0
       }
     },
     c1s3: {
-      type : DataTypes.ENUM("Nessuno","16G","18G"),
+      type : DataTypes.ENUM("16G","18G"),
       comment : "Ago 1",
       isValid : {
         min : 0
@@ -37,14 +29,14 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     c1s5: {
-      type : DataTypes.ENUM("Nessuno","L1-L2","L2-L3","L3-L4","Altro"),
+      type : DataTypes.ENUM("L1-L2","L2-L3","L3-L4","ALTRO"),
       comment : "Interspazio 2",
       isValid : {
         min : 0
       }
     },
     c1s6: {
-      type : DataTypes.ENUM("Nessuno","16G","18G"),
+      type : DataTypes.ENUM("25G","27G"),
       comment : "Ago 2",
       isValid : {
         min : 0
@@ -63,7 +55,7 @@ module.exports = function(sequelize, DataTypes) {
       comment : "Dose test"
     },
     c1s9a: {
-      type : DataTypes.ENUM("Ropivacaina","Levobupivacaina","Lidocaina","Bubivacaina","Altro"),
+      type : DataTypes.ENUM("Ropivacaina","Levobupivacaina","Lidocaina","Bubivacaina","ALTRO"),
       comment : "Dose test farmaco"
     },
     c1s9b: {
@@ -89,24 +81,6 @@ module.exports = function(sequelize, DataTypes) {
           return date.toISOString().substr(0,date.toISOString().lastIndexOf(":"));
         }
       }
-    },
-    c1s10b: {
-      type : DataTypes.DATE,
-      comment : "Posizionamento bolo",
-      get : function(){
-        if(this.getDataValue('c1s10b')){
-          var date = new Date(this.getDataValue('c1s10b'));
-          return date.toISOString().substr(0,date.toISOString().lastIndexOf(":"));
-        }
-      }
-    },
-    c1s10ch: {
-      type : DataTypes.INTEGER,
-      comment : "Tempo totale lavoro (ore)"
-    },
-    c1s10cm: {
-      type : DataTypes.INTEGER,
-      comment : "Tempo totale lavoro (minuti)"
     },
     c2a: {
       type : DataTypes.ENUM('Si','No'),
@@ -187,16 +161,7 @@ module.exports = function(sequelize, DataTypes) {
     c2s9b: {
       type : DataTypes.FLOAT,
       comment : "ph venoso"
-    },
-    c2s10a: {
-      type : DataTypes.INTEGER,
-      comment : "NRS Iniziale"
-    },
-    c2s10b: {
-      type : DataTypes.FLOAT,
-      comment : "NRS Medio"
-    },
-
+    }
   },
   {
     classMethods: {

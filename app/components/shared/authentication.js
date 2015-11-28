@@ -22,7 +22,7 @@
 
             /* Use this for real authentication
              ----------------------------------------------*/
-            $http.post('/auth/login', { username: username, password: password })
+            $http.post('/cartella_anest/auth/login', { username: username, password: password })
                 .success(function (response) {
                     callback(response);
                 })
@@ -34,7 +34,7 @@
 
         function Logout(callback) {
 
-          $http.post('/auth/logout')
+          $http.post('/cartella_anest/auth/logout')
               .success(function (response) {
                   callback(response);
               });
@@ -43,7 +43,7 @@
 
         function GetSession(callback) {
 
-          $http.get('/auth/session')
+          $http.get('/cartella_anest/auth/session')
               .success(function (response) {
                 callback(response);
               }).error(function (error){

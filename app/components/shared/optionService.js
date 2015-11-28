@@ -14,7 +14,7 @@
         return service;
 
         function Get(item) {
-            return $http.get('/'+item).then(handleSuccess, handleError('Error getting all '+ item));
+            return $http.get('/cartella_anest/'+item).then(handleSuccess, handleError('Error getting all '+ item));
         }
 
         // private functions

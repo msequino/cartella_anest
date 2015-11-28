@@ -1,23 +1,23 @@
 <div class="row">
 
   <h3 class="title">Paziente codice <p class="text-warning blank-space">{{vm.data.patientId}}</p> Data visita: <p class="text-warning blank-space">{{vm.data.Summary.c1s1 | date : 'yyyy-MM-dd'}}</p></h3>
-  <div ng-show="vm.error" class="alert alert-danger">{{vm.error}}</div>
-  <div ng-show="vm.success" class="alert alert-success">Salvataggio effettuato</div>
 
   <form name="vm.form" ng-submit="vm.submitInfo()" role="form" novalidate>
     <div class="col-md-11 thumbnail">
       <div>
         <ul class="nav nav-tabs" role="tablist">
           <li role="presentation" ng-click="vm.showTab = 1" ng-class="{active:vm.showTab==1}" class="mouse-over"><a role="tab" aria-expanded="true">Cartella</a></li>
-          <li role="presentation" ng-click="vm.showTab = 2" ng-class="{active:vm.showTab==2}" class="mouse-over"><a role="tab" aria-expanded="true">Anestesiologia</a></li>
+          <li role="presentation" ng-click="vm.showTab = 2" ng-class="{active:vm.showTab==2}" class="mouse-over"><a role="tab" aria-expanded="true">Analgesia</a></li>
           <li role="presentation" ng-click="vm.showTab = 3" ng-class="{active:vm.showTab==3}" class="mouse-over"><a role="tab" aria-expanded="true">Anestesia</a></li>
           <li role="presentation" ng-click="vm.showTab = 4" ng-class="{active:vm.showTab==4}" class="mouse-over"><a role="tab" aria-expanded="true">Note</a></li>
+          <li role="presentation" ng-click="vm.showTab = 5" ng-class="{active:vm.showTab==5}" class="mouse-over"><a role="tab" aria-expanded="true">Assistenza Neotale</a></li>
         </ul>
         <div class="tab-content">
           <div ng-class="{active:vm.showTab==1,in:vm.showTab==1}" class="tab-pane fade" ng-include="'components/home/editInfoPanels/panel1.html'"></div>
           <div ng-class="{active:vm.showTab==2,in:vm.showTab==2}" class="tab-pane fade" ng-include="'components/home/editInfoPanels/panel2.html'"></div>
           <div ng-class="{active:vm.showTab==3,in:vm.showTab==3}" class="tab-pane fade" ng-include="'components/home/editInfoPanels/panel3.html'"></div>
           <div ng-class="{active:vm.showTab==4,in:vm.showTab==4}" class="tab-pane fade" ng-include="'components/home/editInfoPanels/panel4.html'"></div>
+          <div ng-class="{active:vm.showTab==5,in:vm.showTab==5}" class="tab-pane fade" ng-include="'components/home/editInfoPanels/panel5.html'"></div>
         </div>
       </div>
 
@@ -26,14 +26,28 @@
 
       <div class="form-group col-md-6">
         <label for="Study">Studio in cui includere la paziente:</label>
-        <select name="Study" class="form-control" ng-model="vm.data.StudyId">
+        <select name="Study" class="form-control" ng-disabled="vm.finalized" ng-model="vm.data.StudyId">
           <option ng-repeat="item in vm.studies" value="{{item.id}}">{{item.acronym}}</option>
         </select>
       </div>
 
-      <div class="form-actions col-md-6">
-        <button type="submit" class="btn btn-primary">{{vm.data.id ? "Aggiorna" : "Registra"}}</button>
-        <a ng-click="vm.cleanForm()" class="btn btn-link">Cancella</a>
+      <div class="form-actions col-md-6" ng-show="vm.user.ClinicId" ng-if="vm.finalized == 0">
+        <div class="row">
+          <div class="col-md-10">
+            <p class="bg-danger bordered" class="form-control" >
+              <label for="PatientFinalized" class="checkbox-inline">
+                <input type="checkbox" ng-change="vm.checkFinalization()" name="PatientFinalized" ng-model="vm.data.Patient.finalized"> Finalizza
+                <br>
+                <span class="text-muted">ATTENZIONE: a salvataggio compiuto tali informazioni non saranno più modificabili</span>
+
+              </label>
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <button type="submit" ng-disabled="vm.errors.hasOne()" class="btn btn-primary">{{vm.data.Summary.id ? "Aggiorna" : "Registra"}}</button>
+          <a ng-click="vm.cleanForm()" class="btn btn-link">Cancella</a>
+        </div>
       </div>
     </div>
 

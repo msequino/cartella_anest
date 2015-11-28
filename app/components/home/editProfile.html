@@ -1,8 +1,6 @@
 <div class="row">
 
   <div class="col-md-6 col-md-offset-1 thumbnail">
-      <div ng-show="vm.error" class="alert alert-danger">{{vm.error}}</div>
-      <div ng-show="vm.success" class="alert alert-success">Profilo modificato. Tra 3 s verrai reindirizzato nella homepage.</div>
       <form name="vm.form" ng-submit="vm.submitUser(true)" role="form" novalidate>
         <input type="hidden" ng-model="vm.data.id"/>
         <div class="row">

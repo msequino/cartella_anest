@@ -17,19 +17,19 @@
         return service;
 
         function GetAll() {
-            return $http.get('/studies').then(handleSuccess, handleError('Error getting all studies'));
+            return $http.get('/cartella_anest/studies').then(handleSuccess, handleError('Error getting all studies'));
         }
 
         function GetById(id) {
-            return $http.get('/studies/' + id).then(handleSuccess, handleError('Error getting user by id'));
+            return $http.get('/cartella_anest/studies/' + id).then(handleSuccess, handleError('Error getting user by id'));
         }
 
         function GetByPatient(id) {
-            return $http.get('/studies/patient/' + id).then(handleSuccess, handleError('Error getting user by id'));
+            return $http.get('/cartella_anest/studies/patient/' + id).then(handleSuccess, handleError('Error getting user by id'));
         }
 
         function Create(study) {
-            return $http.post('/studies', study).then(handleSuccess, handleError);
+            return $http.post('/cartella_anest/studies', study).then(handleSuccess, handleError);
         }
 
         // private functions

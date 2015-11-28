@@ -6,19 +6,22 @@
         .directive('datepicker', function(){
           function link(scope,element,attrs,ngModelCtrl){
 
-            /*scope.$watch('minDate', function(value) {
+            scope.$watch('minDate', function(value) {
               var date = new Date(element.datepicker("getDate"));
               if(value != undefined)
                 if(new Date(value) > date){
                   element.val('');
                 }
               element.datepicker("option","minDate",value);
-            });*/
+            });
+            scope.$watch('finalized', function(value) {
+              element.datepicker("option","showOn",scope.finalized ? "" : "button");
+            });
 
             $(function(){
               element.datepicker({
                 dateFormat : "yy-mm-dd",
-                showOn : "button",
+                showOn : scope.finalized ? "" : "button",
                 maxDate : scope.maxDate,
                 changeMonth: true,
                 changeYear: true,
@@ -40,6 +43,7 @@
             scope : {
               minDate : '=minDate',
               maxDate : '=maxDate',
+              finalized : '=finalized',
             },
             link : link
           }

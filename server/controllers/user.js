@@ -1,8 +1,9 @@
 
 var models = require("../models"),
   log = require('../config/winston');
+  
 module.exports.getUsers = function(req,res,next){
-  models.User.findAll({attributes:['id','name','surname','active']}).then(function(users){
+  models.User.findAll({attributes:['id','name','surname','active','GroupId','ClinicId']}).then(function(users){
     res.json(users);
   });
 }
@@ -25,7 +26,7 @@ module.exports.insertUser = function(req,res,next){
     res.json({id : user.getDataValue('id')});
   }).catch(function(error){
     log.log('error',error);
-    res.json({error : error});
+    res.status(404).send(error.errors[0].message);
   });
 }
 
@@ -35,9 +36,12 @@ module.exports.updateUser = function(req,res,next){
       user.updateAttributes(req.body).then(function(u){
         log.log('info',req.user.id + ' UPDATED user '+ JSON.stringify(user));
         res.json(u);
+      }).catch(function(error){
+        log.log('error',error);
+        res.status(404).send(error.errors[0].message);
       });
   }).catch(function(error){
     log.log('error',error);
-    res.json(error);
+    res.status(404).send(error.errors[0].message);
   });
 }
