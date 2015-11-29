@@ -138,6 +138,7 @@
                     if(loadItems == 4 && id) //Load patient with id
                       PatientService.GetById(id).then(function (response) {
                         vm.showTab = 1;
+
                         vm.data = response || {};
                         vm.data.StudyId = response.Patient.StudyId;
                         vm.data.Summary = response.Summary || null;
@@ -157,6 +158,10 @@
                         vm.data.Therapy = vm.data.Therapy || [];
                         vm.data.patientId = response.Patient.id;
                         vm.finalized = vm.data.Patient.finalized;
+
+                        vm.text_patient_page_1 = "Scheda Pz " + vm.data.patientId;
+                        vm.text_patient_page_2 = "Controlla i testi in rosso per correggerer gli errori";
+
                         OptionService.Get('info').then(function(response){
                           vm.items = response;
                         });
@@ -753,6 +758,8 @@
                 if(vm.errors.hasOwnProperty(key))
                   return true;
 
+            if(vm.data.Patient.finalized)
+              return vm.form.$invalid;
             return false;
         }
         function timer(successAlert,mChangeView){

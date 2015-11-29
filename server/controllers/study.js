@@ -14,7 +14,6 @@ module.exports.getStudyPatient = function(req,res,next){
     -- controlla formati datetime-local (meglio se in formato 24) usa il computer del lavoro
     -- problema quantità farmaci;
     -- vedi etichette concentrazione;
-    imposta campi richiesti da facoltativi e permetti salva e finalizzazione;
     perchè vm.Anestesia e vm.Analgesia non si aggiornano??? scrivi su stack
      */
   models.sequelize.query("SELECT a.c1s10a AS InsCatetere,t.c1s1 AS InsBolo,a.c2s6 AS InEsp,a.c2s1 AS Parto,TIMEDIFF(IF(an.c2s2 IS NOT NULL, an.c2s2 ,a.c2s1),t.c1s1) AS dAnalgesia, a.c2s7 AS Complicanze FROM Analgesia AS a INNER JOIN Therapies AS t ON a.PatientId=t.PatientId LEFT JOIN Anestesia AS an ON a.PatientId=an.PatientId WHERE a.PatientId = :id ORDER BY t.c1s1 ASC LIMIT 1" ,{replacements : {id : req.params.id},

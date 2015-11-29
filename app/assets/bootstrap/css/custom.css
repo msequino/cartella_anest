@@ -211,3 +211,10 @@ th.large{
 .has-error-background > label {
   color: #f00;
 }
+
+.navbar-center {
+  text-align: center;
+}
+.fix-to-top {
+  display: none;
+}

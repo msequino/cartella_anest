@@ -1,6 +1,6 @@
 <div class="row">
 
-  <h3 class="title">Paziente codice <p class="text-warning blank-space">{{vm.data.patientId}}</p> Data visita: <p class="text-warning blank-space">{{vm.data.Summary.c1s1 | date : 'yyyy-MM-dd'}}</p></h3>
+  <h3 set-class-when-at-top="fix-to-top" class="title">Paziente codice <p class="text-warning blank-space">{{vm.data.patientId}}</p> Data visita: <p class="text-warning blank-space">{{vm.data.Summary.c1s1 | date : 'yyyy-MM-dd'}}</p></h3>
 
   <form name="vm.form" ng-submit="vm.submitInfo()" role="form" novalidate>
     <div class="col-md-11 thumbnail">

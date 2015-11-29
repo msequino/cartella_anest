@@ -1,13 +1,13 @@
 <br/>
 <div class="row">
-  <div class="form-group col-md-12">
+  <div class="form-group col-md-12" ng-class="{ 'has-error-background': vm.data.Patient.finalized && vm.form.AnalgesiaC1.$error.required }">
     <label for="AnalgesiaC1">E' stata attivata una procedura anestesiologica? </label>
     <div class="radio">
       <label for="AnalgesiaC1Si" class="radio-inline" >
-        <input type="radio" ng-disabled="vm.finalized" name="AnalgesiaC1" ng-change="vm.cleanAnalgesiaC1()" ng-model="vm.Analgesia" value="Si"> Si
+        <input type="radio" ng-disabled="vm.finalized" name="AnalgesiaC1" required ng-change="vm.cleanAnalgesiaC1()" ng-model="vm.Analgesia" value="Si"> Si
       </label>
       <label for="AnalgesiaC1No" class="radio-inline" >
-        <input type="radio" ng-disabled="vm.finalized" name="AnalgesiaC1" ng-change="vm.cleanAnalgesiaC1()" ng-model="vm.Analgesia" value="No"> No
+        <input type="radio" ng-disabled="vm.finalized" name="AnalgesiaC1" required ng-change="vm.cleanAnalgesiaC1()" ng-model="vm.Analgesia" value="No"> No
       </label>
     </div>
   </div>
