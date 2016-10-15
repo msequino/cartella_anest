@@ -1,23 +1,23 @@
 <div class="row">
 
-  <h3 set-class-when-at-top="fix-to-top" class="title">Paziente codice <p class="text-warning blank-space">{{vm.data.patientId}}</p> Data visita: <p class="text-warning blank-space">{{vm.data.Summary.c1s1 | date : 'yyyy-MM-dd'}}</p></h3>
+  <h3 set-class-when-at-top="hide" class="title">Paziente codice <p class="text-warning blank-space">{{vm.data.patientId}}</p> Data visita: <p class="text-warning blank-space">{{vm.data.Summary.c1s1 | date : 'yyyy-MM-dd'}}</p></h3>
 
   <form name="vm.form" ng-submit="vm.submitInfo()" role="form" novalidate>
     <div class="col-md-11 thumbnail">
       <div>
         <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" ng-click="vm.showTab = 1" ng-class="{active:vm.showTab==1}" class="mouse-over"><a role="tab" aria-expanded="true">Cartella</a></li>
-          <li role="presentation" ng-click="vm.showTab = 2" ng-class="{active:vm.showTab==2}" class="mouse-over"><a role="tab" aria-expanded="true">Analgesia</a></li>
-          <li role="presentation" ng-click="vm.showTab = 3" ng-class="{active:vm.showTab==3}" class="mouse-over"><a role="tab" aria-expanded="true">Anestesia</a></li>
-          <li role="presentation" ng-click="vm.showTab = 4" ng-class="{active:vm.showTab==4}" class="mouse-over"><a role="tab" aria-expanded="true">Note</a></li>
-          <li role="presentation" ng-click="vm.showTab = 5" ng-class="{active:vm.showTab==5}" class="mouse-over"><a role="tab" aria-expanded="true">Assistenza Neotale</a></li>
+          <li role="presentation" ng-click="vm.showTab = 1" ng-class="{active:vm.showTab==1}" class="mouse-over"><a role="tab" aria-expanded="true">Cartella <span ng-show="vm.errors.Summary()" class="error glyphicon glyphicon-exclamation-sign"></span></a></li>
+          <li role="presentation" ng-click="vm.showTab = 2" ng-class="{active:vm.showTab==2}" class="mouse-over"><a role="tab" aria-expanded="true">Analgesia <span ng-show="vm.errors.Analgesia()" class="error glyphicon glyphicon-exclamation-sign"></span></a></li>
+          <li role="presentation" ng-click="vm.showTab = 3" ng-class="{active:vm.showTab==3}" class="mouse-over"><a role="tab" aria-expanded="true">Anestesia <span ng-show="vm.errors.Anestesia()" class="error glyphicon glyphicon-exclamation-sign"></span></a></li>
+          <li role="presentation" ng-click="vm.showTab = 5" ng-class="{active:vm.showTab==5}" class="mouse-over"><a role="tab" aria-expanded="true">Assistenza Neotale <span ng-show="vm.errors.Birth()" class="error glyphicon glyphicon-exclamation-sign"></span></a></li>
+          <li role="presentation" ng-click="vm.showTab = 4" ng-class="{active:vm.showTab==4}" class="mouse-over"><a role="tab" aria-expanded="true">Note </a></li>
         </ul>
         <div class="tab-content">
           <div ng-class="{active:vm.showTab==1,in:vm.showTab==1}" class="tab-pane fade" ng-include="'components/home/editInfoPanels/panel1.html'"></div>
           <div ng-class="{active:vm.showTab==2,in:vm.showTab==2}" class="tab-pane fade" ng-include="'components/home/editInfoPanels/panel2.html'"></div>
           <div ng-class="{active:vm.showTab==3,in:vm.showTab==3}" class="tab-pane fade" ng-include="'components/home/editInfoPanels/panel3.html'"></div>
-          <div ng-class="{active:vm.showTab==4,in:vm.showTab==4}" class="tab-pane fade" ng-include="'components/home/editInfoPanels/panel4.html'"></div>
           <div ng-class="{active:vm.showTab==5,in:vm.showTab==5}" class="tab-pane fade" ng-include="'components/home/editInfoPanels/panel5.html'"></div>
+          <div ng-class="{active:vm.showTab==4,in:vm.showTab==4}" class="tab-pane fade" ng-include="'components/home/editInfoPanels/panel4.html'"></div>
         </div>
       </div>
 
@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="row">
-          <button type="submit" ng-disabled="vm.errors.hasOne()" class="btn btn-primary">{{vm.data.Summary.id ? "Aggiorna" : "Registra"}}</button>
+          <button type="submit" ng-disabled="vm.form.$invalid && vm.data.Patient.finalized" class="btn btn-primary">{{vm.data.Summary.id ? "Aggiorna" : "Registra"}}</button>
           <a ng-click="vm.cleanForm()" class="btn btn-link">Cancella</a>
         </div>
       </div>

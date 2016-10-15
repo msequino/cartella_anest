@@ -68,7 +68,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     c2s3b : {
       type : DataTypes.FLOAT,
-      comment : "Concentrazione (%)"
+      comment : "Concentrazione (mg/ml)"
     },
     c2s3c : {
       type : DataTypes.FLOAT,
@@ -84,7 +84,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     c2s4b : {
       type : DataTypes.FLOAT,
-      comment : "Concentrazione (%)"
+      comment : "Concentrazione (mg/ml)"
     },
     c2s4c : {
       type : DataTypes.FLOAT,
@@ -127,7 +127,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     c3s3b : {
       type : DataTypes.FLOAT,
-      comment : "Concentrazione (%)"
+      comment : "Concentrazione (mg/ml)"
     },
     c3s3c : {
       type : DataTypes.FLOAT,
@@ -143,7 +143,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     c3s4b : {
       type : DataTypes.FLOAT,
-      comment : "Quantità (mcg)"
+      comment : "Concentrazione (mcg/ml)"
     },
     c3s4c : {
       type : DataTypes.FLOAT,
@@ -159,7 +159,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     c3s5b : {
       type : DataTypes.FLOAT,
-      comment : "Quantità (mcg)"
+      comment : "Concentrazione (mcg/ml)"
     },
     c3s5c : {
       type : DataTypes.FLOAT,

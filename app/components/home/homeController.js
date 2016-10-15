@@ -5,10 +5,11 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['UserService', 'PatientService', 'DoctorService', 'AuthenticationService', 'OptionService', 'StudyService', '$rootScope', '$location', '$timeout'];
-    function HomeController(UserService, PatientService, DoctorService, AuthenticationService, OptionService, StudyService, $rootScope, $location, $timeout) {
+    HomeController.$inject = ['UserService', 'PatientService', 'DoctorService', 'AuthenticationService', 'OptionService', 'StudyService', '$rootScope', '$location', '$timeout', '$window'];
+    function HomeController(UserService, PatientService, DoctorService, AuthenticationService, OptionService, StudyService, $rootScope, $location, $timeout, window) {
 
         var vm = this;
+        vm.Math = window.Math;
 
         vm.errors = {};
         vm.today = new Date();
@@ -20,6 +21,9 @@
 
         vm.showTab = 1;
         vm.showModal = false;
+        vm.showPatientModal = false;
+
+        vm.itemsPerPage = 10;
 
         vm.loadUser = loadUser;
         vm.loadDoctor = loadDoctor;
@@ -63,6 +67,8 @@
         vm.submitInfo = submitInfo;
         vm.submitStudy = submitStudy;
 
+        vm.backToHomepage = backToHomepage;
+
         vm.checkFinalization = checkFinalization;
         initController();
 
@@ -89,6 +95,8 @@
                 PatientService.GetAll().then(function(response){
                   vm.patients = response;
                 });
+                vm.pagination = 1;
+
                 vm.template = 'components/home/homepage.html';
 
               }
@@ -103,7 +111,6 @@
 
         //Profile functionalities
         function loadUser(id) {
-          console.log(id);
             UserService.GetById(id)
                 .then(function (user) {
                     vm.data = user;
@@ -133,6 +140,7 @@
                 if(loadItems == 3) //Load patients
                   PatientService.GetAll().then(function (response) {
                     vm.patients = response;
+                    vm.pagination = 1;
                   });
                   else{
                     if(loadItems == 4 && id) //Load patient with id
@@ -160,7 +168,7 @@
                         vm.finalized = vm.data.Patient.finalized;
 
                         vm.text_patient_page_1 = "Scheda Pz " + vm.data.patientId;
-                        vm.text_patient_page_2 = "Controlla i testi in rosso per correggerer gli errori";
+                        vm.text_patient_page_2 = "Correggi gli errori per finalizzare";
 
                         OptionService.Get('info').then(function(response){
                           vm.items = response;
@@ -199,10 +207,11 @@
           if(!vm.data.id)
             UserService.Create(vm.data).then(function(response){
               if(typeof response.success != 'undefined'){
-                if(!response.success)
+                if(("success" in response)){
                   vm.error = !response.success;
                   vm.message = response.message.data;
                   return;
+                }
               }
               vm.data.id = response.id;
               vm.data.password = null;
@@ -212,7 +221,7 @@
           else{
             if(!vm.data.password || vm.data.password.length == 0) delete vm.data.password;
             UserService.Update(vm.data).then(function(response){
-              if(!response.success){
+              if(("success" in response)){
                 vm.error = !response.success;
                 vm.message = response.message.data;
                 return;
@@ -237,7 +246,7 @@
 
         function submitStudy(){
           StudyService.Create(vm.data).then(function(response){
-            if(!response.success){
+            if(("success" in response)){
               vm.error = !response.success;
               vm.message = response.message.data;
               return;
@@ -251,7 +260,7 @@
           if(!vm.data.ClinicId) vm.data.ClinicId = vm.user.ClinicId;
           if(!vm.data.id)
             DoctorService.Create(vm.data).then(function(response){
-              if(!response.success){
+              if(("success" in response)){
                 vm.error = !response.success;
                 vm.message = response.message.data;
                 return;
@@ -262,7 +271,7 @@
             });
           else{
             DoctorService.Update(vm.data).then(function(response){
-              if(!response.success){
+              if(("success" in response)){
                 vm.error = !response.success;
                 vm.message = response.message.data;
                 return;
@@ -278,7 +287,7 @@
           vm.data.ClinicId = vm.user.ClinicId;
           if(!vm.data.id)
             PatientService.Create(vm.data).then(function(response){
-              if(!response.success){
+              if(("success" in response)){
                 vm.error = !response.success;
                 vm.message = response.message.data;
                 return;
@@ -286,20 +295,15 @@
 
               vm.data.id = response.id;
               vm.patients.push({id : vm.data.id});
+              vm.showPatientModal = true;
               //INVIA paziente via mail
               angular.element("#link").attr("href", angular.element("#link").attr("href") +
+                          vm.data.id + "%2c" +
                           vm.data.name + "%2c" +
                           vm.data.surname + "%2c" +
                           vm.data.birth + "%2c" +
                           vm.data.code);
               //angular.element("#link").trigger('click');
-              vm.success = true;
-              cleanForm();
-
-              $timeout(function () {
-                vm.success = false;
-                changeView('components/home/homepage.html');
-              }, 3000);
             });
         }
 
@@ -726,6 +730,14 @@
           }
         }
 
+        function backToHomepage(){
+          vm.showPatientModal = false;
+          vm.success = true;
+          cleanForm();
+          timer(true,true);
+
+        }
+
         function checkAllDates(){
           //Funzione per controllare se le date inserite precedentemente sono corrette
           if(vm.data.Analgesia.c2s1 <= vm.data.Analgesia.c2s6)
@@ -749,19 +761,52 @@
               vm.errors[error] = true;
         }
 
-        function checkFinalization(){
+        function checkFinalization(){}
 
-        }
-        vm.errors.hasOne = function(){
-            for(var key in vm.errors)
-              if(key.indexOf("hasOne") < 0)
-                if(vm.errors.hasOwnProperty(key))
-                  return true;
-
+        vm.errors.Summary = function(){
+          if(vm.data.hasOwnProperty("Patient"))
             if(vm.data.Patient.finalized)
-              return vm.form.$invalid;
-            return false;
+              for(var key in vm.form)
+                if(key.indexOf("Summary") >= 0)
+                  if(vm.form[key].$invalid)
+                    return true;
+
+          return false;
         }
+
+        vm.errors.Analgesia = function(){
+          if(vm.data.hasOwnProperty("Patient"))
+            if(vm.data.Patient.finalized)
+              for(var key in vm.form)
+                if(key.indexOf("Analgesia") >= 0)
+                  if(vm.form[key].$invalid)
+                    return true;
+
+          return false;
+        }
+
+        vm.errors.Anestesia = function(){
+          if(vm.data.hasOwnProperty("Patient"))
+            if(vm.data.Patient.finalized)
+              for(var key in vm.form)
+                if(key.indexOf("Anestesia") >= 0)
+                  if(vm.form[key].$invalid)
+                    return true;
+
+          return false;
+        }
+
+        vm.errors.Birth = function(){
+          if(vm.data.hasOwnProperty("Patient"))
+            if(vm.data.Patient.finalized)
+              for(var key in vm.form)
+                if(key.indexOf("Birth") >= 0)
+                  if(vm.form[key].$invalid)
+                    return true;
+
+          return false;
+        }
+
         function timer(successAlert,mChangeView){
           vm.success = successAlert;
           vm.error = !successAlert;

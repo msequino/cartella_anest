@@ -46,6 +46,18 @@
   </div>
 
   <div class="row">
+    <div class="form-group col-md-4" ng-class="{ 'has-error-background': vm.data.Patient.finalized && vm.form.AnalgesiaC2s10.$error.required }">
+      <label for="AnalgesiaC2s10">Temperatura alla nascità > di 38 gradi </label>
+      <div class="radio">
+        <label for="AnalgesiaC2s10{{item}}" class="radio-inline"  ng-repeat="(key,item) in vm.items['Analgesia.c2s10']">
+          <input type="radio" name="AnalgesiaC2s10" ng-disabled="vm.finalized" ng-required="vm.Analgesia == 'Si'" ng-model="vm.data.Analgesia.c2s10" value="{{item}}">{{item}}
+        </label>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
     <div class="form-group col-md-4" ng-class="{ 'has-error-background': vm.data.Patient.finalized && vm.form.AnalgesiaC2s4.$error.required }">
       <label for="AnalgesiaC2s4">Augmentation </label>
       <div class="radio">

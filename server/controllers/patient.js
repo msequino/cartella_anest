@@ -5,16 +5,20 @@ var models = require("../models"),
 
 module.exports.getPatients = function(req,res,next){
   var clinic = !req.user.getDataValue('ClinicId') ? {} : {ClinicId : req.user.getDataValue('ClinicId')};
-  var whereClinicId = req.user.getDataValue('clinicId') ? "WHERE p.ClinicId = :clinicId" : "";
-  var paramsClinicId = req.user.getDataValue('clinicId') ? {clinicId : req.user.getDataValue('clinicId')} : {};
+
+  var whereClinicId = req.user.getDataValue('ClinicId') ? "WHERE p.ClinicId = :clinicId" : "";
+
+  var paramsClinicId = req.user.getDataValue('ClinicId') ? {clinicId : req.user.getDataValue('ClinicId')} : {};
+
   models.sequelize.query("SELECT p.id,s.c1s1,s.c1s3,s.c1s2,CONCAT(d.surname, ' ',d.name) AS doctor,ag.id AS agid,an.id AS anid,st.acronym,p.finalized "+
     "FROM Patients p LEFT JOIN Summaries s ON p.id=s.PatientId "+
     " LEFT JOIN Analgesia ag ON p.id=ag.PatientId "+
-    " LEFT JOIN Anestesia an ON p.id=ag.PatientId "+
+    " LEFT JOIN Anestesia an ON p.id=an.PatientId "+
     " LEFT JOIN Doctors d ON s.DoctorId=d.id "+
     " LEFT JOIN Studies st ON p.StudyId=st.id "+
     "" + whereClinicId + " ORDER BY p.id", {replacements : paramsClinicId,
           type:models.sequelize.QueryTypes.SELECT}).then(function(data){
+            console.log(data.length);
             res.json(data);
 
   });
@@ -79,6 +83,9 @@ module.exports.getPatient = function(req,res,next){
 }
 
 module.exports.insertPatient = function(req,res,next){
+  req.body.name = null;
+  req.body.surname = null;
+  req.body.code = null;
   models.Patient.create(req.body).then(function(p){
     log.log('info',req.user.id + ' CREATE patient '+ JSON.stringify(p));
     res.json(p);
@@ -131,6 +138,7 @@ module.exports.getInfo = function(req,res,next){
   response['Analgesia.c2b'] = models.Analgesia.rawAttributes.c2b.values;
   response['Analgesia.c2s2'] = models.Analgesia.rawAttributes.c2s2.values;
   response['Analgesia.c2s4'] = models.Analgesia.rawAttributes.c2s4.values;
+  response['Analgesia.c2s10'] = models.Analgesia.rawAttributes.c2s10.values;
   response['Therapy.c1s3'] = models.Therapy.rawAttributes.c1s3.values;
   response['Therapy.c1s3a'] = models.Therapy.rawAttributes.c1s3a.values;
   response['Therapy.c1s4'] = models.Therapy.rawAttributes.c1s4.values;

@@ -4,19 +4,22 @@
     <li class="sidebar-brand">
     </li>
     <li>
-        <a class="mouse-over" ng-click="vm.changeView('components/home/homepage.html',3)">Lista pazienti</a>
+        <a class="mouse-over" ng-click="vm.changeView('components/home/homepage.html',3)"><span class="glyphicon glyphicon-home"/> Lista pazienti</a>
     </li>
     <li>
-        <a class="mouse-over" ng-click="vm.changeView('components/home/statistics.html')">Statistiche</a>
+        <a class="mouse-over" ng-show="vm.user.ClinicId" ng-click="vm.changeView('components/home/editPatient.html',4)"><span class="glyphicon glyphicon-bed"/> Nuovo paziente</a>
     </li>
     <li>
-        <a class="mouse-over" ng-show="vm.user.GroupId < 3" ng-click="vm.changeView('components/home/editDoctors.html',2)">Lista medici</a>
+        <a class="mouse-over" ng-click="vm.changeView('components/home/statistics.html')"><span class="glyphicon glyphicon-object-align-bottom"/> Statistiche</a>
     </li>
     <li>
-        <a class="mouse-over" ng-show="vm.user.GroupId < 3" ng-click="vm.changeView('components/home/editUsers.html',1)">Lista utenti</a>
+        <a class="mouse-over" ng-show="vm.user.GroupId < 3" ng-click="vm.changeView('components/home/editDoctors.html',2)"><span class="glyphicon glyphicon-education"/> Lista medici</a>
     </li>
     <li>
-        <a class="mouse-over" ng-click="vm.changeView('components/home/editStudies.html')">Lista studi</a>
+        <a class="mouse-over" ng-show="vm.user.GroupId < 3" ng-click="vm.changeView('components/home/editUsers.html',1)"><span class="glyphicon glyphicon-magnet"/> Lista utenti</a>
+    </li>
+    <li>
+        <a class="mouse-over" ng-click="vm.changeView('components/home/editStudies.html')"><span class="glyphicon glyphicon-list-alt"/> Lista studi</a>
     </li>
   </ul>
 </div>

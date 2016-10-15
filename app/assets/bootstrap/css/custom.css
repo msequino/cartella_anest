@@ -215,6 +215,13 @@ th.large{
 .navbar-center {
   text-align: center;
 }
-.fix-to-top {
+.hide {
   display: none;
+}
+span.error{
+  color: red;
+}
+.nav-footer{
+  position:fixed;
+  bottom:20%;
 }

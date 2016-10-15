@@ -11,7 +11,6 @@ module.exports.getStudies = function(req,res,next){
 module.exports.getStudyPatient = function(req,res,next){
   var response = {};
   /* TODO
-    -- controlla formati datetime-local (meglio se in formato 24) usa il computer del lavoro
     -- problema quantità farmaci;
     -- vedi etichette concentrazione;
     perchè vm.Anestesia e vm.Analgesia non si aggiornano??? scrivi su stack

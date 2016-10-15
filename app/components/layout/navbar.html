@@ -7,7 +7,7 @@
 
   <div class="col-md-3" ng-show="vm.data.patientId">
     <div class="navbar-center">
-      <span id="label-navbar" class="fix-to-top">{{vm.text_patient_page_1}}</span><br><span ng-show="vm.data.Patient.finalized && vm.form.$invalid">{{vm.text_patient_page_2}}</span>
+      <span id="label-navbar" class="fix-to-top hide">{{vm.text_patient_page_1}}</span><br><p ng-show="vm.data.Patient.finalized && vm.form.$invalid">{{vm.text_patient_page_2}}</p>
     </div>
   </div>
 

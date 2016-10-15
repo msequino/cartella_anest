@@ -1,7 +1,5 @@
 <div class="row">
 
-  <a href="data:application/octet-stream," id="link"/>
-
   <div class="col-md-8 col-md-offset-1 thumbnail">
       <form name="vm.form" ng-submit="vm.submitPatient()" role="form" novalidate>
         <input type="hidden" ng-model="vm.data.id"/>
@@ -18,10 +16,10 @@
           </div>
         </div>
         <div class="row">
-          <div class="form-group col-md-6" ng-class="{ 'has-error': vm.form.birth.$dirty && vm.form.birth.$error.required }">
+          <div class="form-group col-md-6">
               <label for="date">Data di nascita</label>
               <div class="input-group">
-                  <p class="showInline"><input type="text" name="birth" disabled class="form-control" date-options="dateOptions" ng-model="vm.data.birth" datepicker required/></p>
+                  <p class="showInline"><input type="text" name="birth" disabled class="form-control" date-options="dateOptions" ng-model="vm.data.birth" datepicker/></p>
               </div>
               <span ng-show="vm.form.date.$dirty && vm.form.date.$error.required" class="help-block">Data richiesta</span>
           </div>
@@ -42,3 +40,5 @@
       </form>
   </div>
 </div>
+
+<div ng-include="'components/home/modal/newPatient.html'"></div>

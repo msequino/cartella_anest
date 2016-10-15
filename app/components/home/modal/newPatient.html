@@ -1,0 +1,24 @@
+<div id="{{handler}}" class="modal fade" ng-class="{in:vm.showPatientModal,'show-modal':vm.showPatientModal}" aria-hidden="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Nuovo paziente </h4>
+        <h1 class="modal-title">#{{vm.data.id}} </h1>
+      </div>
+      <div class="modal-body">
+          <p class="danger">Attenzione salvare in un file le seguenti informazioni (in modo da essere sempre recuperabili):</p>
+          <ul>
+            <li>{{vm.data.id}}</li>
+            <li>{{vm.data.surname + " " + vm.data.name}}</li>
+            <li>{{vm.data.code}}</li>
+          </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="vm.backToHomepage()">Chiudi</button>
+        Oppure
+        <a href="data:application/octet-stream," download="patient.csv" id="link"> Scarica csv </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade in" ng-show="vm.showModal"></div>

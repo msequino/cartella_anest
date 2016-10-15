@@ -47,16 +47,16 @@
       </select>
     </div>
 
-    <div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.AnestesiaC3s3b.$dirty && vm.form.AnestesiaC3s3b.$error.min, 'has-error-background': vm.data.Patient.finalized && vm.form.AnestesiaC3s3b.$error.required }">
-      <label for="AnestesiaC3s3b">Conc. (mg/ml):</label>
-      <input type="number" name="AnestesiaC3s3b" ng-required="vm.data.Anestesia.c3s3 == 'Si'" class="form-control" ng-disabled="vm.finalized" ng-model="vm.data.Anestesia.c3s3b" min="0"/>
-      <span ng-show="vm.form.AnestesiaC3s3b.$dirty && vm.form.AnestesiaC3s3b.$error.min" class="help-block">Maggiore di 0</span>
-    </div>
-
     <div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.AnestesiaC3s3c.$dirty && vm.form.AnestesiaC3s3c.$error.min , 'has-error-background': vm.data.Patient.finalized && vm.form.AnestesiaC3s3c.$error.required}">
       <label for="AnestesiaC3s3c">Vol. (ml):</label>
       <input type="number" name="AnestesiaC3s3c" ng-required="vm.data.Anestesia.c3s3 == 'Si'" class="form-control" ng-disabled="vm.finalized" ng-model="vm.data.Anestesia.c3s3c" min="0"/>
       <span ng-show="vm.form.AnestesiaC3s3c.$dirty && vm.form.AnestesiaC3s3c.$error.min" class="help-block">Maggiore di 0</span>
+    </div>
+
+    <div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.AnestesiaC3s3b.$dirty && vm.form.AnestesiaC3s3b.$error.min, 'has-error-background': vm.data.Patient.finalized && vm.form.AnestesiaC3s3b.$error.required }">
+      <label for="AnestesiaC3s3b">Conc. (mg/ml):</label>
+      <input type="number" name="AnestesiaC3s3b" ng-required="vm.data.Anestesia.c3s3 == 'Si'" class="form-control" ng-disabled="vm.finalized" ng-model="vm.data.Anestesia.c3s3b" min="0"/>
+      <span ng-show="vm.form.AnestesiaC3s3b.$dirty && vm.form.AnestesiaC3s3b.$error.min" class="help-block">Maggiore di 0</span>
     </div>
   </div>
 
@@ -87,7 +87,7 @@
     </div>
 
     <div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.AnestesiaC3s4c.$dirty && vm.form.AnestesiaC3s4c.$error.min , 'has-error-background': vm.data.Patient.finalized && vm.form.AnestesiaC3s4c.$error.required}">
-      <label for="AnestesiaC3s4c">Vol. (ml):</label>
+      <label for="AnestesiaC3s4c">Conc. (mcg/ml):</label>
       <input type="number" name="AnestesiaC3s4c" class="form-control" ng-required="vm.data.Anestesia.c3s4 == 'Si'" ng-disabled="vm.finalized" ng-model="vm.data.Anestesia.c3s4c" min="0"/>
       <span ng-show="vm.form.AnestesiaC3s4c.$dirty && vm.form.AnestesiaC3s4c.$error.min" class="help-block">Maggiore di 0</span>
     </div>
@@ -120,7 +120,7 @@
     </div>
 
     <div class="form-group col-md-4" ng-class="{ 'has-error': vm.form.AnestesiaC3s5c.$dirty && vm.form.AnestesiaC3s5c.$error.min ,'has-error-background': vm.data.Patient.finalized && vm.form.AnestesiaC3s5c.$error.required}">
-      <label for="AnestesiaC3s5c">Vol. (ml):</label>
+      <label for="AnestesiaC3s5c">Conc. (mcg/ml):</label>
       <input type="number" name="AnestesiaC3s5c" ng-required="vm.data.Anestesia.c3s5 == 'Si'" class="form-control" ng-disabled="vm.finalized" ng-model="vm.data.Anestesia.c3s5c" min="0"/>
       <span ng-show="vm.form.AnestesiaC3s5c.$dirty && vm.form.AnestesiaC3s5c.$error.min" class="help-block">Maggiore di 0</span>
     </div>

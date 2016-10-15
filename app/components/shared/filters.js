@@ -26,9 +26,8 @@
         .filter('checkStudiesByPatient',function(){
           return function(patient){
             // TODO : manca NRS > 5 e dilatazione cervice
-//            if(patient.Summary.c1s5 == 0 && patient.birth)
+            //            if(patient.Summary.c1s5 == 0 && patient.birth)
           }
-
         })
         .filter('split', function() {
           return function(input, splitChar) {
@@ -42,6 +41,34 @@
               if(input)
                 return input.split(splitChar)[splitIndex];
           }
-        });
+        })
+        .filter('range', function() {
+          return function(input, total) {
+              total = parseInt(total);
+
+              for(var i =0 ; i< total;i++)
+                input.push(i);
+
+              return input;
+          }
+        })
+        .filter('customLimitTo', function() {
+          return function(input, limit, begin) {
+
+            var out = [];
+
+            if(input){
+              limit = parseInt(limit);
+              begin = parseInt(begin);
+              for(var i=0 ; i<limit;i++)
+                if(input.length > i+begin)
+                  out.push(input[i+begin]);
+
+              return out;
+              
+            }
+
+          }
+        })
 
 })();

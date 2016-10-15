@@ -161,7 +161,11 @@ module.exports = function(sequelize, DataTypes) {
     c2s9b: {
       type : DataTypes.FLOAT,
       comment : "ph venoso"
-    }
+    },
+    c2s10: {
+      type : DataTypes.ENUM("Si","No"),
+      comment : "Temperatura"
+    },
   },
   {
     classMethods: {
