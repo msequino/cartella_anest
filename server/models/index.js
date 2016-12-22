@@ -4,7 +4,7 @@ var fs        = require("fs");
 var path      = require("path");
 var Sequelize = require("sequelize");
 var env       = process.env.NODE_ENV || "development";
-var sequelize = new Sequelize("cartellaanest", "cartellaanest", "vwTKbF3KyHBRfhGd", {logging : false});
+var sequelize = new Sequelize("cartellaanest", "cartellaanest", "NTE5aY4uJDBXEYt3", {logging : false});
 var db        = {};
 
 fs
